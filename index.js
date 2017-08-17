@@ -2,16 +2,7 @@ var express = require("express");
 var app = express();
 var fs = require('fs');
 var config = require("./config");
-
-var privateKey = fs.readFileSync('privatekey.pem');
-var certificate = fs.readFileSync('certificate.pem');
-
-var options = {
-  key: privateKey,
-  cert: certificate
-};
-
-var https = require('https').Server(options, app);
+var http = require('http').Server(app);
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
 var cors = require('cors');
@@ -99,7 +90,7 @@ apiRoutes.use(function (err, req, res, next) {
     console.log(err);
 });
 
-var io = require("socket.io")(https);
+var io = require("socket.io")(http);
 var turns = io;
 
 io.on('connection', function(socket){
@@ -115,7 +106,7 @@ mongoose.connection.on('open', function(ref){
     require("./controllers/all")(app, apiRoutes, io); 
     app.use("/api", apiRoutes);
 
-    https.listen(config.appPort, function(){
+    http.listen(config.appPort, function(){
         console.log("app listen on " + config.appPort);
     }); 
 });
