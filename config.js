@@ -1,5 +1,5 @@
 module.exports = {
-	dburl : "mongodb://daiAdmin:0126*dai*@13.59.230.244:27017/daimont",
+	dburl : "mongodb://daiAdmin:0126*dai*@127.0.0.1:27017/daimont",
 	secret : "$daimont.2017",
 	appPort : 8443,
 	ssl_phrase : process.env.SSL_PHRASE,
