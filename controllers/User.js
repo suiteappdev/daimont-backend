@@ -34,7 +34,7 @@ module.exports = function(app, apiRoutes){
                   name : user.name,
                   last_name : user.last_name,
                   email : user.email,
-                  activation_url : config.base_url + "profile/" + user.activation_token
+                  activation_url : config.base_url_dev + "profile/" + user.activation_token
                }}, 'activation/index.ejs');
 
               var data_activation_email = {
