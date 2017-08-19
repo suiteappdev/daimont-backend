@@ -113,21 +113,12 @@ module.exports = function(app, apiRoutes, io){
 		function update(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
-			var where = {};
-
-			if(req.headers['x-daimont-user']){
-				where = { "metadata._author" : req.headers['x-daimont-user'] };
-			}
-
-			where._id = mongoose.Types.ObjectId(req.params.id);
-
-
 
 			!REQ.data || (data.data = REQ.data); 
 
 			data = { $set : data };          
 
-			Model.update( where , data , function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
 					res.status(200).json(rs);
 				}else{
