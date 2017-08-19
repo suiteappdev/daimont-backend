@@ -4,6 +4,7 @@ module.exports = function(app, apiRoutes, io){
 		var path = require("path");
 		var mongoose = require('mongoose');
 		var Model = require(path.join("../", "models", _entity + ".js"));
+    	var user_manager = require('../models/user_manager');
     	var crypto = require("crypto");
 	   	var config = require(path.join(process.env.PWD , "config.js"));
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
@@ -105,6 +106,25 @@ module.exports = function(app, apiRoutes, io){
 			model.save(function(err, payment){
 				if(payment){
 			    	res.status(200).json(payment);
+		              
+		              Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").exec(function(err, data){
+							  var _html = _compiler.render(
+									{ _data : { name : payment._user.name, last_name : payment._user.last_name}}, 'payment/new_payment_to_admin.ejs');
+
+				              var data = {
+				                from: ' Daimont <noreply@daimont.com>',
+				                to: config.email_recipient,
+				                subject: 'Nuevo pago',
+				                text: 'se ha realizado un nuevo pago',
+				                html: _html
+				              };
+
+				              mailgun.messages().send(data, function (error, body) {
+				                console.log("mailgun body", body);
+				                console.log("mailgun errr", error);
+				              });       	 
+								       
+		              });
 				}else{
 					res.status(500).json(err);
 				}
@@ -130,6 +150,8 @@ module.exports = function(app, apiRoutes, io){
 			Model.update( where , data , function(err, rs){
 				if(rs){
 					res.status(200).json(rs);
+
+
 				}else{
 					res.status(500).json(err)
 				}
