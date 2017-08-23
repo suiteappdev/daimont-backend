@@ -17,7 +17,7 @@ module.exports = function(app, apiRoutes, io){
 
 			console.log("REQ", REQ);
 
-			var _html = _compiler.render({ _data : { body : REQ.body, name: REQ.name} }, 'contact/index.ejs');
+			var _html = _compiler.render({ _data : { body : REQ.body, name: REQ.name, email: REQ.email} }, 'contact/index.ejs');
 
 			var data = {
 				from: ' Daimont <noreply@daimont.com>',
@@ -30,7 +30,7 @@ module.exports = function(app, apiRoutes, io){
 			mailgun.messages().send(data, function (error, body) {
 				console.log("mailgun body", body);
 				console.log("mailgun errr", error);
-				
+
 				if(!error){
 						res.status(200).json({ sended : true});
 				}else{
