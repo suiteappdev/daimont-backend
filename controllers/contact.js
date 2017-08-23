@@ -31,6 +31,8 @@ module.exports = function(app, apiRoutes, io){
 				console.log("mailgun body", body);
 				console.log("mailgun errr", error);
 			});
+
+			res.status(200).json({ sended : 'OK'});
 		}
 
 		app.post("/api/" + _url_alias, post);
