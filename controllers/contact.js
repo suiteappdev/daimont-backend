@@ -28,11 +28,8 @@ module.exports = function(app, apiRoutes, io){
 			};
 
 			mailgun.messages().send(data, function (error, body) {
-				console.log("mailgun body", body);
-				console.log("mailgun errr", error);
-
 				if(!error){
-						res.status(200).json({ sended : true});
+						return res.status(200).json({ sended : true});
 				}else{
 					res.status(500).json({  sended: false});
 				}
