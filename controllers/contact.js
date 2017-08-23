@@ -3,7 +3,10 @@ module.exports = function(app, apiRoutes, io){
 		var path = require("path");
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 	   	var config = require(path.join(process.env.PWD , "config.js"));
-
+ 		
+ 		var api_key = process.env.MAILGUN_API_KEY || null;;
+	    var domain = 'daimont.com';
+	    
 	    var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 		function post(req, res){
