@@ -30,9 +30,14 @@ module.exports = function(app, apiRoutes, io){
 			mailgun.messages().send(data, function (error, body) {
 				console.log("mailgun body", body);
 				console.log("mailgun errr", error);
+				
+				if(!error){
+						res.status(200).json({ sended : true});
+				}else{
+					res.status(500).json({  sended: false});
+				}
 			});
 
-			res.status(200).json({ sended : 'OK'});
 		}
 
 		app.post("/api/" + _url_alias, post);
