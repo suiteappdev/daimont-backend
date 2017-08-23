@@ -17,7 +17,7 @@ module.exports = function(app, apiRoutes, io){
 
 			console.log("REQ", REQ);
 
-			var _html = _compiler.render({ _data : { body : REQ.body} }, 'contact/index.ejs');
+			var _html = _compiler.render({ _data : { body : REQ.body, name: REQ.name} }, 'contact/index.ejs');
 
 			var data = {
 				from: ' Daimont <noreply@daimont.com>',
