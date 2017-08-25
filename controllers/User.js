@@ -290,7 +290,7 @@ module.exports = function(app, apiRoutes){
 
          UserSchema.findOne({ email : req.body.email }).exec(function(err, user){
             if(!user){
-                    res.status(401).json({err : 'Usuario o clave incorrectos'});
+                    res.status(404).json({err : 'email address not found'});
                     return;
              }
 
@@ -305,7 +305,7 @@ module.exports = function(app, apiRoutes){
                         res.status(200).json({token:token, user : user});
                   });  
             }else{
-                  res.status(401).json({err: 'Usuario o clave incorrectos'});
+                  res.status(404).json({err: 'Usuario o clave incorrectos'});
             }
         });
     }
