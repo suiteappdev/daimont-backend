@@ -53,7 +53,7 @@ module.exports = function(app, apiRoutes, io){
 		function getCurrent(req, res){
 			var REQ = req.params; 
 				console.log("REQ", REQ);
-				
+
 			Model.findOne({ _user : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").exec(function(err, rs){
 				if(!err){
 					res.status(200).json(rs);
@@ -157,9 +157,9 @@ module.exports = function(app, apiRoutes, io){
 			});
 		 }
 
+		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
-		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 		apiRoutes.post("/" + _url_alias, post);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
