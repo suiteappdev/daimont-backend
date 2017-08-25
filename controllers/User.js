@@ -17,7 +17,7 @@ module.exports = function(app, apiRoutes){
     var domain = 'daimont.com';
     var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
-    function create(req, res){
+    function client(req, res){
        var data = req.body;
        var password_text = req.body.password;
        var credit = req.body.credit;
@@ -83,6 +83,75 @@ module.exports = function(app, apiRoutes){
 
         });
     }
+
+ function admin(req, res){
+       var data = req.body;
+       var password_text = req.body.password;
+       var credit = req.body.credit;
+       data.type = "ADMINISTRATOR"; 
+        
+       user_manager.create(data, function(err, user){
+          
+          if(err){
+              res.status(409).json({code : 11000});
+              return;
+          }
+          
+          if(user){
+              var _html_activation = _compiler.render({ _data : {
+                  name : user.name,
+                  last_name : user.last_name,
+                  email : user.email,
+                  activation_url : config.base_url_dev + "profile/" + user.activation_token
+               }}, 'activation/index.ejs');
+
+              var data_activation_email = {
+                from: ' Daimont <noreply@daimont.com>',
+                to: user.email,
+                subject: 'Activar Cuenta',
+                text: 'proceda con la activación de su cuenta',
+                html: _html_activation
+              };
+
+              mailgun.messages().send(data_activation_email, function (error, body) {
+                  if(data){
+                    if(credit){
+                        var _html_credit_resume = _compiler.render({ _data : {
+                            user : user.first_name,
+                            amount : formatCurrency(user.credit.data.amount[0], opts),
+                            interestsDays : formatCurrency(user.credit.data.interestsDays, opts),
+                            pay_day : moment(user.credit.data.pay_day).format('MMMM DD, YYYY'),
+                            system_quoteDays : formatCurrency(user.credit.data.system_quoteDays, opts),
+                            finance_quote : formatCurrency(user.credit.data.finance_quote, opts),
+                            ivaDays : formatCurrency(user.credit.data.ivaDays, opts),
+                            total_payment : formatCurrency(user.credit.data.total_payment, opts),
+                            status : user.credit.data.status
+                         }}, 'credit_resume/index.ejs');
+
+                        var data_credit_resume = {
+                          from: ' Daimont <noreply@daimont.com>',
+                          to: user.email,
+                          subject: 'Resumen de Credito',
+                          text: 'Estado y resumen de su actual credito',
+                          html: _html_credit_resume
+                        };
+
+                        mailgun.messages().send(data_credit_resume, function (error, body) {
+                          if(data){
+                              console.log("email request", body);
+                          }
+                        });                       
+                    }
+                  }
+                console.log("email request", body);
+              });
+                  
+              res.status(200).json(user);
+          }
+
+        });
+    }
+
 
     function update(req, res){
          var data = {};
@@ -283,6 +352,8 @@ module.exports = function(app, apiRoutes){
     app.post('/api/password-reset/', passwordReset);
     app.post('/api/recover/', recover);
     app.post("/api/user", create);
+    app.post("/api/user/client", client);
+    app.post("/api/user/admin", admin);
     app.post("/api/login", login);
     apiRoutes.put("/user/:id", update);
     apiRoutes.delete("/user/:id", remove);
