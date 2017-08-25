@@ -54,11 +54,11 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var _where = {};
 
-			if(REQ.data.facebook_id){
-				_where.data = {};
+			try{
+				_where._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);	
+			}catch(error){
+			    _where.data = {};
 				_where.data.owner = req.headers['x-daimont-user'];
-			}else{
-				_where._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 			}
 
 			Model.findOne(_where).populate("_user").exec(function(err, rs){
