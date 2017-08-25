@@ -52,24 +52,23 @@ module.exports = function(app, apiRoutes, io){
 
 		function getCurrent(req, res){
 			var REQ = req.params; 
-			var _where = {};
-
 			try{
-				_where._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);	
+				Model.findOne({ _user : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
 			}catch(error){
-			    _where.data = {};
-				_where.data.owner = req.headers['x-daimont-user'].toString();
+				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).populate("_user").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs);
+					}else{
+						res.status(500).json(err);
+					}
+				});
 			}
-
-			console.log("where", _where);
-
-			Model.findOne(_where).populate("_user").exec(function(err, rs){
-				if(!err){
-					res.status(200).json(rs);
-				}else{
-					res.status(500).json(err);
-				}
-			});
 		}
 
 		function post(req, res){
