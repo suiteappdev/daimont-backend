@@ -49,6 +49,19 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+
+		function getCurrent(req, res){
+			var REQ = req.params; 
+
+			Model.findOne({"metadata._author" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).sort('-createdAt').exec(function(err, rs){
+				if(!err){
+					res.status(200).json(rs);
+				}else{
+					res.status(500).json(err);
+				}
+			});
+		}
+
 		function post(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
@@ -145,6 +158,7 @@ module.exports = function(app, apiRoutes, io){
 
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
+		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 		apiRoutes.post("/" + _url_alias, post);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
