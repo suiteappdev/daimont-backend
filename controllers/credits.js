@@ -57,8 +57,8 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				_where._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);	
 			}catch(error){
-			    _where.data = {};
-				_where.data.owner = req.headers['x-daimont-user'];
+			    _where['data'] = {};
+				_where['data']['owner'] = req.headers['x-daimont-user'];
 			}
 
 			Model.findOne(_where).populate("_user").exec(function(err, rs){
