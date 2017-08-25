@@ -19,11 +19,11 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var where;
 
-			 Model.find({"metadata._author" : req.headers['x-daimont-user']}).populate("_user").exec(function(err, rs){
+			 Model.find({"metadata._author" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs);
 					}else{
-						res.json(err);
+						res.status(500).json(err);
 					}
 			 });
 		}
