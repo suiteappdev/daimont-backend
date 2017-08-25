@@ -52,8 +52,9 @@ module.exports = function(app, apiRoutes, io){
 
 		function getCurrent(req, res){
 			var REQ = req.params; 
-
-			Model.findOne({ _user : req.headers['x-daimont-user']}).populate("_user").exec(function(err, rs){
+				console.log("REQ", REQ);
+				
+			Model.findOne({ _user : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").exec(function(err, rs){
 				if(!err){
 					res.status(200).json(rs);
 				}else{
