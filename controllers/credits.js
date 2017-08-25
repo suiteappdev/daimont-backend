@@ -19,11 +19,7 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var where;
 
-			if(req.headers['x-daimont-user']){
-				where = { "metadata._author" :  req.headers['x-daimont-user']};
-			}
-
-			 Model.find( where || {} ).populate("_user").exec(function(err, rs){
+			 Model.find({"metadata._author" : req.headers['x-daimont-user']}).populate("_user").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs);
 					}else{
