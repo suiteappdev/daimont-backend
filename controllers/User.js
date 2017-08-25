@@ -406,7 +406,9 @@ module.exports = function(app, apiRoutes){
 
       User.update({ activation_token: REQ.activation_token  }, { $set: { active: true }},  function(err, user) {
         if(!err){
-            res.status(200).json(user)
+            User.findOne({ activation_token: REQ.activation_token}).exec(function(err, rs){
+               res.status(200).json(rs);
+            });
         }
       });
   }
