@@ -30,6 +30,7 @@ var _Schema = new Schema({
 _Schema.pre('save', function (next) {
     this.full_name = (this.name || '') + ' ' + (this.last_name  || '');
     this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
+    var _self = this;
 
     if(this.credit){
     	var credit = mongoose.model('credits');
@@ -46,9 +47,8 @@ _Schema.pre('save', function (next) {
 
     	new_credit.save(function(err, credit){
     		if(!err){
-                console.log("console", this.credit);
-
-                this.credit = credit;
+                console.log("User", _self);
+                _self.credit = credit;
 				next();    			
     		}
     	});
