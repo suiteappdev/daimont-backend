@@ -150,7 +150,7 @@ module.exports = function(app, apiRoutes, io){
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
  						var _html_credit_approved = _compiler.render({ _data : {
-                            user : (user.name + ' ' + user.last_name)
+                            user : (data._user.name + ' ' + data._user.last_name)
                          }}, 'credit_approved/credit_approved.ejs');
 
                         var data_credit_approved = {
