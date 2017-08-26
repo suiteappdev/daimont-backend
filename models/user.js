@@ -47,6 +47,7 @@ _Schema.pre('save', function (next) {
 
     	new_credit.save(function(err, credit){
     		if(!err){
+                this.credit = credit;
 				next();    			
     		}
     	});
