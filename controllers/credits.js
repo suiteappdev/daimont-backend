@@ -207,7 +207,7 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
-		function deposited(req, res){
+		function deposit(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
 
