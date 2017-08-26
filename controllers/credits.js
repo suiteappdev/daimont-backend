@@ -163,7 +163,7 @@ module.exports = function(app, apiRoutes, io){
 
                         mailgun.messages().send(data_credit_approved, function (error, body) {
                           if(data){
-                              console.log("New credit request Approved has been sended to " + config.email_recipient, body);
+                              console.log("New credit request approved has been sended to " + REQ._user.email, body);
                           }
                         });                            
 
