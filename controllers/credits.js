@@ -32,15 +32,8 @@ module.exports = function(app, apiRoutes, io){
 
 		function getById(req, res){
 			var REQ = req.params; 
-			var where;
 
-			if(req.headers['x-daimont-user']){
-				where = { "metadata._author" : req.headers['x-daimont-user'] };
-			}
-
-			where._id = mongoose.Types.ObjectId(REQ.user);
-
-			Model.findOne(where || {}).exec(function(err, rs){
+			Model.findOne({"_id", mongoose.Types.ObjectId(REQ.id)}).exec(function(err, rs){
 				if(!err){
 					res.status(200).json(rs);
 				}else{
