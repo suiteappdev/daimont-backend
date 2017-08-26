@@ -8,6 +8,8 @@ module.exports = function(app, apiRoutes, io){
 		var User = require('../models/user');
 		var crypto = require("crypto")
 		var FB = require('facebook-node');
+    	var user_manager = require('../models/user_manager');
+
 		FB.setApiVersion("v2.2");
 	    
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
@@ -144,6 +146,40 @@ module.exports = function(app, apiRoutes, io){
 			                  res.status(401).json(response);
 			                }
 			            });
+			        }else{
+
+			        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id])}).populate("_user").exec(function(err, rs){
+			        		if(!err){
+								var _html_credit_resume = _compiler.render({ _data : {
+		                            user : (rs._user.name + ' ' + rs._user.last_name) ,
+		                            amount : formatCurrency(rs.data.amount[0], opts),
+		                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
+		                            pay_day : moment(rs.data.pay_day).format('MMMM DD, YYYY'),
+		                            system_quoteDays : formatCurrency(rs.data.system_quoteDays, opts),
+		                            finance_quote : formatCurrency(rs.data.finance_quote, opts),
+		                            ivaDays : formatCurrency(rs.data.ivaDays, opts),
+		                            total_payment : formatCurrency(rs.data.total_payment, opts),
+		                            status : rs.data.status
+		                         }}, 'credit_resume/index.ejs');
+
+		                        var data_credit_resume = {
+		                          	from: ' Daimont <noreply@daimont.com>',
+		                          	to: rs._user.email,
+		                          	subject: 'Resumen de Credito',
+		                          	text: 'Estado y resumen de su actual credito',
+		                          	html: _html_credit_resume
+		                        };
+
+		                        mailgun.messages().send(data_credit_resume, function (error, body) {
+		                          if(data){
+		                              console.log("New credit request has been sended to " + user.email, body);
+		                          }
+		                        }); 			        			
+			        		}
+			        	});
+
+
+
 			        }
 
 			    	res.status(200).json(credit);
