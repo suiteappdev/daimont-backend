@@ -4,6 +4,7 @@ module.exports = function(app, apiRoutes, io){
 		var path = require("path");
 		var mongoose = require('mongoose');
 		var Model = require(path.join("../", "models", _entity + ".js"));
+	   	var config = require(path.join(process.env.PWD , "config.js"));
 		var User = require('../models/user');
 		var crypto = require("crypto")
 		var FB = require('facebook-node');
