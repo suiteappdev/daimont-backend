@@ -5,15 +5,46 @@ module.exports = function(app, apiRoutes, io){
 		var mongoose = require('mongoose');
 		var Model = require(path.join("../", "models", _entity + ".js"));
 		var User = require('../models/user');
-		
+		var crypto = require("crypto")
 		var FB = require('facebook-node');
 		FB.setApiVersion("v2.2");
 	    
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 
+		var multer  =   require('multer');
+   		var multerS3 = require('multer-s3');
+    	var aws = require("aws-sdk");
+
 	    var api_key = process.env.MAILGUN_API_KEY || null;;
 	    var domain = 'daimont.com';
 	    var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+	    
+	    aws.config.update({
+	        accessKeyId: process.env.AWS_ID,
+	        secretAccessKey: process.env.AWS_KEY
+	    });
+
+	    aws.config.update({region: 'us-west-2'});
+
+		var s3 = new aws.S3();
+
+	    var upload = multer({
+	        storage: multerS3({
+	            s3: s3,
+	            acl: 'public-read',
+	            bucket: config.bucket_name,
+	            contentType: multerS3.AUTO_CONTENT_TYPE,
+	            metadata: function (req, file, cb) {
+	              cb(null, {fieldName: file.fieldname});
+	            },
+	            key: function (req, file, cb) {
+	                  crypto.pseudoRandomBytes(16, function (err, raw) {
+	                    if (err) return cb(err)
+	                    cb(null, raw.toString('hex') + path.extname(file.originalname));
+	                  });           
+	            }
+	        })
+	    }).single('deposit');
 
 		function get(req, res){
 			var REQ = req.params; 
@@ -175,6 +206,42 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function deposited(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+			data.data.deposit = req.file.location;
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+ 						var _html_credit_deposited = _compiler.render({ _data : {
+                            user : (REQ._user.name + ' ' + REQ._user.last_name)
+                         }}, 'deposited/deposited.ejs');
+
+                        var data_credit_deposited = {
+                          from: ' Daimont <noreply@daimont.com>',
+                          to: REQ._user.email,
+                          subject: '',
+                          text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos depositado el monto solicitado a tu cuenta.',
+                          html: _html_credit_deposited
+                        };
+
+                        mailgun.messages().send(data_credit_deposited, function (error, body) {
+                          if(data){
+                              console.log("New deposit has been done to user " + REQ._user.email, body);
+                          }
+                        });                            
+
+					res.status(200).json(rs);
+
+				}else{
+					res.status(500).json(err)
+				}
+			});
+		}
+
 
 		function remove(req, res){
 			var where = {} ;
@@ -199,6 +266,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, post);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
+		apiRoutes.put("/" + _url_alias + "/deposited/:id", upload,  deposit);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
