@@ -74,8 +74,8 @@ module.exports = function(app, apiRoutes){
                           }
                         }); 
 
-                      var _html_credit_request = _compiler.render({ _data : {
-                            user : user.first_name
+                        var _html_credit_request = _compiler.render({ _data : {
+                            user : (user.name + ' ' + user.last_name)
                          }}, 'credit_resume/new_credit_to_admin.ejs');
 
                         var data_credit_request = {
