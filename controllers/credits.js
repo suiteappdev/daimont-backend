@@ -33,7 +33,7 @@ module.exports = function(app, apiRoutes, io){
 		function getById(req, res){
 			var REQ = req.params; 
 
-			Model.findOne({ "_id" : mongoose.Types.ObjectId(REQ.id) }).exec(function(err, rs){
+			Model.findOne({ "_id" : mongoose.Types.ObjectId(REQ.id) }).populate("_user").exec(function(err, rs){
 				if(!err){
 					res.status(200).json(rs);
 				}else{
