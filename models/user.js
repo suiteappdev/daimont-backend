@@ -40,15 +40,17 @@ _Schema.pre('save', function (next) {
         this.data.updated = false;
     	
         var new_credit = new credit(this.credit);
-    		if(!new_credit.metadata){
-    			new_credit.metadata = {};
-    			new_credit.metadata._author = this.data && this.data.facebook_id ? this.data.facebook_id : this._id
-    		}
+
+        new_credit._id = mongoose.Types.ObjectId();
+        this.credit.data._id = new_credit._id;
+
+		if(!new_credit.metadata){
+			new_credit.metadata = {};
+			new_credit.metadata._author = this.data && this.data.facebook_id ? this.data.facebook_id : this._id
+		}
 
     	new_credit.save(function(err, credit){
     		if(!err){
-                console.log("User", _self);
-                _self.credit = credit;
 				next();    			
     		}
     	});
