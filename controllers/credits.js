@@ -103,7 +103,10 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
 			!REQ.data || (data.data = REQ.data);
-			
+
+			data._user = mongoose.Types.ObjectId(REQ._user); 
+			data.data.owner = REQ._user; 
+
 			if(REQ.metadata._provider == 'FACEBOOK'){
 	        	var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
 				console.log("fbt", facebook_token)
