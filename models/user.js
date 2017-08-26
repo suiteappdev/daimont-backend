@@ -32,7 +32,6 @@ _Schema.pre('save', function (next) {
     this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
 
     if(this.credit){
-    	console.log(this.credit);
     	var credit = mongoose.model('credits');
     	this.credit._user = mongoose.Types.ObjectId(this._id);
         
@@ -47,6 +46,8 @@ _Schema.pre('save', function (next) {
 
     	new_credit.save(function(err, credit){
     		if(!err){
+                console.log("console", this.credit);
+
                 this.credit = credit;
 				next();    			
     		}
