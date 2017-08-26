@@ -152,7 +152,8 @@ module.exports = function(app, apiRoutes, io){
 			        }else{
 
 			        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
-			        		if(!err){
+			        		console.log("rs", rs)
+			        		/*if(!err){
 								var _html_credit_resume = _compiler.render({ _data : {
 		                            user : (rs._user.name + ' ' + rs._user.last_name) ,
 		                            amount : formatCurrency(rs.data.amount[0], opts),
@@ -178,7 +179,7 @@ module.exports = function(app, apiRoutes, io){
 		                              console.log("New credit request has been sended to " + user.email, body);
 		                          }
 		                        }); 			        			
-			        		}
+			        		}*/
 			        	});
 
 
