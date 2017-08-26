@@ -224,7 +224,7 @@ module.exports = function(app, apiRoutes, io){
                         var data_credit_deposited = {
                           from: ' Daimont <noreply@daimont.com>',
                           to: REQ._user.email,
-                          subject: '',
+                          subject: 'Deposito Realizado.',
                           text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos depositado el monto solicitado a tu cuenta.',
                           html: _html_credit_deposited
                         };
