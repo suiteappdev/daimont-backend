@@ -12,7 +12,7 @@ module.exports = function(app, apiRoutes, io){
     	var moment = require('moment');
    		moment.locale('es');
     	var formatCurrency = require('format-currency')
-
+		var opts = { format: '%v %c', code: 'COP' }
 		FB.setApiVersion("v2.2");
 	    
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
