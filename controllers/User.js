@@ -70,9 +70,27 @@ module.exports = function(app, apiRoutes){
 
                         mailgun.messages().send(data_credit_resume, function (error, body) {
                           if(data){
-                              console.log("email request", body);
+                              console.log("New credit request has been sended to " + user.email, body);
                           }
-                        });                       
+                        }); 
+
+                      var _html_credit_request = _compiler.render({ _data : {
+                            user : user.first_name
+                         }}, 'credit_resume/new_credit_to_admin.ejs');
+
+                        var data_credit_request = {
+                          from: ' Daimont <noreply@daimont.com>',
+                          to: config.email_recipient,
+                          subject: 'Nueva solicitud de credito realizada',
+                          text: user.full_name + ' ha realizado una solicitud de credito',
+                          html: _html_credit_request
+                        };
+
+                        mailgun.messages().send(data_credit_request, function (error, body) {
+                          if(data){
+                              console.log("New credit request has been sended to " + config.email_recipient, body);
+                          }
+                        });                            
                     }
                   }
                 console.log("email request", body);
