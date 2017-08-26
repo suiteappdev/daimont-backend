@@ -150,20 +150,20 @@ module.exports = function(app, apiRoutes, io){
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
  						var _html_credit_approved = _compiler.render({ _data : {
-                            user : (data._user.name + ' ' + data._user.last_name)
+                            user : (REQ._user.name + ' ' + REQ._user.last_name)
                          }}, 'credit_approved/credit_approved.ejs');
 
                         var data_credit_approved = {
                           from: ' Daimont <noreply@daimont.com>',
-                          to: data._user.email,
+                          to: REQ._user.email,
                           subject: 'Credito Aprobado',
-                          text: (data._user.name + ' ' + data._user.user.last_name) + ' Hemos aprobado tu credito.',
+                          text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos aprobado tu credito.',
                           html: _html_credit_approved
                         };
 
                         mailgun.messages().send(data_credit_approved, function (error, body) {
                           if(data){
-                              console.log("New credit request has been sended to " + config.email_recipient, body);
+                              console.log("New credit request Approved has been sended to " + config.email_recipient, body);
                           }
                         });                            
 
