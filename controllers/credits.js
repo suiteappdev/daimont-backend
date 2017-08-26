@@ -9,6 +9,9 @@ module.exports = function(app, apiRoutes, io){
 		var crypto = require("crypto")
 		var FB = require('facebook-node');
     	var user_manager = require('../models/user_manager');
+    	var moment = require('moment');
+   		moment.locale('es');
+    	var formatCurrency = require('format-currency')
 
 		FB.setApiVersion("v2.2");
 	    
