@@ -139,6 +139,23 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function approved(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+					res.status(200).json(rs);
+				}else{
+					res.status(500).json(err)
+				}
+			});
+		}
+
 
 		function remove(req, res){
 			var where = {} ;
@@ -162,6 +179,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, post);
+		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
