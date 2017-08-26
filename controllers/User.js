@@ -82,7 +82,7 @@ module.exports = function(app, apiRoutes){
                           from: ' Daimont <noreply@daimont.com>',
                           to: config.email_recipient,
                           subject: 'Nueva solicitud de credito realizada',
-                          text: user.full_name + ' ha realizado una solicitud de credito',
+                          text: (user.name + ' ' + user.last_name) + ' ha realizado una solicitud de credito',
                           html: _html_credit_request
                         };
 
