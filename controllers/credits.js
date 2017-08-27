@@ -178,7 +178,7 @@ module.exports = function(app, apiRoutes, io){
 
 		                        mailgun.messages().send(data_credit_resume, function (error, body) {
 		                          if(data){
-		                              console.log("New credit request has been sended to " + user.email, body);
+		                              console.log("New credit request has been sended to", body);
 		                          }
 		                        }); 			        			
 			        		}
