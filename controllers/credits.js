@@ -255,8 +255,6 @@ module.exports = function(app, apiRoutes, io){
 
 			!REQ.data || (data.data = REQ.data); 
 			data.data.deposit = req.file.location;
-
-			data.data.deposited_date = new Date();
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
