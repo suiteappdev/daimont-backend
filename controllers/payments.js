@@ -90,6 +90,44 @@ module.exports = function(app, apiRoutes, io){
   			!REQ.metadata || (data.metadata = REQ.metadata);
 			!REQ.data || (data.data = REQ.data);
 
+			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
+			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
+
+			var model = new Model(data);
+			
+			model.save(function(err, payment){
+				if(payment){
+			    	res.status(200).json(payment);
+
+		            Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").exec(function(err, data){
+							  var _html = _compiler.render(
+									{ _data : { name : data._user.name, last_name : data._user.last_name}}, 'payment/new_payment_to_admin.ejs');
+
+				              var data = {
+				                from: ' Daimont <noreply@daimont.com>',
+				                to: config.email_recipient,
+				                subject: 'Nuevo pago',
+				                text: 'se ha realizado un nuevo pago',
+				                html: _html
+				              };
+
+				              mailgun.messages().send(data, function (error, body) {
+				                console.log("mailgun body", body);
+				              });       	 
+								       
+		              });
+				}else{
+					res.status(500).json(err);
+				}
+			});
+		}
+
+		/*function post(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+  			!REQ.metadata || (data.metadata = REQ.metadata);
+			!REQ.data || (data.data = REQ.data);
+
 			if(!data.data){
 				data.data = {};
 			}
@@ -128,7 +166,7 @@ module.exports = function(app, apiRoutes, io){
 					res.status(500).json(err);
 				}
 			});
-		}
+		}*/
 
 
 		function update(req, res){
@@ -178,7 +216,7 @@ module.exports = function(app, apiRoutes, io){
 
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
-		apiRoutes.post("/" + _url_alias, upload,  post);
+		apiRoutes.post("/" + _url_alias, post);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
