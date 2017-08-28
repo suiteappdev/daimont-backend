@@ -137,27 +137,29 @@ module.exports = function(app, apiRoutes, io){
 			data = { $set : data };          
 
 			Model.update( { "_id" : mongoose.Types.ObjectId(data._id)} , data , function(err, rs){
-				if(payment){
-			    	res.status(200).json(payment);
-		              Model.findOne({ _id : mongoose.Types.ObjectId(data._id)}).populate("_user").exec(function(err, data){
-							  var _html = _compiler.render(
-									{ _data : { name : data._user.name, last_name : data._user.last_name}}, 'payment/new_payment_to_admin.ejs');
+			    	  if(!err){
+			    	  	  res.status(200).json(rs);
 
-				              var data = {
-				                from: ' Daimont <noreply@daimont.com>',
-				                to: config.email_recipient,
-				                subject: 'Nuevo pago',
-				                text: 'se ha realizado un nuevo pago',
-				                html: _html
-				              };
+			              Model.findOne({ _id : mongoose.Types.ObjectId(data._id)}).populate("_user").exec(function(err, data){
+								  var _html = _compiler.render(
+										{ _data : { name : data._user.name, last_name : data._user.last_name}}, 'payment/new_payment_to_admin.ejs');
 
-				              mailgun.messages().send(data, function (error, body) {
-				                console.log("mailgun body", body);
-				              });       	 
-		              });
-				}else{
-					res.status(500).json(err);
-				}
+					              var data = {
+					                from: ' Daimont <noreply@daimont.com>',
+					                to: config.email_recipient,
+					                subject: 'Nuevo pago',
+					                text: 'se ha realizado un nuevo pago',
+					                html: _html
+					              };
+
+					              mailgun.messages().send(data, function (error, body) {
+					                console.log("mailgun body", body);
+					              });       	 
+			              });
+			    	  }
+		              
+
+
 			});
 		}
 
