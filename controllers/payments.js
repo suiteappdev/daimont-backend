@@ -134,8 +134,6 @@ module.exports = function(app, apiRoutes, io){
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 
-			data = { $set : data };          
-
 			Model.update( { "_id" : mongoose.Types.ObjectId(data._id)} , data , function(err, rs){
 			    	  if(!err){
 			    	  	  res.status(200).json(rs);
