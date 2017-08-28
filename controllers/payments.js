@@ -129,18 +129,18 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data);
 
 			data.data.transaction = req.file.location;
+
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
-			data._credit = mongoose.Types.ObjectId(req.body._credit);
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
+
+			data = { $set : data };          
 
 			Model.update( { "_id" : mongoose.Types.ObjectId(data._id)} , data , function(err, rs){
 			    	  if(!err){
 			    	  	  res.status(200).json(rs);
-
-			              Model.findOne({"_id" : mongoose.Types.ObjectId(data._id)}).populate("_user").exec(function(err, data){
-								  console.log("rs", data)
-								  /*var _html = _compiler.render(
+			              Model.findOne({ _id : mongoose.Types.ObjectId(data._id)}).populate("_user").exec(function(err, data){
+								  var _html = _compiler.render(
 										{ _data : { name : data._user.name, last_name : data._user.last_name}}, 'payment/new_payment_to_admin.ejs');
 
 					              var data = {
@@ -153,9 +153,10 @@ module.exports = function(app, apiRoutes, io){
 
 					              mailgun.messages().send(data, function (error, body) {
 					                console.log("mailgun body", body);
-					              });*/       	 
+					              });       	 
 			              });
 			    	  }
+
 			});
 		}
 
