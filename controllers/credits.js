@@ -295,21 +295,21 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
- 						var _html_credit_deposited = _compiler.render({ _data : {
+ 						var _html_credit_rejected = _compiler.render({ _data : {
                             user : (REQ._user.name + ' ' + REQ._user.last_name)
-                         }}, 'deposited/deposited.ejs');
+                         }}, 'rejected/rejected.ejs');
 
-                        var data_credit_deposited = {
+                        var data_credit_rejected = {
                           from: ' Daimont <noreply@daimont.com>',
                           to: REQ._user.email,
-                          subject: 'Deposito Realizado.',
-                          text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos depositado el monto solicitado a tu cuenta.',
-                          html: _html_credit_deposited
+                          subject: 'Lo sentimos, No hemos podido procesar tu solicitud de credito.',
+                          text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Lo sentimos, No hemos podido procesar tu solicitud de credito.',
+                          html: _html_credit_rejected
                         };
 
-                        mailgun.messages().send(data_credit_deposited, function (error, body) {
+                        mailgun.messages().send(data_credit_rejected, function (error, body) {
                           if(data){
-                              console.log("New deposit has been done to user " + REQ._user.email, body);
+                              console.log("Deposit reject has been done to user " + REQ._user.email, body);
                           }
                         });                            
 
