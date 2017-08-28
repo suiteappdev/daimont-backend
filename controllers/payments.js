@@ -129,7 +129,7 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data);
 
 			data.data.transaction = req.file.location;
-			
+
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
@@ -212,8 +212,8 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, post);
+		apiRoutes.put("/" + _url_alias + "/confirm", upload, confirm);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
-		apiRoutes.put("/" + _url_alias + "/confirm",upload, confirm);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
 		return this;
