@@ -285,6 +285,43 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function rejected(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+			data.data.status = 'Rechazado';
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+ 						var _html_credit_deposited = _compiler.render({ _data : {
+                            user : (REQ._user.name + ' ' + REQ._user.last_name)
+                         }}, 'deposited/deposited.ejs');
+
+                        var data_credit_deposited = {
+                          from: ' Daimont <noreply@daimont.com>',
+                          to: REQ._user.email,
+                          subject: 'Deposito Realizado.',
+                          text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos depositado el monto solicitado a tu cuenta.',
+                          html: _html_credit_deposited
+                        };
+
+                        mailgun.messages().send(data_credit_deposited, function (error, body) {
+                          if(data){
+                              console.log("New deposit has been done to user " + REQ._user.email, body);
+                          }
+                        });                            
+
+					res.status(200).json(rs);
+
+				}else{
+					res.status(500).json(err)
+				}
+			});
+		}
+
+
 
 		function remove(req, res){
 			var where = {} ;
@@ -309,6 +346,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, post);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
+		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 		apiRoutes.put("/" + _url_alias + "/deposited/:id", upload,  deposit);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
