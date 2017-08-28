@@ -122,19 +122,14 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
-		/*function post(req, res){
+		function confirm(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
 			!REQ.data || (data.data = REQ.data);
 
-			if(!data.data){
-				data.data = {};
-			}
-
-			data.data.payday = req.body.payday;
-			data.data.bank = req.body.bank;
 			data.data.transaction = req.file.location;
+			
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
@@ -166,7 +161,7 @@ module.exports = function(app, apiRoutes, io){
 					res.status(500).json(err);
 				}
 			});
-		}*/
+		}
 
 
 		function update(req, res){
@@ -218,6 +213,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, post);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
+		apiRoutes.put("/" + _url_alias + "/confirm",upload, confirm);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
 		return this;
