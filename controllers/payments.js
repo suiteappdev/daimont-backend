@@ -130,10 +130,9 @@ module.exports = function(app, apiRoutes, io){
 
 			data.data.transaction = req.file.location;
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
+			data._credit = mongoose.Types.ObjectId(req.body._credit);
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
-
-			console.log("data", data);
 
 			data = { $set : data };          
 
