@@ -129,7 +129,6 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data);
 
 			data.data.transaction = req.file.location;
-
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
@@ -140,7 +139,7 @@ module.exports = function(app, apiRoutes, io){
 			    	  if(!err){
 			    	  	  res.status(200).json(rs);
 
-			              Model.findOne({ _id : mongoose.Types.ObjectId(data._id)}).populate("_user").exec(function(err, data){
+			              Model.findOne({"_id" : mongoose.Types.ObjectId(data._id)}).populate("_user").exec(function(err, data){
 								  var _html = _compiler.render(
 										{ _data : { name : data._user.name, last_name : data._user.last_name}}, 'payment/new_payment_to_admin.ejs');
 
@@ -157,9 +156,6 @@ module.exports = function(app, apiRoutes, io){
 					              });       	 
 			              });
 			    	  }
-		              
-
-
 			});
 		}
 
