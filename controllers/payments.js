@@ -92,6 +92,7 @@ module.exports = function(app, apiRoutes, io){
 
 			data.metadata = data.metadata || {};
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
+			data._credit = mongoose.Types.ObjectId(REQ._credit);
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 			data.data.transaction = req.file.location;
 			
