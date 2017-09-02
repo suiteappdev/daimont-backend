@@ -280,6 +280,16 @@ module.exports = function(app, apiRoutes){
         });
     }
 
+    function employeess(req, res){
+        User.find({ "type" : "ADMINISTRATOR" }).exec(function(err, users){
+            if(!err){
+                res.status(200).json(users);
+            }else{
+                res.status(500).json({err : err});
+            }
+        });
+    }
+
     function user(req, res){
         User
         .findOne( mongoose.Types.ObjectId(req.params.id))
@@ -432,7 +442,9 @@ module.exports = function(app, apiRoutes){
   }
 
     apiRoutes.get('/user', users);
+    apiRoutes.get('/user/employees', employees);
     apiRoutes.get('/user/:id', user);
+
     app.get('/api/user/exists/:email', exists);
     app.post('/api/user/activate', activate);
     app.post('/api/reset/:token', reset);
@@ -442,6 +454,7 @@ module.exports = function(app, apiRoutes){
     app.post("/api/user/client", client);
     app.post("/api/user/admin", admin);
     app.post("/api/login", login);
+    
     apiRoutes.put("/user/:id", update);
     apiRoutes.delete("/user/:id", remove);
 
