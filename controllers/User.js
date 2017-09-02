@@ -280,7 +280,7 @@ module.exports = function(app, apiRoutes){
         });
     }
 
-    function employeess(req, res){
+    function employees(req, res){
         User.find({ "type" : "ADMINISTRATOR" }).exec(function(err, users){
             if(!err){
                 res.status(200).json(users);
