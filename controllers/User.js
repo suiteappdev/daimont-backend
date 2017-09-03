@@ -36,7 +36,7 @@ module.exports = function(app, apiRoutes){
                       contract : buffer.toString('hex'),
                       last_name : user.last_name,
                       email : user.email,
-                      activation_url : config.base_url_dev + "profile/" + user.activation_token + "/" + buffer.toString('hex');
+                      activation_url : config.base_url_dev + "profile/" + user.activation_token + "/" + buffer.toString('hex')
                    }}, 'activation/index.ejs');
 
                   var data_activation_email = {
