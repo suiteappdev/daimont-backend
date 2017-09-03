@@ -30,78 +30,78 @@ module.exports = function(app, apiRoutes){
           }
           
           if(user){
-              var contract;
-
               require('crypto').randomBytes(4, function(err, buffer) {
-                contract = buffer.toString('hex');
+                  var _html_activation = _compiler.render({ _data : {
+                      name : user.name,
+                      contract : buffer.toString('hex'),
+                      last_name : user.last_name,
+                      email : user.email,
+                      activation_url : config.base_url_dev + "profile/" + user.activation_token + "/" + contract
+                   }}, 'activation/index.ejs');
+
+                  var data_activation_email = {
+                    from: ' Daimont <noreply@daimont.com>',
+                    to: user.email,
+                    subject: 'Activar Cuenta',
+                    text: 'proceda con la activación de su cuenta',
+                    html: _html_activation
+                  };
+
+                  mailgun.messages().send(data_activation_email, function (error, body) {
+                      if(data){
+                        if(credit){
+                            var _html_credit_resume = _compiler.render({ _data : {
+                                user : user.first_name,
+                                amount : formatCurrency(user.credit.data.amount[0], opts),
+                                interestsDays : formatCurrency(user.credit.data.interestsDays, opts),
+                                pay_day : moment(user.credit.data.pay_day).format('MMMM DD, YYYY'),
+                                system_quoteDays : formatCurrency(user.credit.data.system_quoteDays, opts),
+                                finance_quote : formatCurrency(user.credit.data.finance_quote, opts),
+                                ivaDays : formatCurrency(user.credit.data.ivaDays, opts),
+                                total_payment : formatCurrency(user.credit.data.total_payment, opts),
+                                status : user.credit.data.status
+                             }}, 'credit_resume/index.ejs');
+
+                            var data_credit_resume = {
+                              from: ' Daimont <noreply@daimont.com>',
+                              to: user.email,
+                              subject: 'Resumen de Credito',
+                              text: 'Estado y resumen de su actual credito',
+                              html: _html_credit_resume
+                            };
+
+                            mailgun.messages().send(data_credit_resume, function (error, body) {
+                              if(data){
+                                  console.log("New credit request has been sended to " + user.email, body);
+                              }
+                            }); 
+
+                            var _html_credit_request = _compiler.render({ _data : {
+                                user : (user.name + ' ' + user.last_name),
+                                credit_url : config.base_url_dev + "detail/" + user.credit.data._id
+                             }}, 'credit_resume/new_credit_to_admin.ejs');
+
+                            var data_credit_request = {
+                              from: ' Daimont <noreply@daimont.com>',
+                              to: config.email_recipient,
+                              subject: 'Nueva solicitud de credito realizada',
+                              text: (user.name + ' ' + user.last_name) + ' ha realizado una solicitud de credito',
+                              html: _html_credit_request
+                            };
+
+                            mailgun.messages().send(data_credit_request, function (error, body) {
+                              if(data){
+                                  console.log("New credit request has been sended to " + config.email_recipient, body);
+                              }
+                            });                            
+                        }
+                      }
+                  });
+
+
               });
 
-              var _html_activation = _compiler.render({ _data : {
-                  name : user.name,
-                  contract : contract,
-                  last_name : user.last_name,
-                  email : user.email,
-                  activation_url : config.base_url_dev + "profile/" + user.activation_token + "/" + contract
-               }}, 'activation/index.ejs');
 
-              var data_activation_email = {
-                from: ' Daimont <noreply@daimont.com>',
-                to: user.email,
-                subject: 'Activar Cuenta',
-                text: 'proceda con la activación de su cuenta',
-                html: _html_activation
-              };
-
-              mailgun.messages().send(data_activation_email, function (error, body) {
-                  if(data){
-                    if(credit){
-                        var _html_credit_resume = _compiler.render({ _data : {
-                            user : user.first_name,
-                            amount : formatCurrency(user.credit.data.amount[0], opts),
-                            interestsDays : formatCurrency(user.credit.data.interestsDays, opts),
-                            pay_day : moment(user.credit.data.pay_day).format('MMMM DD, YYYY'),
-                            system_quoteDays : formatCurrency(user.credit.data.system_quoteDays, opts),
-                            finance_quote : formatCurrency(user.credit.data.finance_quote, opts),
-                            ivaDays : formatCurrency(user.credit.data.ivaDays, opts),
-                            total_payment : formatCurrency(user.credit.data.total_payment, opts),
-                            status : user.credit.data.status
-                         }}, 'credit_resume/index.ejs');
-
-                        var data_credit_resume = {
-                          from: ' Daimont <noreply@daimont.com>',
-                          to: user.email,
-                          subject: 'Resumen de Credito',
-                          text: 'Estado y resumen de su actual credito',
-                          html: _html_credit_resume
-                        };
-
-                        mailgun.messages().send(data_credit_resume, function (error, body) {
-                          if(data){
-                              console.log("New credit request has been sended to " + user.email, body);
-                          }
-                        }); 
-
-                        var _html_credit_request = _compiler.render({ _data : {
-                            user : (user.name + ' ' + user.last_name),
-                            credit_url : config.base_url_dev + "detail/" + user.credit.data._id
-                         }}, 'credit_resume/new_credit_to_admin.ejs');
-
-                        var data_credit_request = {
-                          from: ' Daimont <noreply@daimont.com>',
-                          to: config.email_recipient,
-                          subject: 'Nueva solicitud de credito realizada',
-                          text: (user.name + ' ' + user.last_name) + ' ha realizado una solicitud de credito',
-                          html: _html_credit_request
-                        };
-
-                        mailgun.messages().send(data_credit_request, function (error, body) {
-                          if(data){
-                              console.log("New credit request has been sended to " + config.email_recipient, body);
-                          }
-                        });                            
-                    }
-                  }
-              });
                   
               res.status(200).json(user);
           }
