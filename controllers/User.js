@@ -30,11 +30,18 @@ module.exports = function(app, apiRoutes){
           }
           
           if(user){
+              var contract;
+
+              require('crypto').randomBytes(4, function(err, buffer) {
+                contract = buffer.toString('hex');
+              });
+
               var _html_activation = _compiler.render({ _data : {
                   name : user.name,
+                  contract : contract,
                   last_name : user.last_name,
                   email : user.email,
-                  activation_url : config.base_url_dev + "profile/" + user.activation_token
+                  activation_url : config.base_url_dev + "profile/" + user.activation_token + "/" + contract
                }}, 'activation/index.ejs');
 
               var data_activation_email = {
