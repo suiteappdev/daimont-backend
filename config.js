@@ -4,7 +4,7 @@ module.exports = {
 	appPort : 2020,
 	ssl_phrase : process.env.SSL_PHRASE,
 	bucket_name : 'daimontstorage',
-	email_recipient : 'listerine1989@gmail.com',
+	email_recipient : process.env.ADMIN_EMAIL,
 	base_url_dev : 'http://www.daimont.com/frontend/dist/#/',
 	base_url_pro : 'http://www.daimont.com/frontend/dist/#/',
 	smtp_email : "listerine1989@gmail.com",
