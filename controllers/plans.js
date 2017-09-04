@@ -92,9 +92,10 @@ module.exports = function(app, apiRoutes, io){
 			});
 		 }
 
-		apiRoutes.get("/" + _url_alias , get);
+		apiRoutes.get("/" + _url_alias, get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
+		apiRoutes.post("/" + _url_alias , post);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
 		return this;
