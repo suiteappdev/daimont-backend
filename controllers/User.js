@@ -48,7 +48,6 @@ module.exports = function(app, apiRoutes){
                   };
 
                   mailgun.messages().send(data_activation_email, function (error, body) {
-                      if(data){
                         if(credit){
                             var _html_credit_resume = _compiler.render({ _data : {
                                 user : user.first_name,
@@ -71,7 +70,7 @@ module.exports = function(app, apiRoutes){
                             };
 
                             mailgun.messages().send(data_credit_resume, function (error, body) {
-                              if(data){
+                              if(body){
                                   console.log("New credit request has been sended to " + user.email, body);
                               }
                             }); 
@@ -90,19 +89,16 @@ module.exports = function(app, apiRoutes){
                             };
 
                             mailgun.messages().send(data_credit_request, function (error, body) {
-                              if(data){
+                              if(body){
                                   console.log("New credit request has been sended to " + config.email_recipient, body);
                               }
                             });                            
                         }
-                      }
                   });
 
 
               });
 
-
-                  
               res.status(200).json(user);
           }
 
@@ -167,6 +163,7 @@ module.exports = function(app, apiRoutes){
                         });                       
                     }
                   }
+                  
                 console.log("email request", body);
               });
                   
