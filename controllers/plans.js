@@ -55,6 +55,7 @@ module.exports = function(app, apiRoutes, io){
 			    	res.status(200).json(plans);
 				}else{
 					res.status(500).json(err);
+				}
 			});
 		}
 
