@@ -63,6 +63,19 @@ module.exports = function(app, apiRoutes, io){
 			 });
 		}
 
+		function all(req, res){
+			var REQ = req.params; 
+			var where;
+
+			 Model.find({}).populate("_user").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs);
+					}else{
+						res.json(err);
+					}
+			 });
+		}
+
 
 
 		function getById(req, res){
@@ -172,6 +185,7 @@ module.exports = function(app, apiRoutes, io){
 		 }
 
 		apiRoutes.get("/" + _url_alias , get);
+		apiRoutes.get("/" + _url_alias +"/all", all);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, upload, post);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
