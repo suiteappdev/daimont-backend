@@ -255,6 +255,7 @@ module.exports = function(app, apiRoutes){
          !REQ.email || (data.email = REQ.email);
          !REQ.name || (data.name = REQ.name);
          !REQ.last_name || (data.last_name = REQ.last_name);
+         !REQ._plan || (data._plan = REQ._plan);
 
           if(REQ.password){
             data.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.password);

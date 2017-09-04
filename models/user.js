@@ -20,6 +20,7 @@ var _Schema = new Schema({
       phone : {type: String, required : false},
 	  data:{ type : Object},
 	  credit:{ type : Object},
+      _plan : { type : Schema.Types.ObjectId , ref : 'plans', required: false},
 	  active : { type : Boolean, default : false},
 	  type : { type : String, trim : true, default : 'CLIENT'},
 	  _role : [{ type : Schema.Types.ObjectId , ref : 'Role'}],
