@@ -50,7 +50,7 @@ module.exports = function(app, apiRoutes, io){
 
 			var model = new Model(data);
 			
-			model.save(function(err, p){
+			model.save(function(err, plans){
 				if(plans){
 			    	res.status(200).json(plans);
 				}else{
