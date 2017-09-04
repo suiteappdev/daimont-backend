@@ -283,6 +283,18 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function all (req, res){
+			var REQ = req.params; 
+			
+			 Model.find({}).populate("_user").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs);
+					}else{
+						res.status(500).json(err);
+					}
+			 });
+		}
+
 		function rejected(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
@@ -340,6 +352,7 @@ module.exports = function(app, apiRoutes, io){
 		 }
 
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
+		apiRoutes.get("/" + _url_alias + "/all" , all);
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, post);
