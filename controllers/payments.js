@@ -116,8 +116,8 @@ module.exports = function(app, apiRoutes, io){
 			    	res.status(200).json(payment);
 
 		            Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").exec(function(err, data){
-							 console.log(data)
-							 /* var _html = _compiler.render(
+							 console.log("pago", data)
+							 var _html = _compiler.render(
 									{ _data : { name : data._user.name, last_name : data._user.last_name}}, 'payment/new_payment_to_admin.ejs');
 
 				              var data = {
@@ -130,7 +130,7 @@ module.exports = function(app, apiRoutes, io){
 
 				              mailgun.messages().send(data, function (error, body) {
 				                console.log("mailgun body", body);
-				              }); */      	 
+				              });       	 
 								       
 		              });
 				}else{
