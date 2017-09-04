@@ -11,7 +11,7 @@ var metadata = require('./plugins/metadata');
 var _Schema = new Schema({
 	  data : Object,
 	  _user : { type : Schema.Types.ObjectId , ref : 'User'},
-	  _approvedby :  { type : Schema.Types.ObjectId , ref : 'User' required: false}
+	  _approvedby :  { type : Schema.Types.ObjectId , ref : 'User', required: false}
 });
 
 _Schema.pre('save', function (next) {
