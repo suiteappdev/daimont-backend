@@ -273,6 +273,29 @@ module.exports = function(app, apiRoutes){
           });   
     }
 
+    function upgrade_plan(req, res){
+          var data = {};
+          var REQ = req.body || req.params;
+         !REQ.metadata || (data.metadata = REQ.metadata);
+         !REQ.data || (data.data = REQ.data);
+         !REQ.username || (data.username = REQ.username);
+         !REQ.email || (data.email = REQ.email);
+         !REQ.name || (data.name = REQ.name);
+         !REQ.last_name || (data.last_name = REQ.last_name);
+         
+          if(REQ._plan){
+              data._plan = mongoose.Types.ObjectId(REQ._plan);
+          }
+
+          data = { $set : data }; 
+
+          user_manager.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
+              if(rs){
+                  res.json(rs);
+              }
+          });   
+    }
+
     function remove(req, res){
         user_manager.remove(req.params.id, function(err, user){
             if(!err){
@@ -466,6 +489,7 @@ module.exports = function(app, apiRoutes){
     app.post("/api/user/admin", admin);
     app.post("/api/login", login);
     
+    apiRoutes.put("/user/upgrade/:id", upgrade_plan);
     apiRoutes.put("/user/:id", update);
     apiRoutes.delete("/user/:id", remove);
 
