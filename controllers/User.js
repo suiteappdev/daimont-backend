@@ -47,32 +47,6 @@ module.exports = function(app, apiRoutes){
 
                   mailgun.messages().send(data_activation_email, function (error, body) {
                         if(credit){
-                            var _html_credit_resume = _compiler.render({ _data : {
-                                user : user.first_name,
-                                amount : formatCurrency(user.credit.data.amount[0], opts),
-                                interestsDays : formatCurrency(user.credit.data.interestsDays, opts),
-                                pay_day : moment(user.credit.data.pay_day).format('MMMM DD, YYYY'),
-                                system_quoteDays : formatCurrency(user.credit.data.system_quoteDays, opts),
-                                finance_quote : formatCurrency(user.credit.data.finance_quote, opts),
-                                ivaDays : formatCurrency(user.credit.data.ivaDays, opts),
-                                total_payment : formatCurrency(user.credit.data.total_payment, opts),
-                                status : user.credit.data.status
-                             }}, 'credit_resume/index.ejs');
-
-                            var data_credit_resume = {
-                              from: ' Daimont <noreply@daimont.com>',
-                              to: user.email,
-                              subject: 'Resumen de Credito',
-                              text: 'Estado y resumen de su actual credito',
-                              html: _html_credit_resume
-                            };
-
-                            mailgun.messages().send(data_credit_resume, function (error, body) {
-                              if(body){
-                                  console.log("New credit request has been sended to " + user.email, body);
-                              }
-                            }); 
-
                             var _html_credit_request = _compiler.render({ _data : {
                                 user : (user.name + ' ' + user.last_name),
                                 credit_url : config.base_url_dev + "detail/" + user.credit.data._id
