@@ -16,6 +16,8 @@ var _Schema = new Schema({
 
 _Schema.pre('save', function (next) {
 	if(this.data){
+		this.data = this.data || {};
+		this.data.status = 'Pendiente';
 		this.data.hidden = false;
 	}
 	
