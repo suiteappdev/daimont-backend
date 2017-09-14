@@ -62,7 +62,7 @@ module.exports = function(app, apiRoutes, io){
 
 			data.metadata = data.metadata || {};
 			data.data = REQ.data || {};
-			
+
 			if(REQ._user){
 				data._user = mongoose.Types.ObjectId(REQ._user);
 			}
@@ -73,7 +73,7 @@ module.exports = function(app, apiRoutes, io){
 			}
 
 			require('crypto').randomBytes(3, function(err, buffer) {
-				data.data.contract = buffer.toString('hex');;
+				data.data.contract = buffer.toString('hex');
 
 				var model = new Model(data);
 				
@@ -83,7 +83,7 @@ module.exports = function(app, apiRoutes, io){
 
 			            Model.findOne({ _id : mongoose.Types.ObjectId(contract._id)}).populate("_user").exec(function(err, data){
 								 console.log("pago", data)
-							 var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : token}}, 'contract/new_contract.ejs');
+							 var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex');}}, 'contract/new_contract.ejs');
 
 				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
