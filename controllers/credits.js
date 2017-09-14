@@ -56,7 +56,7 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var where;
 
-			 Model.find({"_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").exec(function(err, rs){
+			 Model.find({"_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs);
 					}else{
@@ -70,7 +70,7 @@ module.exports = function(app, apiRoutes, io){
 		function getById(req, res){
 			var REQ = req.params; 
 
-			Model.findOne({ "_id" : mongoose.Types.ObjectId(REQ.id) }).populate("_user").exec(function(err, rs){
+			Model.findOne({ "_id" : mongoose.Types.ObjectId(REQ.id) }).populate("_user").populate("_payment").exec(function(err, rs){
 				if(!err){
 					res.status(200).json(rs);
 				}else{
@@ -83,7 +83,7 @@ module.exports = function(app, apiRoutes, io){
 		function getCurrent(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").exec(function(err, rs){
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -290,7 +290,7 @@ module.exports = function(app, apiRoutes, io){
 		function all (req, res){
 			var REQ = req.params; 
 			
-			 Model.find({}).populate("_user").exec(function(err, rs){
+			 Model.find({}).populate("_user").populate("_payment").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs);
 					}else{
