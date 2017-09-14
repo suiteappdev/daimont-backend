@@ -58,7 +58,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
-			!REQ.data || (data.data = REQ.data);
+			!REQ.data || (data.data = REQ.data || {});
 
 			data.metadata = data.metadata || {};
 
@@ -72,9 +72,8 @@ module.exports = function(app, apiRoutes, io){
 			}
 
 			require('crypto').randomBytes(3, function(err, buffer) {
-				var token  = buffer.toString('hex');
-				data.data.contract = token;
-				
+				data.data.contract = buffer.toString('hex');;
+
 				var model = new Model(data);
 				
 				model.save(function(err, contract){
