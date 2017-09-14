@@ -26,6 +26,18 @@ module.exports = function(app, apiRoutes, io){
 			 });
 		}
 
+		function verify(req, res){
+			var REQ = req.params; 
+
+			 Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs);
+					}else{
+						res.status(500).json(err);
+					}
+			 });
+		}
+
 		function all(req, res){
 			var REQ = req.params; 
 			var where;
@@ -150,6 +162,7 @@ module.exports = function(app, apiRoutes, io){
 		 }
 
 		apiRoutes.get("/" + _url_alias , get);
+		apiRoutes.get("/" + _url_alias+'/verify/:contract' , verify);
 		apiRoutes.get("/" + _url_alias +"/all", all);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, post);
