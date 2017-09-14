@@ -58,10 +58,11 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
-			!REQ.data || (data.data = REQ.data || {});
+			!REQ.data || (data.data = REQ.data);
 
 			data.metadata = data.metadata || {};
-
+			data.data = REQ.data || {};
+			
 			if(REQ._user){
 				data._user = mongoose.Types.ObjectId(REQ._user);
 			}
