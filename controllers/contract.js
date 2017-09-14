@@ -83,7 +83,7 @@ module.exports = function(app, apiRoutes, io){
 
 			            Model.findOne({ _id : mongoose.Types.ObjectId(contract._id)}).populate("_user").exec(function(err, data){
 								 console.log("pago", data)
-							 var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex');}}, 'contract/new_contract.ejs');
+							 var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 
 				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
