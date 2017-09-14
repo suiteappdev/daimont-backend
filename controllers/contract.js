@@ -70,33 +70,36 @@ module.exports = function(app, apiRoutes, io){
 			if(REQ._credit){
 				data._credit = mongoose.Types.ObjectId(REQ._credit);
 			}
-			
-			var model = new Model(data);
-			
-			model.save(function(err, contract){
-				if(contract){
-			    	res.status(200).json(contract);
 
-		            Model.findOne({ _id : mongoose.Types.ObjectId(contract._id)}).populate("_user").exec(function(err, data){
-							 console.log("pago", data)
-							 require('crypto').randomBytes(3, function(err, buffer) {
-								 var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
+			require('crypto').randomBytes(3, function(err, buffer) {
+				var token  = buffer.toString('hex');
+				data.data.contract = token;
+				
+				var model = new Model(data);
+				
+				model.save(function(err, contract){
+					if(contract){
+				    	res.status(200).json(contract);
 
-					              var data = {
-					                from: ' Daimont <noreply@daimont.com>',
-					                to: data._user.email,
-					                subject: 'Firma de Contrato',
-					                text: 'por favor usa este codigo para validar tu contrato de prestamo.'
-					              };
+			            Model.findOne({ _id : mongoose.Types.ObjectId(contract._id)}).populate("_user").exec(function(err, data){
+								 console.log("pago", data)
+							 var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : token}}, 'contract/new_contract.ejs');
 
-					              mailgun.messages().send(data, function (error, body) {
-					                console.log("mailgun body", body);
-					              });    
-							});
-		              });
-				}else{
-					res.status(500).json(err);
-				}
+				              var data = {
+				                from: ' Daimont <noreply@daimont.com>',
+				                to: data._user.email,
+				                subject: 'Firma de Contrato',
+				                text: 'por favor usa este codigo para validar tu contrato de prestamo.'
+				              };
+
+				              mailgun.messages().send(data, function (error, body) {
+				                console.log("mailgun body", body);
+				              });    
+			              });
+					}else{
+						res.status(500).json(err);
+					}
+				});				
 			});
 		}
 
