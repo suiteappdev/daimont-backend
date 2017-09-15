@@ -44,6 +44,7 @@ _Schema.pre('save', function (next) {
         var new_credit = new credit(this.credit);
 
         new_credit._id = mongoose.Types.ObjectId();
+        this.credit.data = this.credit.data || {};
         this.credit.data._id = new_credit._id;
 
 		if(!new_credit.metadata){
