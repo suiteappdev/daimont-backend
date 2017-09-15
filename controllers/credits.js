@@ -204,6 +204,10 @@ module.exports = function(app, apiRoutes, io){
 				data._payment = mongoose.Types.ObjectId(REQ._payment);
 			}
 
+			if(REQ._contract){
+				data._contract = mongoose.Types.ObjectId(REQ._contract);
+			}
+
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
