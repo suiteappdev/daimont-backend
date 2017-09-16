@@ -17,41 +17,10 @@ module.exports = function(app, apiRoutes, io){
 	    
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 
-		var multer  =   require('multer');
-   		var multerS3 = require('multer-s3');
-    	var aws = require("aws-sdk");
-
 	    var api_key = process.env.MAILGUN_API_KEY || null;;
 	    var domain = 'daimont.com';
 	    var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 	    
-	    aws.config.update({
-	        accessKeyId: process.env.AWS_ID,
-	        secretAccessKey: process.env.AWS_KEY
-	    });
-
-	    aws.config.update({region: 'us-west-2'});
-
-		var s3 = new aws.S3();
-
-	    var upload = multer({
-	        storage: multerS3({
-	            s3: s3,
-	            acl: 'public-read',
-	            bucket: config.bucket_name,
-	            contentType: multerS3.AUTO_CONTENT_TYPE,
-	            metadata: function (req, file, cb) {
-	              cb(null, {fieldName: file.fieldname});
-	            },
-	            key: function (req, file, cb) {
-	                  crypto.pseudoRandomBytes(16, function (err, raw) {
-	                    if (err) return cb(err)
-	                    cb(null, raw.toString('hex') + path.extname(file.originalname));
-	                  });           
-	            }
-	        })
-	    }).single('deposit');
-
 		function get(req, res){
 			var REQ = req.params; 
 			var where;
@@ -260,7 +229,6 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.body || req.params;
 
 			!REQ.data || (data.data = REQ.data); 
-			data.data.deposit = req.file.location;
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
@@ -366,7 +334,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.post("/" + _url_alias, post);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
-		apiRoutes.put("/" + _url_alias + "/deposited/:id", upload,  deposit);
+		apiRoutes.put("/" + _url_alias + "/deposited/:id", deposit);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
