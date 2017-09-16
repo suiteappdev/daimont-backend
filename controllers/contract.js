@@ -31,7 +31,7 @@ module.exports = function(app, apiRoutes, io){
 
 			 Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs);
+						res.status(200).json(rs ? rs : []);
 					}else{
 						res.status(500).json(err);
 					}
