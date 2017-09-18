@@ -52,7 +52,7 @@ module.exports = function(app, apiRoutes, io){
 		function getCurrent(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])).sort("+createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).sort("+createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
