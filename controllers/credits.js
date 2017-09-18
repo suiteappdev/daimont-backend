@@ -77,7 +77,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						var _cupon = Math.max.apply(null, rs.filter(function(o) { return o.data.amount[0] && o._payment;}).map(function(o){ return o.data.amount[0]}));
 						
-						res.status(200).json( _cupon || []);
+						res.status(200).json( _cupon ? [_cupon] : [] );
 					}else{
 						res.status(500).json(err);
 					}
