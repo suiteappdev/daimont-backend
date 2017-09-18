@@ -75,7 +75,7 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
-						res.status(200).json(objects.filter(function(o) { return o.data.amount[0] && o._payment;}) || []);
+						res.status(200).json(rs.filter(function(o) { return o.data.amount[0] && o._payment;}) || []);
 					}else{
 						res.status(500).json(err);
 					}
