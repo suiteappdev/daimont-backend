@@ -76,8 +76,11 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						var _cupon = Math.max.apply(null, rs.filter(function(o) { return o.data.amount[0] && o._payment;}).map(function(o){ return o.data.amount[0]}));
-						
-						res.status(200).json(_cupon);
+						if(_cupon){
+							res.status(200).json([_cupon]);
+						}else{
+							res.status(200).json([]);
+						}
 					}else{
 						res.status(500).json(err);
 					}
