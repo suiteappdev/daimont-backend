@@ -70,6 +70,27 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+		function getByMaxAmount(req, res){
+			var REQ = req.params; 
+			try{
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(objects.filter(function(o) { return o.data.amount[0] && o._payment;}) || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
 		function post(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
@@ -328,6 +349,7 @@ module.exports = function(app, apiRoutes, io){
 		 }
 
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
+		apiRoutes.get("/" + _url_alias +"/max_amount", getByMaxAmount);
 		apiRoutes.get("/" + _url_alias + "/all" , all);
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
