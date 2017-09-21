@@ -70,6 +70,27 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+		function getHistory(req, res){
+			var REQ = req.params; 
+			try{
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs.filter(function(credit){ return credit._payment}) || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
 		function getByMaxAmount(req, res){
 			var REQ = req.params; 
 			try{
@@ -355,6 +376,7 @@ module.exports = function(app, apiRoutes, io){
 
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 		apiRoutes.get("/" + _url_alias +"/max_amount", getByMaxAmount);
+		apiRoutes.get("/" + _url_alias +"/history", getHistory);
 		apiRoutes.get("/" + _url_alias + "/all" , all);
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
