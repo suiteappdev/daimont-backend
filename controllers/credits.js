@@ -96,9 +96,8 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
-						var records = rs.filter(function(credit){ return credit.data.amount[0] && credit._payment});
-						console.log("records", rs.filter(function(credit){ return credit._payment}));
-
+						var records = rs.filter(function(credit){ return credit._payment});
+						
 						if(records.length > 0){
 							res.status(200).json({ amount : Math.max(records.map(function(c){ return c.data.amount[0]}))});
 						}else{
