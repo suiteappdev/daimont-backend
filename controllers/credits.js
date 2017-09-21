@@ -94,7 +94,7 @@ module.exports = function(app, apiRoutes, io){
 		function getByMaxAmount(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						var records = rs.filter(function(credit){ return credit.data.amount[0] && credit._payment});
 						console.log("records", rs.filter(function(credit){ return credit._payment}));
