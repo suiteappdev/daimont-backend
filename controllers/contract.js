@@ -33,6 +33,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						if(rs){
 							  var PDFKit = require('pdfkit');
+							  console.log("pdfkit", PDFKit)
 
 							  pdf = new PDFKit('url', 'http://google.com');
 
