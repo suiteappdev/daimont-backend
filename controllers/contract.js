@@ -39,6 +39,8 @@ module.exports = function(app, apiRoutes, io){
 
 								 var stream = wkhtmltopdf(_html);
 
+								 console.log("stream", stream);
+
 					              var data = {
 				                	from: ' Daimont <noreply@daimont.com>',
 					                to: rs._user.email,
