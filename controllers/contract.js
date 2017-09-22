@@ -41,7 +41,7 @@ module.exports = function(app, apiRoutes, io){
 								 var stream = wkhtmltopdf(_html);
 
 					              var data = {
-					                from: ' Daimont <noreply@daimont.com>',
+					                from: 'Daimont <noreply@daimont.com>',
 					                to: rs._user.email,
 					                subject: 'Prestamo realizado.',
 					                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
