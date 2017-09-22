@@ -32,7 +32,7 @@ module.exports = function(app, apiRoutes, io){
 			 Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						if(rs){
-							  var PDFKit = require('pdfkitjs');
+							  var PDFKit = require('pdfkit');
 
 							  pdf = new PDFKit('url', 'http://google.com');
 
