@@ -219,11 +219,11 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data); 
 
 			if(REQ._payment){
-				data._payment = mongoose.Types.ObjectId(REQ._payment);
+				data._payment = mongoose.Types.ObjectId(REQ._payment._id ? REQ._payment._id  : REQ._payment);
 			}
 
 			if(REQ._contract){
-				data._contract = mongoose.Types.ObjectId(REQ._contract);
+				data._contract = mongoose.Types.ObjectId(REQ._contract._id ? REQ._contract._id : REQ._contract);
 			}
 
 			data = { $set : data };          
