@@ -38,15 +38,16 @@ module.exports = function(app, apiRoutes, io){
 								 wkhtmltopdf.command = "/home/ec2-user/wkhtmltox/bin/wkhtmltopdf";
 
 								 stream = wkhtmltopdf(_html, { pageSize: 'letter' })
-									  .pipe(fs.createWriteStream('out.pdf'));
+									  .pipe(fs.createWriteStream('contrato.pdf'));
+
 								 stream.on('close', function() {
 					              	var data = {
 					                	from: ' Daimont <noreply@daimont.com>',
 						                to: rs._user.email,
 						                subject: 'Prestamo realizado.',
 						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
-						                html: _html
-						                //attachment : stream
+						                html: _html,
+						                attachment : path.join(process.env.PWD , "contrato.pdf")
 						              };
 
 						              mailgun.messages().send(data, function (error, body) {
