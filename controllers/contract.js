@@ -32,30 +32,30 @@ module.exports = function(app, apiRoutes, io){
 			 Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						if(rs){
-							  var PDFKit = require('pdfkit');
-							  console.log("pdfkit", PDFKit)
+								// PDFKit support multiples types (url, file, html) and any options for wkhtmltopdf
+								// run `wkhtmltopdf --extended-help` for a full list of options
+								var PDFKit = require('pdfkitjs');
 
-							  pdf = new PDFKit('url', 'http://google.com');
+								pdf = new PDFKit('url', 'http://google.com');
 
-							  pdf.toFile('google.pdf', function (err, file) {
-							  	if(!err){
-									  var _html = _compiler.render({ _data : { name : rs._user.name, last_name : rs._user.last_name}}, 'contract/contract_filled.ejs');
+								pdf.toFile('google.pdf', function (err, file) {
+	 							  	if(!err){
+										  var _html = _compiler.render({ _data : { name : rs._user.name, last_name : rs._user.last_name}}, 'contract/contract_filled.ejs');
 
-						              var data = {
-						                from: ' Daimont <noreply@daimont.com>',
-						                to: data._user.email,
-						                subject: 'Prestamo realizado.',
-						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
-						                html: _html,
-						                attachment : file
-						              };
+							              var data = {
+							                from: ' Daimont <noreply@daimont.com>',
+							                to: data._user.email,
+							                subject: 'Prestamo realizado.',
+							                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
+							                html: _html,
+							                attachment : file
+							              };
 
-						              mailgun.messages().send(data, function (error, body) {
-						                console.log("mailgun body", body);
-						              }); 							  		
-							  	}
- 
-							  });
+							              mailgun.messages().send(data, function (error, body) {
+							                console.log("mailgun body", body);
+							              }); 							  		
+								  	}
+								});
 						}
 
 						res.status(200).json(rs ? rs : []);
