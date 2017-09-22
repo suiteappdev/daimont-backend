@@ -39,7 +39,7 @@ module.exports = function(app, apiRoutes, io){
 
 					              var data = {
 					                from: ' Daimont <noreply@daimont.com>',
-					                to: data._user.email,
+					                to: res._user.email,
 					                subject: 'Prestamo realizado.',
 					                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
 					                html: _html,
