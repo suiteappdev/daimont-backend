@@ -31,6 +31,32 @@ module.exports = function(app, apiRoutes, io){
 
 			 Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
+						if(rs){
+							  var PDFKit = require('pdfkitjs');
+
+							  pdf = new PDFKit('url', 'http://google.com');
+
+							  pdf.toFile('google.pdf', function (err, file) {
+							  	if(!err){
+									  var _html = _compiler.render({ _data : { name : rs._user.name, last_name : rs._user.last_name}}, 'contract/contract_filled.ejs');
+
+						              var data = {
+						                from: ' Daimont <noreply@daimont.com>',
+						                to: data._user.email,
+						                subject: 'Prestamo realizado.',
+						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
+						                html: _html
+						                attachment : file
+						              };
+
+						              mailgun.messages().send(data, function (error, body) {
+						                console.log("mailgun body", body);
+						              }); 							  		
+							  	}
+ 
+							  });
+						}
+
 						res.status(200).json(rs ? rs : []);
 					}else{
 						res.status(500).json(err);
@@ -103,6 +129,7 @@ module.exports = function(app, apiRoutes, io){
 				                subject: 'Firma de Contrato',
 				                text: 'por favor usa este codigo para firmar tu contrato de prestamo.',
 				                html: _html
+				                attachment : path.join(process.env.PWD , "docs", "_contract.docx")
 				              };
 
 				              mailgun.messages().send(data, function (error, body) {
