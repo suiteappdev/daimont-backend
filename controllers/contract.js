@@ -128,7 +128,7 @@ module.exports = function(app, apiRoutes, io){
 				                to: data._user.email,
 				                subject: 'Firma de Contrato',
 				                text: 'por favor usa este codigo para firmar tu contrato de prestamo.',
-				                html: _html
+				                html: _html,
 				                attachment : path.join(process.env.PWD , "docs", "_contract.docx")
 				              };
 
