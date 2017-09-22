@@ -32,7 +32,8 @@ module.exports = function(app, apiRoutes, io){
 			 Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						if(rs){
-								 var _html = _compiler.render({ _data : { name : rs._user.name, last_name : rs._user.last_name}}, 'contract/contract_filled.ejs');
+								console.log("rs", rs)
+								 /*var _html = _compiler.render({ _data : { name : rs._user.name, last_name : rs._user.last_name}}, 'contract/contract_filled.ejs');
 								 var wkhtmltopdf = require('wkhtmltopdf');
 								 
 								 var stream = wkhtmltopdf(_html);
@@ -48,7 +49,7 @@ module.exports = function(app, apiRoutes, io){
 
 					              mailgun.messages().send(data, function (error, body) {
 					                console.log("mailgun body", body);
-					              }); 							  		
+					              }); */							  		
 						}
 
 						res.status(200).json(rs ? rs : []);
