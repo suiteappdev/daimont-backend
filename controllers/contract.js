@@ -34,7 +34,9 @@ module.exports = function(app, apiRoutes, io){
 						if(rs){
 								 var _html = _compiler.render({ _data : { name : rs._user.name, last_name : rs._user.last_name}}, 'contract/contract_filled.ejs');
 								 var wkhtmltopdf = require('wkhtmltopdf');
+								 
 								 wkhtmltopdf.command = "/home/ec2-user/wkhtmltox/bin";
+
 								 console.log("wk", wkhtmltopdf);
 								 var stream = wkhtmltopdf(_html);
 
