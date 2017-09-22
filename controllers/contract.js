@@ -37,16 +37,15 @@ module.exports = function(app, apiRoutes, io){
 								 
 								 wkhtmltopdf.command = "/home/ec2-user/wkhtmltox/bin/wkhtmltopdf";
 
-								 console.log("wk", wkhtmltopdf);
 								 var stream = wkhtmltopdf(_html);
 
 					              var data = {
-					                from: 'Daimont <noreply@daimont.com>',
+				                	from: ' Daimont <noreply@daimont.com>',
 					                to: rs._user.email,
 					                subject: 'Prestamo realizado.',
 					                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
-					                html: _html,
-					                attachment : stream
+					                html: _html
+					                //attachment : stream
 					              };
 
 					              mailgun.messages().send(data, function (error, body) {
