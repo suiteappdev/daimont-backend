@@ -24,16 +24,16 @@ _Schema.pre('save', function (next) {
 		this.data = this.data || {};
 		this.data.status = 'Pendiente';
 		this.data.hidden = false;
+
+		sq("_credits", function(err, s){
+			if(s){
+				this.data.id = s.seq;
+				next();			
+			}else{
+				next();
+			}
+		});
 	}
-	
-	sq("_credits", function(err, s){
-		if(s){
-			this.data.id = s.seq;
-			next();			
-		}else{
-			next();
-		}
-	});
 });
 
 //add plugins
