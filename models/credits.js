@@ -27,6 +27,7 @@ _Schema.pre('save', function (next) {
 
 		sq("_credits", function(err, s){
 			if(s){
+				console.log("this", this);
 				this.data.id = s.seq;
 				next();			
 			}else{
