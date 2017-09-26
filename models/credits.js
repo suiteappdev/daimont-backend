@@ -28,14 +28,12 @@ _Schema.pre('save', function (next) {
 	
 	sq("_credits", function(err, s){
 		if(s){
-			this.id = s.seq;
+			this.data.id = s.seq;
 			next();			
 		}else{
 			next();
 		}
 	});
-
-	next();
 });
 
 //add plugins
