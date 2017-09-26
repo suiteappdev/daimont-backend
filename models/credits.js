@@ -20,15 +20,17 @@ var _Schema = new Schema({
 });
 
 _Schema.pre('save', function (next) {
-	if(this.data){
-		this.data = this.data || {};
-		this.data.status = 'Pendiente';
-		this.data.hidden = false;
+	var _self = this;
+
+	if(_self.data){
+		_self.data = this.data || {};
+		_self.data.status = 'Pendiente';
+		_self.data.hidden = false;
 
 		sq("_credits", function(err, s){
 			if(s){
 				console.log("this", this);
-				this.data.id = s.seq;
+				_self.data.id = s.seq;
 				next();			
 			}else{
 				next();
