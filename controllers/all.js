@@ -3,9 +3,24 @@ module.exports = exports = function(app, apiRoutes, io){
 	var _batmanMailer = require(path.join(process.env.PWD , "helpers", "BatmanMailer", "index.js"));
 	var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 	var config = require(path.join(process.env.PWD , "config.js"));
+    var mongoose = require('mongoose');
+    var path = require("path");
+    var credit = require('../models/counters');
 	
 	var fs = require('fs');
 	var files = fs.readdirSync('./controllers');
+
+	app.get('/ini' , function(req, res){
+		var model = new Model({ "_credits", seq : 0 });
+		
+		model.save(function(err, counter){
+			if(counter){
+		    	res.status(200).json(counter);
+			}else{
+				res.status(500).json(err);
+			}
+		});
+	});
 
 	console.log(files)
 

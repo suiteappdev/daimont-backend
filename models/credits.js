@@ -4,6 +4,9 @@ var base_path = process.env.PWD;
 
 var entity = "credits";
 
+function sq(collection, callback) {
+   mongoose.model('counters').findOneAndUpdate({ entity: collection}, { $inc: { seq: 1 } }, callback);
+}
 // Load required packages
 var timestamps = require('mongoose-timestamp');
 var metadata = require('./plugins/metadata');
@@ -23,7 +26,14 @@ _Schema.pre('save', function (next) {
 		this.data.hidden = false;
 	}
 	
-  	next();
+	sq("_credits", function(err, s){
+		if(s){
+			this.id = s.seq;
+			next();			
+		}else{
+			next();
+		}
+	});
 });
 
 //add plugins
