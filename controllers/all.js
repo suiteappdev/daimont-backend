@@ -5,7 +5,7 @@ module.exports = exports = function(app, apiRoutes, io){
 	var config = require(path.join(process.env.PWD , "config.js"));
     var mongoose = require('mongoose');
     var path = require("path");
-    var credit = require('../models/counters');
+    var Model = require('../models/counters');
 	
 	var fs = require('fs');
 	var files = fs.readdirSync('./controllers');
