@@ -34,6 +34,8 @@ _Schema.pre('save', function (next) {
 			next();
 		}
 	});
+
+	next();
 });
 
 //add plugins
