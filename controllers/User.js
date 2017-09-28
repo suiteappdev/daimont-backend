@@ -30,7 +30,7 @@ module.exports = function(app, apiRoutes){
           }
           
           if(user){
-                  var _html_activation = _compiler.render({ _data : {
+                  /*var _html_activation = _compiler.render({ _data : {
                       name : user.name,
                       last_name : user.last_name,
                       email : user.email,
@@ -66,7 +66,7 @@ module.exports = function(app, apiRoutes){
                               }
                             });                            
                         }
-                  });
+                  });*/
 
               res.status(200).json(user);
           }
@@ -315,7 +315,7 @@ module.exports = function(app, apiRoutes){
           var jwt = require('jsonwebtoken');
           var UserSchema = require('../models/user');
 
-         UserSchema.findOne({ email : req.body.email, active  : true }).exec(function(err, user){
+         UserSchema.findOne({ email : req.body.email}).exec(function(err, user){
             if(!user){
                     res.status(404).json({err : 'email address not found'});
                     return;
