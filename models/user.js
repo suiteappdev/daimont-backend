@@ -16,7 +16,8 @@ var _Schema = new Schema({
 	  name : { type : String, trim : true,  lowercase : true},
 	  last_name : { type : String, trim : true, lowercase : true},
 	  full_name : { type : String, trim : true, lowercase : true},
-	  email : { type : String, trim : true , unique : true, lowercase:true},
+      email : { type : String, trim : true , unique : true, lowercase:true},
+	  cc : { type : String, trim : true , unique : true, lowercase:true},
       phone : {type: String, required : false},
 	  data:{ type : Object},
 	  credit:{ type : Object},
@@ -41,7 +42,7 @@ _Schema.pre('save', function (next) {
         _self.data.updated = false;
     	
         var new_credit = new credit(_self.credit);
-        
+
         new_credit._user = mongoose.Types.ObjectId(_self._id);
         new_credit._id = mongoose.Types.ObjectId();
         _self.credit.data = _self.credit.data || {};
