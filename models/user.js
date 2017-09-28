@@ -36,16 +36,15 @@ _Schema.pre('save', function (next) {
 
     if(this.credit){
     	var credit = mongoose.model('credits');
-    	this.credit._user = mongoose.Types.ObjectId(this._id);
-        
-        this.data = this.data || {};
-        this.data.updated = false;
-    	
-        var new_credit = new credit(this.credit);
 
+        _self.data = _self.data || {};
+        _self.data.updated = false;
+    	
+        var new_credit = new credit(_self.credit);
+        
+        new_credit._user = mongoose.Types.ObjectId(_self._id);
         new_credit._id = mongoose.Types.ObjectId();
-        this.credit.data = this.credit.data || {};
-        this.credit.data._id = new_credit._id;
+        _self.credit.data = _self.credit.data || {};
 
 		if(!new_credit.metadata){
 			new_credit.metadata = {};
@@ -54,6 +53,7 @@ _Schema.pre('save', function (next) {
 
     	new_credit.save(function(err, credit){
     		if(!err){
+                _self.credit = credit._id;
 				next();    			
     		}
     	});
