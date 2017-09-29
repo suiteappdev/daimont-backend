@@ -378,24 +378,28 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
- 						var _html_credit_rejected = _compiler.render({ _data : {
-                            user : (REQ._user.name + ' ' + REQ._user.last_name)
-                         }}, 'rejected/rejected.ejs');
+						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
+							if(!error){
+		 						var _html_credit_rejected = _compiler.render({ _data : {
+		                            user : (credit._user.name + ' ' + credit._user.last_name)
+		                         }}, 'rejected/rejected.ejs');
 
-                        var data_credit_rejected = {
-                          from: ' Daimont <noreply@daimont.com>',
-                          to: REQ._user.email,
-                          subject: 'Lo sentimos, No hemos podido procesar tu solicitud de credito.',
-                          text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Lo sentimos, No hemos podido procesar tu solicitud de credito.',
-                          html: _html_credit_rejected
-                        };
+		                        var data_credit_rejected = {
+		                          from: ' Daimont <noreply@daimont.com>',
+		                          to: credit._user.email,
+		                          subject: 'Lo sentimos, No hemos podido procesar tu solicitud de credito.',
+		                          text: (credit._user.name + ' ' + credit._user.last_name) + ' Lo sentimos, No hemos podido procesar tu solicitud de prestamo.',
+		                          html: _html_credit_rejected
+		                        };
 
-                        mailgun.messages().send(data_credit_rejected, function (error, body) {
-                          if(data){
-                              console.log("Deposit reject has been done to user " + REQ._user.email, body);
-                          }
-                        });                            
-
+		                        mailgun.messages().send(data_credit_rejected, function (error, body) {
+		                          if(data){
+		                              console.log("Deposit reject has been done to user " + credit._user.email, body);
+		                          }
+		                        });   								
+							}
+						});
+                         
 					res.status(200).json(rs);
 
 				}else{
