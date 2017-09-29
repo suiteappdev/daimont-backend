@@ -65,8 +65,8 @@ module.exports = function(app, apiRoutes, io){
 								 		ciudad : rs._user.data.ciudad,
 								 		direccion : rs._user.data.direccion,
 								 		fecha : "pruba",
-								 		ip:rs._user.data.client_metadata.ip || 'no definida',
-								 		codigo:rs.data.contract,
+								 		ip:rs._credit.data.client_metadata.ip || 'no definida',
+								 		codigo:rs._credit.data.contract,
 								 		consecutivo:rs._credit.data.id
 								 	}
 								 }, 'contract/contract_filled.ejs');
