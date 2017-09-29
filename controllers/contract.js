@@ -8,6 +8,11 @@ module.exports = function(app, apiRoutes, io){
     	var crypto = require("crypto");
 	   	var config = require(path.join(process.env.PWD , "config.js"));
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
+    	var moment = require('moment');
+   		moment.locale('es');
+    	var formatCurrency = require('format-currency')
+		var opts = { format: '%v %c', code: 'COP' }
+
 	    var fs = require("fs");
 	    var api_key = process.env.MAILGUN_API_KEY || null;;
 	    var domain = 'daimont.com';
