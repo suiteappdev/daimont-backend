@@ -50,7 +50,22 @@ module.exports = function(app, apiRoutes, io){
 		                            status : rs._credit.data.status
 		                         }}, 'credit_resume/index.ejs');
 
-								 var _html = _compiler.render({ _data : { name : rs._user.name, last_name : rs._user.last_name}}, 'contract/contract_filled.ejs');
+								//nombre 
+								//telefono
+								//cedula
+								//direccion
+								//ciudad
+								//correo
+
+								 var _html = _compiler.render({ _data : { 
+								 		nombre : rs._user.name + ' ' +last_name,
+								 		email : rs._user.email,
+								 		telefono : rs._user.data.telefono || 'sin telefono',
+								 		cedula : rs._user.cc,
+								 		ciudad : rs._user.data.ciudad,
+								 		direccion : rs._user.direccion 
+								 	}
+								 }, 'contract/contract_filled.ejs');
 								 
 								 var wkhtmltopdf = require('wkhtmltopdf');
 								 
