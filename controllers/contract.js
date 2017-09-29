@@ -63,7 +63,11 @@ module.exports = function(app, apiRoutes, io){
 								 		telefono : rs._user.data.telefono || 'sin telefono',
 								 		cedula : rs._user.cc,
 								 		ciudad : rs._user.data.ciudad,
-								 		direccion : rs._user.direccion 
+								 		direccion : rs._user.data.direccion,
+								 		fecha : "pruba",
+								 		ip:rs._user.data.client_metadata.ip || 'no definida',
+								 		codigo:rs.data.contract,
+								 		consecutivo:rs._credit.data.id
 								 	}
 								 }, 'contract/contract_filled.ejs');
 								 
