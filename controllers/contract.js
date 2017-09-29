@@ -59,7 +59,7 @@ module.exports = function(app, apiRoutes, io){
 						                to: rs._user.email,
 						                subject: 'Prestamo realizado.',
 						                html : _html_credit_resume,
-						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.'
+						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
 						                attachment : path.join(process.env.PWD , "contrato.pdf")
 						              };
 
