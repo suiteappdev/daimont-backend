@@ -44,7 +44,7 @@ module.exports = function(app, apiRoutes, io){
 		                            interestsDays : formatCurrency(rs._credit.data.interestsDays, opts),
 		                            pay_day : moment(rs._credit.data.pay_day).format('MMMM DD, YYYY'),
 		                            system_quoteDays : formatCurrency(rs._credit.data.system_quoteDays, opts),
-		                            finance_quote : formatCurrency(rs_credit.data.finance_quote, opts),
+		                            finance_quote : formatCurrency(rs._credit.data.finance_quote, opts),
 		                            ivaDays : formatCurrency(rs._credit.data.ivaDays, opts),
 		                            total_payment : formatCurrency(rs._credit.data.total_payment, opts),
 		                            status : rs._credit.data.status
