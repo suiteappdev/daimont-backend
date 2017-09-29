@@ -42,7 +42,7 @@ module.exports = function(app, apiRoutes, io){
 		                            user : (rs._user.name + ' ' + rs._user.last_name) ,
 		                            amount : formatCurrency(rs._credit.data.amount[0], opts),
 		                            interestsDays : formatCurrency(rs._credit.data.interestsDays, opts),
-		                            pay_day : moment(rs.data._credit.pay_day).format('MMMM DD, YYYY'),
+		                            pay_day : moment(rs._credit.data.pay_day).format('MMMM DD, YYYY'),
 		                            system_quoteDays : formatCurrency(rs._credit.data.system_quoteDays, opts),
 		                            finance_quote : formatCurrency(rs_credit.data.finance_quote, opts),
 		                            ivaDays : formatCurrency(rs._credit.data.ivaDays, opts),
