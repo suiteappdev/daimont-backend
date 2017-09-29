@@ -70,6 +70,53 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+		function email_request(req, res){
+			var REQ = req.params; 
+			try{
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false,  "_id" : mongoose.Types.ObjectId(REQ.id)}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+					if(!err){
+							var _html_credit_resume = _compiler.render({ _data : {
+	                            user : (rs._user.name + ' ' + rs._user.last_name) ,
+	                            amount : formatCurrency(rs.data.amount[0], opts),
+	                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
+	                            pay_day : moment(rs.data.pay_day).format('MMMM DD, YYYY'),
+	                            system_quoteDays : formatCurrency(rs.data.system_quoteDays, opts),
+	                            finance_quote : formatCurrency(rs.data.finance_quote, opts),
+	                            ivaDays : formatCurrency(rs.data.ivaDays, opts),
+	                            total_payment : formatCurrency(rs.data.total_payment, opts),
+	                            status : rs.data.status
+	                         }}, 'credit_resume/index.ejs');
+
+	                        var data_credit_resume = {
+	                          	from: ' Daimont <noreply@daimont.com>',
+	                          	to: rs._user.email,
+	                          	subject: 'Resumen de Credito',
+	                          	text: 'Estado y resumen de su actual credito',
+	                          	html: _html_credit_resume,
+                    			attachment : path.join(process.env.PWD , "docs", "_contract.pdf")
+	                        };
+
+	                        mailgun.messages().send(data_credit_resume, function (error, body) {
+	                          if(data){
+	                              console.log("New credit request has been sended to", body);
+	                          }
+	                        });
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
 		function getHistory(req, res){
 			var REQ = req.params; 
 			try{
@@ -377,6 +424,7 @@ module.exports = function(app, apiRoutes, io){
 		 }
 
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
+		apiRoutes.get("/" + _url_alias +"/email_request/:id", email_request);
 		apiRoutes.get("/" + _url_alias +"/max_amount", getByMaxAmount);
 		apiRoutes.get("/" + _url_alias +"/history", getHistory);
 		apiRoutes.get("/" + _url_alias + "/all" , all);
