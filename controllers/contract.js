@@ -40,14 +40,14 @@ module.exports = function(app, apiRoutes, io){
 							console.log("rs", rs);
 								var _html_credit_resume = _compiler.render({ _data : {
 		                            user : (rs._user.name + ' ' + rs._user.last_name) ,
-		                            amount : formatCurrency(rs.data.amount[0], opts),
-		                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
-		                            pay_day : moment(rs.data.pay_day).format('MMMM DD, YYYY'),
-		                            system_quoteDays : formatCurrency(rs.data.system_quoteDays, opts),
-		                            finance_quote : formatCurrency(rs.data.finance_quote, opts),
-		                            ivaDays : formatCurrency(rs.data.ivaDays, opts),
-		                            total_payment : formatCurrency(rs.data.total_payment, opts),
-		                            status : rs.data.status
+		                            amount : formatCurrency(rs._credit.data.amount[0], opts),
+		                            interestsDays : formatCurrency(rs._credit.data.interestsDays, opts),
+		                            pay_day : moment(rs.data._credit.pay_day).format('MMMM DD, YYYY'),
+		                            system_quoteDays : formatCurrency(rs._credit.data.system_quoteDays, opts),
+		                            finance_quote : formatCurrency(rs_credit.data.finance_quote, opts),
+		                            ivaDays : formatCurrency(rs._credit.data.ivaDays, opts),
+		                            total_payment : formatCurrency(rs._credit.data.total_payment, opts),
+		                            status : rs._credit.data.status
 		                         }}, 'credit_resume/index.ejs');
 
 								 var _html = _compiler.render({ _data : { name : rs._user.name, last_name : rs._user.last_name}}, 'contract/contract_filled.ejs');
