@@ -58,7 +58,7 @@ module.exports = function(app, apiRoutes, io){
 								//correo
 
 								 var _html = _compiler.render({ _data : { 
-								 		nombre : rs._user.name + ' ' +last_name,
+								 		nombre : rs._user.name + ' ' +rs._user.last_name,
 								 		email : rs._user.email,
 								 		telefono : rs._user.data.telefono || 'sin telefono',
 								 		cedula : rs._user.cc,
