@@ -97,10 +97,11 @@ module.exports = function(app, apiRoutes, io){
 	                        };
 
 	                        mailgun.messages().send(data_credit_resume, function (error, body) {
-	                          if(data){
+	                          if(body){
 	                              console.log("New credit request has been sended to", body);
 	                          }
 	                        });
+
 						res.status(200).json(rs || []);
 					}else{
 						res.status(500).json(err);
