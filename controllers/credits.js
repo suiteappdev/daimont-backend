@@ -185,7 +185,7 @@ module.exports = function(app, apiRoutes, io){
 			model.save(function(err, credit){
 				if(credit){
 			        if(facebook_token){
-			            FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
+			            /*FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
 			                if(response && !response.error){
 			                	console.log("facebook response", response);
 
@@ -216,9 +216,9 @@ module.exports = function(app, apiRoutes, io){
 			                }else{
 			                  res.status(401).json(response);
 			                }
-			            });
+			            });*/
 			        }else{
-
+			        	/*
 			        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
 			        		console.log("credit" , rs);
 			        		if(!err){
@@ -249,7 +249,7 @@ module.exports = function(app, apiRoutes, io){
 		                          }
 		                        }); 			        			
 			        		}
-			        	});
+			        	});*/
 			        }
 
 			    	res.status(200).json(credit);
