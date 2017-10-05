@@ -56,15 +56,22 @@ module.exports = function(app, apiRoutes, io){
 								//direccion
 								//ciudad
 								//correo
+								//monto
 
 								 var _html = _compiler.render({ _data : { 
 								 		nombre : rs._user.name + ' ' +rs._user.last_name,
 								 		email : rs._user.email,
-								 		telefono : rs._user.data.telefono || 'sin telefono',
+								 		telefono : rs._user.data.phone || 'sin telefono',
 								 		cedula : rs._user.cc,
 								 		ciudad : rs._user.data.ciudad,
 								 		direccion : rs._user.data.direccion,
+								 		dias : rs._credit.data.days[0],
+								 		fecha_vencimiento : moment(rs._credit.data.pay_day).format('MMMM DD, YYYY'),
+								 		interes : formatCurrency(rs._credit.data.interestsDays, opts),
 								 		fecha : "pruba",
+								 		monto : formatCurrency(rs._credit.data.amount[0], opts),
+								 		total : formatCurrency(rs._credit.data.total_payment, opts),
+								 		cupon : formatCurrency(rs._user.data.cupon, opts),
 								 		ip:rs._credit.data.client_metadata.ip || 'no definida',
 								 		codigo:rs.data.contract,
 								 		consecutivo:rs._credit.data.id

@@ -3503,7 +3503,7 @@ color:red">Tu teléfono:<%= _data.telefono %><o:p></o:p></span></p>
 color:red">Tu correo electrónico:<%= _data.email %><o:p></o:p></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
-color:red">Tu dirección:<%= _data.direccion %><o:p></o:p></span></p>
+color:red">Tu dirección: <%= _data.direccion %><o:p></o:p></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
 color:red">Tu ciudad:<%= _data.ciudad %><o:p></o:p></span></p>
@@ -3535,7 +3535,7 @@ line-height:115%;mso-bidi-font-family:Arial">CREDITO<span style="color:red"><o:p
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
 color:red">Cupo rotativo aprobado: </span><span lang="ES-CO" style="font-size:
-10.0pt;line-height:115%;mso-bidi-font-family:Arial">$......<span style="color:red"><o:p></o:p></span></span></p>
+10.0pt;line-height:115%;mso-bidi-font-family:Arial"><%= _data.cupon %><span style="color:red"><o:p></o:p></span></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
 color:red">Fecha de aprobación:<o:p></o:p></span></p>
@@ -3545,19 +3545,19 @@ color:red">Modalidad de crédito: </span><span lang="ES-CO" style="font-size:10.
 line-height:115%;mso-bidi-font-family:Arial">CREDITO DE CONSUMO <span style="color:red"><o:p></o:p></span></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
-color:red">Plazo aprobado (días): <o:p></o:p></span></p>
+color:red">Plazo aprobado (días): <span style="color:black;"><%= _data.dias %></span><o:p></o:p></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
-color:red">Cuotas:<o:p></o:p></span></p>
+color:red">Cuotas: <span style="color:black;">1</span><o:p></o:p></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
-color:red">Monto del crédito aprobado: </span><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial">$......<span style="color:red"><o:p></o:p></span></span></p>
+color:red">Monto del crédito aprobado: </span><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial"><span style="color:black;"><%= _data.monto %></span><span style="color:red"><o:p></o:p></span></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
-color:red">Interés Remuneratorio (TEA): </span><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial">%<span style="color:red"><o:p></o:p></span></span></p>
+color:red">Interés Remuneratorio (TEA): <span style="color:black;"> 29.33%</span></span><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial">%<span style="color:red"><o:p></o:p></span></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
-color:red">Fecha de vencimiento:<o:p></o:p></span></p>
+color:red">Fecha de vencimiento:<span style="color:black;"><%= _data.fecha_vencimiento %></span><o:p></o:p></span></p>
 
 <p class="MsoListParagraphCxSpMiddle" style="text-align:justify"><span lang="ES-CO" style="font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial"><o:p>&nbsp;</o:p></span></p>
 
@@ -4147,19 +4147,19 @@ Arial">Términos del pagaré(s) y carta(s) de instrucciones:<o:p></o:p></span></
 
 <p class="MsoNormal" style="margin-bottom:0cm;margin-bottom:.0001pt;text-align:
 justify;line-height:normal"><span lang="ES-CO" style="font-size:10.0pt;
-mso-bidi-font-family:Arial;color:red">PAGARÉ NÚMERO:<o:p></o:p></span></p>
+mso-bidi-font-family:Arial;color:red">PAGARÉ NÚMERO:<span style="color:black;"><%= _data.consecutivo %></span><o:p></o:p></span></p>
 
 <p class="MsoNormal" style="margin-bottom:0cm;margin-bottom:.0001pt;text-align:
 justify;line-height:normal"><span lang="ES-CO" style="font-size:10.0pt;
-mso-bidi-font-family:Arial;color:red">Valor: <o:p></o:p></span></p>
+mso-bidi-font-family:Arial;color:red">Valor: <span style="color:black;"><%= _data.total %></span><o:p></o:p></span></p>
 
 <p class="MsoNormal" style="margin-bottom:0cm;margin-bottom:.0001pt;text-align:
 justify;line-height:normal"><span lang="ES-CO" style="font-size:10.0pt;
-mso-bidi-font-family:Arial;color:red">Interés:<o:p></o:p></span></p>
+mso-bidi-font-family:Arial;color:red">Interés: <span style="color:black;"> <%= _data.total %></span><o:p></o:p></span></p>
 
 <p class="MsoNormal" style="margin-bottom:0cm;margin-bottom:.0001pt;text-align:
 justify;line-height:normal"><span lang="ES-CO" style="font-size:10.0pt;
-mso-bidi-font-family:Arial;color:red">Plazo del crédito (días):<o:p></o:p></span></p>
+mso-bidi-font-family:Arial;color:red">Plazo del crédito (días):<span style="color:black;"> <%= _data.dias %></span><o:p></o:p></span></p>
 
 <p class="MsoNormal" style="margin-bottom:0cm;margin-bottom:.0001pt;text-align:
 justify;line-height:normal"><span lang="ES-CO" style="font-size:10.0pt;
