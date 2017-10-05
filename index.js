@@ -17,26 +17,17 @@ var FB = require('facebook-node');
 var path = require("path");
 
 var files = [
-  "daimont_com_co.crt",
-  "COMODORSADomainValidationSecureServerCA.crt",
   "COMODORSAAddTrustCA.crt",
   "AddTrustExternalCARoot.crt"
 ]
 
-  var ca = (function() {
-    var i, len, results;
-    results = [];
-    for (i = 0, len = files.length; i < len; i++) {
-      file = files[i];
-      results.push(fs.readFileSync("./" + file));
-    }
-    return results;
-  })();
-
 var options = {
   key: path.join(process.env.PWD , "private.key"),
   cert: path.join(process.env.PWD , "primary.crt"),
-  ca: ca
+  ca: [
+    fs.path.join(process.env.PWD , "COMODORSAAddTrustCA.crt"),
+    fs.path.join(process.env.PWD , "AddTrustExternalCARoot.crt")
+  ]
 };
 
 FB.setApiVersion("v2.2");
@@ -143,9 +134,9 @@ mongoose.connection.on('open', function(ref){
         console.log("app listen on " + config.appPort);
     }); 
 
+    https.createServer(options, app).listen(8443);
 });
 
-https.createServer(options, app).listen(8443);
 
 
 mongoose.connection.on('error', function(err){
