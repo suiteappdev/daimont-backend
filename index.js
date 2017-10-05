@@ -17,13 +17,9 @@ var FB = require('facebook-node');
 var path = require("path");
 
 var options = {
-  key: fs.readFileSync(path.join(process.env.PWD , "private.pem"), "utf8"),
-  cert: fs.readFileSync(path.join(process.env.PWD , "primary.crt"), "utf8"),
-  ca: [
-    fs.readFileSync(path.join(process.env.PWD , "COMODORSAAddTrustCA.crt"), "utf8"),
-    fs.readFileSync(path.join(process.env.PWD , "AddTrustExternalCARoot.crt"), "utf8"),
-    fs.readFileSync(path.join(process.env.PWD , "COMODORSADomainValidationSecureServerCA.crt"), "utf8")
-  ]
+  key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
+  cert: fs.readFileSync(path.join(process.env.PWD , "certificate.crt"), "utf8"),
+  ca: fs.readFileSync(path.join(process.env.PWD , "AddTrustExternalCARoot.crt"), "utf8")
 };
 
 FB.setApiVersion("v2.2");
