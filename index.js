@@ -17,9 +17,9 @@ var FB = require('facebook-node');
 
 
 var files = [
-  "daimont_com_co.crt"
-  "COMODORSADomainValidationSecureServerCA.crt"
-  "COMODORSAAddTrustCA.crt"
+  "daimont_com_co.crt",
+  "COMODORSADomainValidationSecureServerCA.crt",
+  "COMODORSAAddTrustCA.crt",
   "AddTrustExternalCARoot.crt"
 ]
 
