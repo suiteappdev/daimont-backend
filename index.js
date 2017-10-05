@@ -25,8 +25,8 @@ var options = {
   key: path.join(process.env.PWD , "private.key"),
   cert: path.join(process.env.PWD , "primary.crt"),
   ca: [
-    fs.path.join(process.env.PWD , "COMODORSAAddTrustCA.crt"),
-    fs.path.join(process.env.PWD , "AddTrustExternalCARoot.crt")
+    path.join(process.env.PWD , "COMODORSAAddTrustCA.crt"),
+    path.join(process.env.PWD , "AddTrustExternalCARoot.crt")
   ]
 };
 
