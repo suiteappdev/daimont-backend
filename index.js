@@ -28,7 +28,7 @@ var files = [
     results = [];
     for (i = 0, len = files.length; i < len; i++) {
       file = files[i];
-      results.push(fs.readFileSync("./" + file));
+      results.push(fs.readFileSync("./" + file, 'utf8'));
     }
     return results;
   })();
