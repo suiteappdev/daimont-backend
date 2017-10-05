@@ -15,8 +15,8 @@ var passport = require("passport");
 var User = require('./models/user');
 var FB = require('facebook-node');
 
-var key = fs.readFileSync('private.key');
-var cert = fs.readFileSync( 'primary.crt' );
+var key = fs.readFileSync('private.key', 'utf8');
+var cert = fs.readFileSync( 'primary.crt', 'utf8');
 //var ca = fs.readFileSync( 'intermediate.crt' );
 
 var options = {
