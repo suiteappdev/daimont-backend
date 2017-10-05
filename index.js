@@ -1,4 +1,5 @@
 var express = require("express");
+var https = require('https');
 var app = express();
 var fs = require('fs');
 var config = require("./config");
@@ -14,6 +15,16 @@ var passport = require("passport");
 var User = require('./models/user');
 var FB = require('facebook-node');
 
+var key = fs.readFileSync('private.key');
+var cert = fs.readFileSync( 'primary.crt' );
+//var ca = fs.readFileSync( 'intermediate.crt' );
+
+var options = {
+  key: key,
+  cert: cert
+  //ca: ca
+};
+
 FB.setApiVersion("v2.2");
 app.use(cors());
 app.use(bodyParser.urlencoded({extended : true}));
@@ -24,6 +35,14 @@ process.env.PWD = process.cwd() || process.env.PWD;
 
 
 apiRoutes = express.Router();
+
+app.use(function(req, res, next) {
+    if (req.secure) {
+        next();
+    } else {
+        res.redirect('https://' + req.headers.host + req.url);
+    }
+});
 
 apiRoutes.use(function(req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-daimont-auth'];
@@ -109,6 +128,8 @@ mongoose.connection.on('open', function(ref){
     http.listen(config.appPort, function(){
         console.log("app listen on " + config.appPort);
     }); 
+
+    https.createServer(options, app).listen(443); 
 });
 
 mongoose.connection.on('error', function(err){
