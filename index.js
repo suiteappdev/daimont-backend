@@ -15,15 +15,21 @@ var passport = require("passport");
 var User = require('./models/user');
 var FB = require('facebook-node');
 
-/*var key = fs.readFileSync('./private.key', 'utf8');
-var cert = fs.readFileSync( './primary.crt', 'utf8');
-//var ca = fs.readFileSync( 'intermediate.crt' );
+
+var files = [
+  "daimont_com_co.crt"
+  "COMODORSADomainValidationSecureServerCA.crt"
+  "COMODORSAAddTrustCA.crt"
+  "AddTrustExternalCARoot.crt"
+]
+
+var ca = (fs.readFileSync "./#{file}" for file in files)
 
 var options = {
-  key: key,
-  cert: cert
-  //ca: ca
-};*/
+  key: "./private.key",
+  cert: "./primary.crt",
+  ca: ca
+};
 
 FB.setApiVersion("v2.2");
 app.use(cors());
@@ -129,7 +135,7 @@ mongoose.connection.on('open', function(ref){
         console.log("app listen on " + config.appPort);
     }); 
 
-   /* https.createServer(options, app).listen(443); */
+   https.createServer(options, app).listen(8443);
 });
 
 mongoose.connection.on('error', function(err){
