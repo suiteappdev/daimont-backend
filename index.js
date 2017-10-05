@@ -16,18 +16,13 @@ var User = require('./models/user');
 var FB = require('facebook-node');
 var path = require("path");
 
-var files = [
-  "COMODORSAAddTrustCA.crt",
-  "AddTrustExternalCARoot.crt"
-]
-
 var options = {
-  key: path.join(process.env.PWD , "private.pem"),
-  cert: path.join(process.env.PWD , "primary.crt"),
+  key: fs.readFileSync(path.join(process.env.PWD , "private.pem")),
+  cert: fs.readFileSync(path.join(process.env.PWD , "primary.crt")),
   ca: [
-    path.join(process.env.PWD , "COMODORSAAddTrustCA.crt"),
-    path.join(process.env.PWD , "AddTrustExternalCARoot.crt"),
-    path.join(process.env.PWD , "COMODORSADomainValidationSecureServerCA.crt")
+    fs.readFileSync(path.join(process.env.PWD , "COMODORSAAddTrustCA.crt")),
+    fs.readFileSync(path.join(process.env.PWD , "AddTrustExternalCARoot.crt")),
+    fs.readFileSync(path.join(process.env.PWD , "COMODORSADomainValidationSecureServerCA.crt"))
   ]
 };
 
