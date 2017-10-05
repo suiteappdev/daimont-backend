@@ -14,7 +14,7 @@ var cores = require('os').cpus().length;
 var passport = require("passport");
 var User = require('./models/user');
 var FB = require('facebook-node');
-
+var path = require("path");
 
 var files = [
   "daimont_com_co.crt",
@@ -28,14 +28,14 @@ var files = [
     results = [];
     for (i = 0, len = files.length; i < len; i++) {
       file = files[i];
-      results.push(fs.readFileSync("./" + file, 'utf8'));
+      results.push(fs.readFileSync("./" + file));
     }
     return results;
   })();
 
 var options = {
-  key: "./private.key",
-  cert: "./primary.crt",
+  key: path.join(process.env.PWD , "private.key"),
+  cert: path.join(process.env.PWD , "primary.crt"),
   ca: ca
 };
 
