@@ -50,14 +50,6 @@ module.exports = function(app, apiRoutes, io){
 		                            status : rs._credit.data.status
 		                         }}, 'credit_resume/index.ejs');
 
-								//nombre 
-								//telefono
-								//cedula
-								//direccion
-								//ciudad
-								//correo
-								//monto
-
 								 var _html = _compiler.render({ _data : { 
 								 		nombre : rs._user.name + ' ' +rs._user.last_name,
 								 		email : rs._user.email,
@@ -67,8 +59,8 @@ module.exports = function(app, apiRoutes, io){
 								 		direccion : rs._user.data.direccion,
 								 		dias : rs._credit.data.days[0],
 								 		fecha_vencimiento : moment(rs._credit.data.pay_day).format('MMMM DD, YYYY'),
+								 		fecha_actual :  moment(new Date()).format('MMMM Do YYYY, h:mm:ss a'),
 								 		interes : formatCurrency(rs._credit.data.interestsDays, opts),
-								 		fecha : "pruba",
 								 		monto : formatCurrency(rs._credit.data.amount[0], opts),
 								 		total : formatCurrency(rs._credit.data.total_payment, opts),
 								 		cupon : formatCurrency(rs._user.data.cupon, opts),
