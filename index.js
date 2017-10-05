@@ -23,7 +23,15 @@ var files = [
   "AddTrustExternalCARoot.crt"
 ]
 
-var ca = (fs.readFileSync "./#{file}" for file in files)
+  var ca = (function() {
+    var i, len, results;
+    results = [];
+    for (i = 0, len = files.length; i < len; i++) {
+      file = files[i];
+      results.push(fs.readFileSync("./" + file));
+    }
+    return results;
+  })();
 
 var options = {
   key: "./private.key",
