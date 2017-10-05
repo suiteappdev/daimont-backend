@@ -11,7 +11,7 @@ module.exports = exports = function(app, apiRoutes, io){
 	var files = fs.readdirSync('./controllers');
 
 	app.get('/ini' , function(req, res){
-		var model = new Model({ entity : "_credits", seq : 0 });
+		var model = new Model({ entity : "_credits", seq : 15355 });
 		
 		model.save(function(err, counter){
 			if(counter){
