@@ -143,8 +143,10 @@ mongoose.connection.on('open', function(ref){
         console.log("app listen on " + config.appPort);
     }); 
 
-   https.createServer(options, app).listen(8443);
 });
+
+https.createServer(options, app).listen(8443);
+
 
 mongoose.connection.on('error', function(err){
     console.log('no se pudo realizar la conexión con mongo');
