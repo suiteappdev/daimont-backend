@@ -28,6 +28,8 @@ _Schema.pre('save', function (next) {
 		_self.data.hidden = false;
 
 		sq("_credits", function(err, s){
+			console.log("consecutivo", s);
+			
 			if(s){
 				console.log("this", this);
 				_self.data.id = s.seq;
