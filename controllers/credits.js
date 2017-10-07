@@ -428,7 +428,98 @@ module.exports = function(app, apiRoutes, io){
 			});
 		 }
 
+ 		function pendiente(req, res){
+			var REQ = req.params; 
+			try{
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : 'Pendiente'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
+ 		function rechazado(req, res){
+			var REQ = req.params; 
+			try{
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : 'Rechazado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
+ 		function firmado(req, res){
+			var REQ = req.params; 
+			try{
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : 'Firmado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
+ 		function rechazado(req, res){
+			var REQ = req.params; 
+			try{
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : 'Rechazado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
+
+		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
+		apiRoutes.get("/" + _url_alias +"/firmado", firmado);
+		apiRoutes.get("/" + _url_alias +"/aceptado", aceptado);
+		apiRoutes.get("/" + _url_alias +"/rechazado", rechazado);
+		apiRoutes.get("/" + _url_alias +"/desactualizado", getCurrent);
+
 		apiRoutes.get("/" + _url_alias +"/email_request/:id", email_request);
 		apiRoutes.get("/" + _url_alias +"/max_amount", getByMaxAmount);
 		apiRoutes.get("/" + _url_alias +"/history", getHistory);
