@@ -533,6 +533,27 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+ 		function aceptado(req, res){
+			var REQ = req.params; 
+			try{
+				Model.findOne({"data.hidden" : false, "data.status" : 'Aceptado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
 
 
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
