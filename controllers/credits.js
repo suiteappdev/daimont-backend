@@ -431,7 +431,7 @@ module.exports = function(app, apiRoutes, io){
  		function pendiente(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({"data.hidden" : false, "data.status" : 'Pendiente'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Pendiente'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -452,7 +452,7 @@ module.exports = function(app, apiRoutes, io){
  		function rechazado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({"data.hidden" : false, "data.status" : 'Rechazado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Rechazado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -473,7 +473,7 @@ module.exports = function(app, apiRoutes, io){
  		function firmado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({"data.hidden" : false, "data.status" : 'Firmado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Firmado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -494,7 +494,7 @@ module.exports = function(app, apiRoutes, io){
  		function rechazado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({"data.hidden" : false, "data.status" : 'Rechazado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Rechazado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -502,7 +502,7 @@ module.exports = function(app, apiRoutes, io){
 					}
 				});	
 			}catch(error){
-				Model.findOne({}).exec(function(err, rs){
+				Model.find({}).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -515,7 +515,7 @@ module.exports = function(app, apiRoutes, io){
  		function consignado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({"data.hidden" : false, "data.status" : 'Consignado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Consignado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -536,7 +536,7 @@ module.exports = function(app, apiRoutes, io){
  		function aceptado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({"data.hidden" : false, "data.status" : 'Aceptado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Aceptado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
