@@ -439,7 +439,7 @@ module.exports = function(app, apiRoutes, io){
 					}
 				});	
 			}catch(error){
-				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+				Model.findOne({ "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -460,7 +460,7 @@ module.exports = function(app, apiRoutes, io){
 					}
 				});	
 			}catch(error){
-				Model.findOne( { "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+				Model.findOne({ "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -473,7 +473,7 @@ module.exports = function(app, apiRoutes, io){
  		function firmado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne("data.hidden" : false, "data.status" : 'Firmado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.findOne({"data.hidden" : false, "data.status" : 'Firmado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
