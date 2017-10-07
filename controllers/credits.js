@@ -559,6 +559,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
+		apiRoutes.get("/" + _url_alias +"/pendiente", pendiente);
 		apiRoutes.get("/" + _url_alias +"/firmado", firmado);
 		apiRoutes.get("/" + _url_alias +"/aceptado", aceptado);
 		apiRoutes.get("/" + _url_alias +"/rechazado", rechazado);
