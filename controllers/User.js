@@ -303,7 +303,7 @@ module.exports = function(app, apiRoutes){
 
     function byfacebookId(req, res){
         User
-        .findOne({ "metadata._author" : req.params.facebookId })
+        .findOne({ "data.facebookId" : req.params.facebookId })
         .exec(function(err, rs){
             if(rs)
                 res.json(rs);
