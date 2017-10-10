@@ -303,7 +303,7 @@ module.exports = function(app, apiRoutes){
 
     function byEmail(req, res){
         User
-        .findOne( mongoose.Types.ObjectId(req.params.email))
+        .findOne({ "email" : req.params.email })
         .exec(function(err, rs){
             if(rs)
                 res.json(rs);
