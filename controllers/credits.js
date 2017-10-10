@@ -274,6 +274,10 @@ module.exports = function(app, apiRoutes, io){
 				data._contract = mongoose.Types.ObjectId(REQ._contract._id ? REQ._contract._id : REQ._contract);
 			}
 
+			if(REQ._aprovedBy){
+				data._aprovedBy = mongoose.Types.ObjectId(REQ._aprovedBy._id ? REQ._aprovedBy._id : REQ._aprovedBy);
+			}
+
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
