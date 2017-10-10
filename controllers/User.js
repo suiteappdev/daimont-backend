@@ -301,9 +301,9 @@ module.exports = function(app, apiRoutes){
 
     }
 
-    function byEmail(req, res){
+    function byfacebookId(req, res){
         User
-        .findOne({ "email" : req.params.email })
+        .findOne({ "metadata._author" : req.params.facebookId })
         .exec(function(err, rs){
             if(rs)
                 res.json(rs);
@@ -454,7 +454,7 @@ module.exports = function(app, apiRoutes){
     apiRoutes.get('/user', users);
     apiRoutes.get('/user/employees', employees);
     apiRoutes.get('/user/:id', user);
-    apiRoutes.get('/user/email/:email', byEmail);
+    apiRoutes.get('/user/facebook/:facebookId', byfacebookId);
 
     app.get('/api/user/exists/:email', exists);
     app.post('/api/user/activate', activate);
