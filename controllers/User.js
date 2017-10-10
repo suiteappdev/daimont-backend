@@ -301,6 +301,17 @@ module.exports = function(app, apiRoutes){
 
     }
 
+    function byEmail(req, res){
+        User
+        .findOne( mongoose.Types.ObjectId(req.params.email))
+        .exec(function(err, rs){
+            if(rs)
+                res.json(rs);
+            else
+                res.json(err);
+        })
+    }
+
     function login(req, res){
             if (!req.body.email) {
                 res.status(400).send({err : 'debe especificar un usuario'});
@@ -443,6 +454,7 @@ module.exports = function(app, apiRoutes){
     apiRoutes.get('/user', users);
     apiRoutes.get('/user/employees', employees);
     apiRoutes.get('/user/:id', user);
+    apiRoutes.get('/user/email/:email', byEmail);
 
     app.get('/api/user/exists/:email', exists);
     app.post('/api/user/activate', activate);
