@@ -312,6 +312,17 @@ module.exports = function(app, apiRoutes){
         })
     }
 
+    function byDocument(req, res){
+        User
+        .findOne({ "cc" : req.params.documentId })
+        .exec(function(err, rs){
+            if(rs)
+                res.json(rs);
+            else
+                res.json(err);
+        })
+    }
+
     function login(req, res){
             if (!req.body.email) {
                 res.status(400).send({err : 'debe especificar un usuario'});
@@ -455,6 +466,7 @@ module.exports = function(app, apiRoutes){
     apiRoutes.get('/user/employees', employees);
     apiRoutes.get('/user/:id', user);
     apiRoutes.get('/user/facebook/:facebookId', byfacebookId);
+    apiRoutes.get('/user/documento/:documentId', byDocument);
 
     app.get('/api/user/exists/:email', exists);
     app.post('/api/user/activate', activate);
