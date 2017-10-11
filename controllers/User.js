@@ -317,7 +317,7 @@ module.exports = function(app, apiRoutes){
         .find({ "cc" : req.params.documentId })
         .exec(function(err, rs){
             if(rs)
-                res.json(rs);
+                res.json({ exists : rs.length});
             else
                 res.json(err);
         })
@@ -362,7 +362,7 @@ module.exports = function(app, apiRoutes){
     function exists(req, res){
         User.exists(req.params.email.toLowerCase(), function(err, rs){
           if(!err){
-             res.status(200).json({ exists : rs});
+              res.status(200).json({ exists : rs});
           }
         }) ;
     }
