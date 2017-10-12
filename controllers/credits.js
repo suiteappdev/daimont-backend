@@ -93,7 +93,7 @@ module.exports = function(app, apiRoutes, io){
 	                          	subject: 'Resumen de Credito',
 	                          	text: 'Estado y resumen de su actual credito',
 	                          	html: _html_credit_resume,
-                    			attachment : path.join(process.env.PWD , "docs", "_contract.pdf")
+                    			attachment : path.join(process.env.PWD , "docs", "contracto.pdf")
 	                        };
 
 	                        mailgun.messages().send(data_credit_resume, function (error, body) {
