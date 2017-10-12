@@ -17,6 +17,7 @@ var _Schema = new Schema({
 	  _payment : { type : Schema.Types.ObjectId , ref : 'payments'},
 	  _contract : { type : Schema.Types.ObjectId , ref : 'contracts'},
 	  _approvedby :  { type : Schema.Types.ObjectId , ref : 'User', required: false}
+	  
 });
 
 _Schema.pre('save', function (next) {
