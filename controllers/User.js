@@ -238,11 +238,15 @@ module.exports = function(app, apiRoutes){
           var REQ = req.body || req.params;
 
           User.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).exec(function(err, rs){
-            if(rs){
+            if(!err){
+                console.log("rs", rs);
+
                 rs.data.cupon = REQ.cupon;
 
                 rs.save(function(err, rs){
-                    res.status(200).json(rs);
+                    if(!err){
+                        res.status(200).json(rs);
+                    }
                 });
             }
           });   
