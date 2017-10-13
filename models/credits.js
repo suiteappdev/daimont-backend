@@ -26,6 +26,7 @@ _Schema.pre('save', function (next) {
 	if(_self.data){
 		_self.data = this.data || {};
 		_self.data.status = 'Pendiente';
+		_self.data.with_offer = false;
 		_self.data.hidden = false;
 
 		sq("_credits", function(err, s){
