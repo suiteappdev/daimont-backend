@@ -579,7 +579,7 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
- 		function actualizado(req, res){
+ 		function desactualizado(req, res){
 			var REQ = req.params; 
 			try{
 				Model.find({"data.hidden" : false, "_user.data.updated" : false}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
