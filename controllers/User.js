@@ -243,9 +243,9 @@ module.exports = function(app, apiRoutes){
 
                 rs.data.cupon = REQ.cupon;
 
-                rs.save(function(err, rs){
-                    if(!err){
-                        res.status(200).json(rs);
+                rs.save(function(error, new_rs){
+                    if(!error){
+                        res.status(200).json(new_rs);
                     }
                 });
             }
