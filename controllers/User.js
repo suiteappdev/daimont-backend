@@ -235,17 +235,18 @@ module.exports = function(app, apiRoutes){
     }
 
     function update_cupon(req, res){
-          var data = {};
           var REQ = req.body || req.params;
-          data.data = {};
-          data.data.cupon = REQ.cupon;
 
-          data = { $set : data }; 
-
-          user_manager.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
-              if(rs){
-                  res.json(rs);
-              }
+          User.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }, function(err, rs){
+            if(rs){
+                rs.data.cupon =  REQ.cupon;
+                
+                rs.save(function(err, rs){
+                  if(rs){
+                        res.status(rs);
+                  }
+                });             
+            }
           });   
     }
 
