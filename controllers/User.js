@@ -237,19 +237,11 @@ module.exports = function(app, apiRoutes){
     function update_cupon(req, res){
           var REQ = req.body || req.params;
 
-          User.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).exec(function(err, rs){
-            if(!err){
-                console.log("rs", rs);
-
-                rs.data.cupon = REQ.cupon;
-
-                rs.save(function(error, new_rs){
-                    if(!error){
-                        res.status(200).json(new_rs);
-                    }
-                });
-            }
-          });   
+          User.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.cupon': REQ.cupon }}, function(err, rs) {
+              if(!err){
+                  res.status(200).json(rs);                
+              }
+          });
     }
 
     function remove(req, res){
