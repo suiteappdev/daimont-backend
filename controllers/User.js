@@ -466,7 +466,6 @@ module.exports = function(app, apiRoutes){
     app.post("/api/user/admin", admin);
     app.post("/api/login", login);
     
-    apiRoutes.put("/user/upgrade/:id", upgrade_plan);
     apiRoutes.put("/user/:id", update);
     apiRoutes.put("/user/:id/update-cupon", update_cupon);
     apiRoutes.delete("/user/:id", remove);
