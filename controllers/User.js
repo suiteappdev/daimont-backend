@@ -234,19 +234,11 @@ module.exports = function(app, apiRoutes){
           });   
     }
 
-    function upgrade_plan(req, res){
+    function update_cupon(req, res){
           var data = {};
           var REQ = req.body || req.params;
-         !REQ.metadata || (data.metadata = REQ.metadata);
-         !REQ.data || (data.data = REQ.data);
-         !REQ.username || (data.username = REQ.username);
-         !REQ.email || (data.email = REQ.email);
-         !REQ.name || (data.name = REQ.name);
-         !REQ.last_name || (data.last_name = REQ.last_name);
-         
-          if(REQ._plan){
-              data._plan = mongoose.Types.ObjectId(REQ._plan);
-          }
+          data.data = {};
+          data.data.cupon = REQ.cupon;
 
           data = { $set : data }; 
 
@@ -476,6 +468,7 @@ module.exports = function(app, apiRoutes){
     
     apiRoutes.put("/user/upgrade/:id", upgrade_plan);
     apiRoutes.put("/user/:id", update);
+    apiRoutes.put("/user/:id/update-cupon", update_cupon);
     apiRoutes.delete("/user/:id", remove);
 
     return this;
