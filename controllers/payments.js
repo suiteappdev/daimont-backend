@@ -67,7 +67,7 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var where;
 
-			 Model.find({}).populate("_user").exec(function(err, rs){
+			 Model.find({}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs);
 					}else{
