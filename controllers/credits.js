@@ -382,11 +382,11 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
-				          User.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.banned': true, "data.banTime" : new Date(Date.now()}}, function(err, rs) {
+				          /*User.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.banned': true, "data.banTime" : new Date(Date.now()}}, function(err, rs) {
 				              if(!err){
 				                  res.status(200).json(rs);                
 				              }
-				          });
+				          });*/
 
 						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
 							if(!error){
