@@ -90,7 +90,7 @@ module.exports = function(app, apiRoutes, io){
 	                        var data_credit_resume = {
 	                          	from: ' Daimont <noreply@daimont.com>',
 	                          	to: rs._user.email,
-	                          	subject: 'Resumen de Credito',
+	                          	subject: 'RESUMEN DEL CRÉDITO',
 	                          	text: 'Estado y resumen de su actual credito',
 	                          	html: _html_credit_resume,
                     			attachment : path.join(process.env.PWD , "docs", "contracto.pdf")
@@ -306,7 +306,7 @@ module.exports = function(app, apiRoutes, io){
                         var data_credit_approved = {
                           from: ' Daimont <noreply@daimont.com>',
                           to: REQ._user.email,
-                          subject: 'Credito Aprobado',
+                          subject: 'APROBACIÓN DE PRÉSTAMO',
                           text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos aprobado tu credito.',
                           html: _html_credit_approved
                         };
@@ -397,8 +397,8 @@ module.exports = function(app, apiRoutes, io){
 		                        var data_credit_rejected = {
 		                          from: ' Daimont <noreply@daimont.com>',
 		                          to: credit._user.email,
-		                          subject: 'Lo sentimos, No hemos podido procesar tu solicitud de credito.',
-		                          text: (credit._user.name + ' ' + credit._user.last_name) + ' Lo sentimos, No hemos podido procesar tu solicitud de prestamo.',
+		                          subject: 'RECHAZO DE PRÉSTAMO',
+		                          text: (credit._user.name + ' ' + credit._user.last_name) + ' Lamentamos informarle que por motivos financieros su crédito no ha sido aprobado. Sírvase realizar su solicitud nuevamente dentro de 60 días hábiles.',
 		                          html: _html_credit_rejected
 		                        };
 

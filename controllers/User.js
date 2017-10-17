@@ -119,7 +119,7 @@ module.exports = function(app, apiRoutes){
                         var data_credit_resume = {
                           from: ' Daimont <noreply@daimont.com>',
                           to: user.email,
-                          subject: 'Resumen de Credito',
+                          subject: 'RESUMEN DEL CRÉDITO',
                           text: 'Estado y resumen de su actual credito',
                           html: _html_credit_resume
                         };

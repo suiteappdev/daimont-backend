@@ -81,7 +81,7 @@ module.exports = function(app, apiRoutes, io){
 					              	var data = {
 					                	from: ' Daimont <noreply@daimont.com>',
 						                to: rs._user.email,
-						                subject: 'Prestamo realizado.',
+						                subject: 'CONTRATO FIRMADO',
 						                html : _html_credit_resume,
 						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
 						                attachment : path.join(process.env.PWD , "contrato.pdf")
@@ -164,7 +164,7 @@ module.exports = function(app, apiRoutes, io){
 				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
 				                to: data._user.email,
-				                subject: 'Firma de Contrato',
+				                subject: 'FIRMA DEL CONTRATO',
 				                text: 'por favor usa este codigo para firmar tu contrato de prestamo.',
 				                html: _html,
 				                attachment : path.join(process.env.PWD , "docs", "_contract.docx")
