@@ -169,7 +169,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { "data.status" : { $set : 'Consignado' },  "data.invalid_payment" : { $set : true}} , function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } ,{ $set : {"data.status" : "Consignado", "data.invalid_payment" : true}} , function(err, rs){
 				if(rs){
 						if(REQ.send_email){
 							Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").populate("_credit").exec(function(error, payment){
@@ -182,15 +182,15 @@ module.exports = function(app, apiRoutes, io){
 
 			                        var data_credit_rejected = {
 			                          from: ' Daimont <noreply@daimont.com>',
-			                          to: credit._user.email,
+			                          to: payment._user.email,
 			                          subject: 'PAGO RECHAZADO PAGARE # ' + payment._credit.data.id,
-			                          text: (credit._user.name + ' ' + credit._user.last_name) + ' Lamentamos informarle que el pago realizado del pagaré ha sido rechazado.',
+			                          text: (payment._user.name + ' ' + payment._user.last_name) + ' Lamentamos informarle que el pago realizado del pagaré ha sido rechazado.',
 			                          html: _html_payment_rejected
 			                        };
 
 			                        mailgun.messages().send(_html_payment_rejected, function (error, body) {
 			                          if(data){
-			                              console.log("Deposit reject has been done to user " + credit._user.email, body);
+			                              console.log("messages sended to " + payment._user.email, body);
 			                          }
 			                        });   								
 								}
