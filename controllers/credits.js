@@ -334,7 +334,9 @@ module.exports = function(app, apiRoutes, io){
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
  						var _html_credit_deposited = _compiler.render({ _data : {
-                            user : (REQ._user.name + ' ' + REQ._user.last_name)
+                            user : (REQ._user.name + ' ' + REQ._user.last_name),
+                            monto : formatCurrency(REQ.data.amount[0], opts),
+                            pagare : REQ.data.id
                          }}, 'deposited/deposited.ejs');
 
                         var data_credit_deposited = {
