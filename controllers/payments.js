@@ -169,12 +169,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			!REQ.data || (data.data = REQ.data); 
-			data.data.status = 'Consignado';
-			data.data.invalid_payment = true;
-			data = { $set : data };          
-
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { "data.status" : { $set : 'Consignado' },  "data.invalid_payment" : { $set : true}} , function(err, rs){
 				if(rs){
 						if(REQ.send_email){
 							Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").populate("_credit").exec(function(error, payment){
