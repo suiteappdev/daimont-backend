@@ -180,7 +180,7 @@ module.exports = function(app, apiRoutes, io){
 			                            reason : REQ.reason
 			                         }}, 'invalidate/invalidate.ejs');
 
-			                        var data_credit_rejected = {
+			                        var data_payment_rejected = {
 			                          from: ' Daimont <noreply@daimont.com>',
 			                          to: payment._user.email,
 			                          subject: 'PAGO RECHAZADO PAGARE # ' + payment._credit.data.id,
