@@ -188,7 +188,7 @@ module.exports = function(app, apiRoutes, io){
 			                          html: _html_payment_rejected
 			                        };
 
-			                        mailgun.messages().send(_html_payment_rejected, function (error, body) {
+			                        mailgun.messages().send(data_payment_rejected, function (error, body) {
 			                          if(data){
 			                              console.log("messages sended to " + payment._user.email, body);
 			                          }
