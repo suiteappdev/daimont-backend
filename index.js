@@ -15,6 +15,7 @@ var passport = require("passport");
 var User = require('./models/user');
 var FB = require('facebook-node');
 var path = require("path");
+var csrf = require('csurf')
 
 var options = {
   key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
@@ -30,8 +31,15 @@ app.use(morgan('dev'));
 app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
 
+csrfProtection = csrf({ cookie: true });
+
+app.get('/new-form', csrfProtection, function(req, res) {
+    res.status(200).json({ csrfToken: req.csrfToken()});
+});
 
 apiRoutes = express.Router();
+
+
 
 app.use(function(req, res, next) {
     if (req.secure) {
