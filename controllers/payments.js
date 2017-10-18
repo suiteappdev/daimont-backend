@@ -4,6 +4,7 @@ module.exports = function(app, apiRoutes, io){
 		var path = require("path");
 		var mongoose = require('mongoose');
 		var Model = require(path.join("../", "models", _entity + ".js"));
+		var Credit = require(path.join("../", "models", _entity + ".js"));
     	var user_manager = require('../models/user_manager');
     	var crypto = require("crypto");
 	   	var config = require(path.join(process.env.PWD , "config.js"));
@@ -172,25 +173,25 @@ module.exports = function(app, apiRoutes, io){
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } ,{ $set : {"data.status" : "Consignado", "data.invalid_payment" : true}} , function(err, rs){
 				if(rs){
 						if(REQ.send_email){
-							Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").populate("_credit").exec(function(error, payment){
+							Credit.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
 								if(!error){
 			 						var _html_payment_rejected = _compiler.render({ _data : {
-			                            user : (payment._user.name + ' ' + payment._user.last_name),
-			                            pagare : payment._credit.data.id,
+			                            user : (credit._user.name + ' ' + credit._user.last_name),
+			                            pagare : credit.data.id,
 			                            reason : REQ.reason
 			                         }}, 'invalidate/invalidate.ejs');
 
 			                        var data_payment_rejected = {
 			                          from: ' Daimont <noreply@daimont.com>',
-			                          to: payment._user.email,
-			                          subject: 'PAGO RECHAZADO PAGARE # ' + payment._credit.data.id,
-			                          text: (payment._user.name + ' ' + payment._user.last_name) + ' Lamentamos informarle que el pago realizado del pagaré ha sido rechazado.',
+			                          to: credit._user.email,
+			                          subject: 'PAGO RECHAZADO PAGARE # ' + credit._credit.data.id,
+			                          text: (credit._user.name + ' ' + credit._user.last_name) + ' Lamentamos informarle que el pago realizado del pagaré ha sido rechazado.',
 			                          html: _html_payment_rejected
 			                        };
 
 			                        mailgun.messages().send(data_payment_rejected, function (error, body) {
 			                          if(data){
-			                              console.log("messages sended to " + payment._user.email, body);
+			                              console.log("messages sended to " + credit._user.email, body);
 			                          }
 			                        });   								
 								}
