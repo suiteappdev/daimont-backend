@@ -1,4 +1,5 @@
 var express = require("express");
+var cookieParser = require('cookie-parser');
 var https = require('https');
 var app = express();
 var fs = require('fs');
@@ -30,7 +31,7 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(morgan('dev'));
 app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
-
+app.use(cookieParser())
 csrfProtection = csrf({ cookie: true });
 
 app.get('/new-form', csrfProtection, function(req, res) {
