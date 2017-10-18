@@ -177,7 +177,7 @@ module.exports = function(app, apiRoutes, io){
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
 						if(REQ.send_email){
-							Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user")..populate("_credit").exec(function(error, payment){
+							Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").populate("_credit").exec(function(error, payment){
 								if(!error){
 			 						var _html_payment_rejected = _compiler.render({ _data : {
 			                            user : (payment._user.name + ' ' + payment._user.last_name),
