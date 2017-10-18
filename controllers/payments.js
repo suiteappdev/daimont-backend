@@ -165,6 +165,52 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function invalidate(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+			data.data.status = 'Consignado';
+			data.data.invalid_payment = true;
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+						if(REQ.send_email){
+							Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user")..populate("_credit").exec(function(error, payment){
+								if(!error){
+			 						var _html_payment_rejected = _compiler.render({ _data : {
+			                            user : (payment._user.name + ' ' + payment._user.last_name),
+			                            pagare : payment._credit.data.id,
+			                            reason : REQ.reason
+			                         }}, 'invalidate/invalidate.ejs');
+
+			                        var data_credit_rejected = {
+			                          from: ' Daimont <noreply@daimont.com>',
+			                          to: credit._user.email,
+			                          subject: 'PAGO RECHAZADO PAGARE # ' + payment._credit.data.id,
+			                          text: (credit._user.name + ' ' + credit._user.last_name) + ' Lamentamos informarle que el pago realizado del pagaré ha sido rechazado.',
+			                          html: _html_payment_rejected
+			                        };
+
+			                        mailgun.messages().send(_html_payment_rejected, function (error, body) {
+			                          if(data){
+			                              console.log("Deposit reject has been done to user " + credit._user.email, body);
+			                          }
+			                        });   								
+								}
+							});							
+						}
+
+					res.status(200).json(rs);
+
+				}else{
+					res.status(500).json(err)
+				}
+			});
+		}
+
+
 
 		function remove(req, res){
 			var where = {} ;
@@ -188,6 +234,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/all", all);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, upload, post);
+		apiRoutes.put("/" + _url_alias + "/:id/invalidate", invalidate);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
