@@ -237,7 +237,7 @@ module.exports = function(app, apiRoutes, io){
 		                        var data_credit_resume = {
 		                          	from: ' Daimont <noreply@daimont.com>',
 		                          	to: rs._user.email,
-		                          	subject: 'Resumen de Credito',
+		                          	subject: 'RESUMEN DEL CRÉDITO',
 		                          	text: 'Estado y resumen de su actual credito',
 		                          	html: _html_credit_resume,
 	                    			attachment : path.join(process.env.PWD , "docs", "contrato.pdf")
@@ -342,7 +342,7 @@ module.exports = function(app, apiRoutes, io){
                         var data_credit_deposited = {
                           from: ' Daimont <noreply@daimont.com>',
                           to: REQ._user.email,
-                          subject: 'Deposito Realizado.',
+                          subject: 'APROBACIÓN DE PRÉSTAMO.',
                           text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos depositado el monto solicitado a tu cuenta.',
                           html: _html_credit_deposited
                         };
