@@ -173,8 +173,9 @@ module.exports = function(app, apiRoutes, io){
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } ,{ $set : {"data.status" : "Consignado", "data.invalid_payment" : true}} , function(err, rs){
 				if(rs){
 						if(REQ.send_email){
-							Credit.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
+							Credit.findOne({ _id : mongoose.Types.ObjectId(rs._credit._id) }).populate("_user").exec(function(error, credit){
 								if(!error){
+									console.log("CREDIT", credit);
 			 						var _html_payment_rejected = _compiler.render({ _data : {
 			                            user : (credit._user.name + ' ' + credit._user.last_name),
 			                            pagare : credit.data.id,
