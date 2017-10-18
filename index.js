@@ -1,6 +1,6 @@
 var express = require("express");
-var cookieParser = require('cookie-parser');
 var https = require('https');
+var cookieParser = require('cookie-parser')
 var app = express();
 var fs = require('fs');
 var config = require("./config");
@@ -16,7 +16,6 @@ var passport = require("passport");
 var User = require('./models/user');
 var FB = require('facebook-node');
 var path = require("path");
-var csrf = require('csurf')
 
 var options = {
   key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
@@ -31,11 +30,13 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(morgan('dev'));
 app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
-app.use(cookieParser())
-csrfProtection = csrf({ cookie: true });
+app.use(cookieParser());
 
-app.get('/new-form', csrfProtection, function(req, res) {
-    res.status(200).json({ csrfToken: req.csrfToken()});
+var csrfProtection = csrf({ cookie: true });
+
+app.get('/form', csrfProtection, function(req, res) {
+    // pass the csrfToken to the view
+    res.status(200).json({ csrfToken: req.csrfToken() });
 });
 
 apiRoutes = express.Router();
