@@ -234,7 +234,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/all", all);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, upload, post);
-		apiRoutes.put("/" + _url_alias + "/:id/invalidate", invalidate);
+		apiRoutes.post("/" + _url_alias + "/:id/invalidate", invalidate);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
