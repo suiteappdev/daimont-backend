@@ -218,7 +218,7 @@ module.exports = function(app, apiRoutes, io){
 			                }
 			            });*/
 			        }else{
-			        	/*
+			        	
 			        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
 			        		console.log("credit" , rs);
 			        		if(!err){
@@ -240,7 +240,7 @@ module.exports = function(app, apiRoutes, io){
 		                          	subject: 'Resumen de Credito',
 		                          	text: 'Estado y resumen de su actual credito',
 		                          	html: _html_credit_resume,
-	                    			attachment : path.join(process.env.PWD , "docs", "_contract.pdf")
+	                    			attachment : path.join(process.env.PWD , "docs", "contrato.pdf")
 		                        };
 
 		                        mailgun.messages().send(data_credit_resume, function (error, body) {
@@ -249,9 +249,8 @@ module.exports = function(app, apiRoutes, io){
 		                          }
 		                        }); 			        			
 			        		}
-			        	});*/
+			        	});
 			        }
-
 			    	res.status(200).json(credit);
 				}else{
 					res.status(500).json(err);
