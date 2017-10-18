@@ -75,7 +75,7 @@ module.exports = function(app, apiRoutes, io){
 								 wkhtmltopdf.command = "/home/ec2-user/wkhtmltox/bin/wkhtmltopdf";
 
 								 stream = wkhtmltopdf(_html, { pageSize: 'letter' })
-									  .pipe(fs.createWriteStream('contrato.pdf'));
+									  .pipe(fs.createWriteStream('contrato_firmado.pdf'));
 
 								 stream.on('close', function() {
 					              	var data = {
@@ -84,7 +84,7 @@ module.exports = function(app, apiRoutes, io){
 						                subject: 'CONTRATO FIRMADO',
 						                html : _html_credit_resume,
 						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
-						                attachment : path.join(process.env.PWD , "contrato.pdf")
+						                attachment : path.join(process.env.PWD , "contrato_firmado.pdf")
 						              };
 
 						              mailgun.messages().send(data, function (error, body) {
