@@ -37,7 +37,7 @@ app.use(cookieParser('daimont//***2017plasmaguns'));
 app.use(csrf({ cookie: { key: 'XSRF-TOKEN', path:'/'}}));
 
 app.get('/form', function(req, res) {
-  res.status(200).json({ csrfToken: req.cookies['XSRF-TOKEN']});
+  res.status(200).json({ status : "initialized"});
 });
 
 apiRoutes = express.Router();
