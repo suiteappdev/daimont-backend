@@ -33,13 +33,13 @@ process.env.PWD = process.cwd() || process.env.PWD;
 var csrf = require('csurf');
 var cookieParser= require('cookie-parser'); 
 
-app.use(cookieParser());
-app.use(csrf());
+app.use(cookieParser('daimont//***2017plasmaguns'));
+app.use(csrf({ cookie: { key: 'XSRF-TOKEN', path:'/'}}));
 
 app.get('/form', function(req, res) {
   var token = req.csrfToken();
   res.cookie('XSRF-TOKEN', token);
-  res.status(200).json({ csrfToken: req.csrfToken() });
+  next()
 });
 
 apiRoutes = express.Router();
