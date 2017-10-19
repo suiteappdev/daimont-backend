@@ -34,7 +34,7 @@ process.env.PWD = process.cwd() || process.env.PWD;
 app.use(cookieParser());
 
 
-var csrfProtection = csrf({ cookie: true });
+var csrfProtection = csrf({ cookie: false });
 app.use(csrf());
 
 app.get('/form', csrfProtection, function(req, res) {
