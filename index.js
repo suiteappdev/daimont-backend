@@ -32,14 +32,11 @@ process.env.PWD = process.cwd() || process.env.PWD;
 
 var csrf = require('csurf');
 var cookieParser= require('cookie-parser'); 
+
 app.use(cookieParser('daimont//***2017plasmaguns'));
 app.use(csrf({ cookie: { key: 'XSRF-TOKEN', path:'/'}}));
 
-var csrfProtection = csrf({ cookie: false });
-
-app.use(csrf());
-
-app.get('/form', csrfProtection, function(req, res) {
+app.get('/form', function(req, res) {
     // pass the csrfToken to the view
     res.status(200).json({ csrfToken: req.csrfToken() });
 });
