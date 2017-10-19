@@ -34,7 +34,7 @@ var csrf = require('csurf');
 var cookieParser= require('cookie-parser'); 
 
 app.use(cookieParser('daimont//***2017plasmaguns'));
-app.use(csrf({ cookie: { key: 'XSRF-TOKEN', path:'/'}}));
+app.use(csrf());
 
 app.get('/form', function(req, res) {
     // pass the csrfToken to the view
