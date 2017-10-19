@@ -30,16 +30,6 @@ app.use(morgan('dev'));
 app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
 
-var csrf = require('csurf');
-var cookieParser= require('cookie-parser'); 
-
-app.use(cookieParser('daimont//***2017plasmaguns'));
-app.use(csrf({ cookie: { key: 'XSRF-TOKEN', path:'/'}}));
-
-app.get('/form', function(req, res) {
-  res.status(200).json({ status : "initialized"});
-});
-
 apiRoutes = express.Router();
 
 app.use(function(req, res, next) {
