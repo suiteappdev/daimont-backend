@@ -33,7 +33,9 @@ app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
 app.use(cookieParser());
 
+
 var csrfProtection = csrf({ cookie: true });
+app.use(csrf());
 
 app.get('/form', csrfProtection, function(req, res) {
     // pass the csrfToken to the view
@@ -41,8 +43,6 @@ app.get('/form', csrfProtection, function(req, res) {
 });
 
 apiRoutes = express.Router();
-
-
 
 app.use(function(req, res, next) {
     if (req.secure) {
