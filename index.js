@@ -1,7 +1,5 @@
 var express = require("express");
 var https = require('https');
-var cookieParser = require('cookie-parser');
-var csrf = require('csurf');
 var app = express();
 var fs = require('fs');
 var config = require("./config");
@@ -31,10 +29,14 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(morgan('dev'));
 app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
-app.use(cookieParser());
 
+var csrf = require('csurf');
+var cookieparser= require('cookie-parser'); 
+app.use(cookieParser('daimont//***2017plasmaguns'));
+app.use(csrf({ cookie: {key:XSRF-TOKEN,path:'/'}}));
 
 var csrfProtection = csrf({ cookie: false });
+
 app.use(csrf());
 
 app.get('/form', csrfProtection, function(req, res) {
