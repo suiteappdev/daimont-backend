@@ -31,7 +31,7 @@ app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
 
 var csrf = require('csurf');
-var cookieparser= require('cookie-parser'); 
+var cookieParser= require('cookie-parser'); 
 app.use(cookieParser('daimont//***2017plasmaguns'));
 app.use(csrf({ cookie: {key:XSRF-TOKEN,path:'/'}}));
 
