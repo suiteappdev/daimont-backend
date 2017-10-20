@@ -568,7 +568,7 @@ module.exports = function(app, apiRoutes, io){
  		function actualizado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "_user.data.updated" : true}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
+				Model.find({"data.hidden" : false }).sort("-createdAt").populate("_user", null, { "data.updated": true }).populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -589,7 +589,7 @@ module.exports = function(app, apiRoutes, io){
  		function desactualizado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "_user.data.updated" : false}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
+				Model.find({"data.hidden" : false }).sort("-createdAt").populate("_user", null, { "data.updated": true }).populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
