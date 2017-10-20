@@ -442,7 +442,7 @@ module.exports = function(app, apiRoutes, io){
  		function pendiente(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "data.status" : 'Pendiente', "data.with_offer" : false}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Pendiente'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
