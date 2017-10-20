@@ -571,7 +571,12 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({"data.hidden" : false }).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						console.log("rs", rs)
-						res.status(200).json(rs.filter(function(doc){ return doc._user.data.updated } || []));
+						
+						res.status(200).json(rs.filter(function(doc){ 
+							if(doc._user.data){
+								return doc._user.data.updated
+							}
+						} || []));
 					}else{
 						res.status(500).json(err);
 					}
@@ -593,7 +598,12 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({"data.hidden" : false }).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						console.log("rs", rs)
-						res.status(200).json(rs.filter(function(doc){ return !doc._user.data.updated } || []));
+						res.status(200).json(rs.filter(function(doc){ 
+							if(doc._user.data){
+								return !doc._user.data.updated
+							}
+
+						} || []));
 					}else{
 						res.status(500).json(err);
 					}
