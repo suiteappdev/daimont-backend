@@ -573,7 +573,7 @@ module.exports = function(app, apiRoutes, io){
 						console.log("rs", rs)
 						
 						res.status(200).json(rs.filter(function(doc){ 
-							if(doc._user.data){
+							if(doc._user && doc._user.data){
 								return doc._user.data.updated
 							}
 						} || []));
@@ -599,7 +599,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						console.log("rs", rs)
 						res.status(200).json(rs.filter(function(doc){ 
-							if(doc._user.data){
+							if(doc._user && doc._user.data){
 								return !doc._user.data.updated
 							}
 
