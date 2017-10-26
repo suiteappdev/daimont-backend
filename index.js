@@ -30,10 +30,10 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(morgan('dev'));
 app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
-
 apiRoutes = express.Router();
-
 app.use(helmet());
+app.disable('x-powered-by');
+
 app.use(function(req, res, next) {
     if (req.secure) {
         next();
