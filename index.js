@@ -15,6 +15,7 @@ var passport = require("passport");
 var User = require('./models/user');
 var FB = require('facebook-node');
 var path = require("path");
+var helmet = require('helmet');
 
 var options = {
   key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
@@ -32,6 +33,7 @@ process.env.PWD = process.cwd() || process.env.PWD;
 
 apiRoutes = express.Router();
 
+app.use(helmet());
 app.use(function(req, res, next) {
     if (req.secure) {
         next();
