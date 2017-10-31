@@ -274,7 +274,7 @@ module.exports = function(app, apiRoutes, io){
 			}
 
 			if(REQ._aprovedBy){
-				data._aprovedBy = mongoose.Types.ObjectId(REQ._aprovedBy._id ? REQ._aprovedBy._id : REQ._aprovedBy);
+				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
 
 			data = { $set : data };          
@@ -294,8 +294,8 @@ module.exports = function(app, apiRoutes, io){
 
 			!REQ.data || (data.data = REQ.data); 
 			
-			if(REQ._aprovedBy){
-				data._aprovedBy = mongoose.Types.ObjectId(REQ._aprovedBy._id ? REQ._aprovedBy._id : REQ._aprovedBy);
+			if(REQ._approvedby){
+				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
 
 			data = { $set : data };          
@@ -334,8 +334,8 @@ module.exports = function(app, apiRoutes, io){
 
 			!REQ.data || (data.data = REQ.data); 
 			
-			if(REQ._aprovedBy){
-				data._aprovedBy = mongoose.Types.ObjectId(REQ._aprovedBy._id ? REQ._aprovedBy._id : REQ._aprovedBy);
+			if(REQ._approvedby){
+				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
 
 			data = { $set : data };          
@@ -390,7 +390,7 @@ module.exports = function(app, apiRoutes, io){
 			data.data.status = 'Rechazado';
 			
 			if(REQ._aprovedBy){
-				data._aprovedBy = mongoose.Types.ObjectId(REQ._aprovedBy._id ? REQ._aprovedBy._id : REQ._aprovedBy);
+				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
 
 			data = { $set : data };          
