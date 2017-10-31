@@ -16,7 +16,7 @@ var _Schema = new Schema({
 	  _user : { type : Schema.Types.ObjectId , ref : 'User'},
 	  _payment : { type : Schema.Types.ObjectId , ref : 'payments'},
 	  _contract : { type : Schema.Types.ObjectId , ref : 'contracts'},
-	  _approvedby :  { type : Schema.Types.ObjectId , ref : 'User', required: false}
+	  _approvedby :  { type : Schema.Types.ObjectId , ref : 'User'}
 	  
 });
 
