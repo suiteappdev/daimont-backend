@@ -293,6 +293,10 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.body || req.params;
 
 			!REQ.data || (data.data = REQ.data); 
+			
+			if(REQ._aprovedBy){
+				data._aprovedBy = mongoose.Types.ObjectId(REQ._aprovedBy._id ? REQ._aprovedBy._id : REQ._aprovedBy);
+			}
 
 			data = { $set : data };          
 
@@ -329,6 +333,11 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.body || req.params;
 
 			!REQ.data || (data.data = REQ.data); 
+			
+			if(REQ._aprovedBy){
+				data._aprovedBy = mongoose.Types.ObjectId(REQ._aprovedBy._id ? REQ._aprovedBy._id : REQ._aprovedBy);
+			}
+
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
@@ -379,6 +388,11 @@ module.exports = function(app, apiRoutes, io){
 
 			!REQ.data || (data.data = REQ.data); 
 			data.data.status = 'Rechazado';
+			
+			if(REQ._aprovedBy){
+				data._aprovedBy = mongoose.Types.ObjectId(REQ._aprovedBy._id ? REQ._aprovedBy._id : REQ._aprovedBy);
+			}
+
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
