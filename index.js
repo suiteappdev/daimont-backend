@@ -109,8 +109,8 @@ apiRoutes.use(function (err, req, res, next) {
 });
 
 app.locals._sfind = function(id){
-  return _clients.filter(function(socket){
-      return socket.socket.id == id || socket.uid == id;
+  return _clients.filter(function(client){
+      return client.socket.id == id || client.uid == id;
   })[0]; 
 }
 
@@ -131,7 +131,7 @@ mongoose.connection.on('open', function(ref){
 
   io.on('connection', function(socket){
       socket.on("MAIN", function(data){
-        _clients.push({ sid : socket , uid : data});
+        _clients.push({ socket : socket , uid : data});
         console.log("connected to::", socket);
         console.log("connected to ROOM::", data);
       });
