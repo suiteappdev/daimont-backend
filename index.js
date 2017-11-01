@@ -16,6 +16,7 @@ var User = require('./models/user');
 var FB = require('facebook-node');
 var path = require("path");
 var helmet = require('helmet');
+var _clients = [];
 
 var options = {
   key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
@@ -107,6 +108,12 @@ apiRoutes.use(function (err, req, res, next) {
     console.log(err);
 });
 
+app.locals._sfind = function(id){
+  return _clients.filter(function(socket){
+      return socket.socket.id == id || socket.uid == id;
+  })[0]; 
+}
+
 
 mongoose.connection.on('open', function(ref){
     console.log('Conectado a Mongo');
@@ -121,11 +128,10 @@ mongoose.connection.on('open', function(ref){
 
    var io = require("socket.io")(server);
 
-   var _clients = [];
 
   io.on('connection', function(socket){
       socket.on("MAIN", function(data){
-        socket.join(data);
+        _clients.push({ sid : socket , uid : data});
         console.log("connected to::", socket);
         console.log("connected to ROOM::", data);
       });
