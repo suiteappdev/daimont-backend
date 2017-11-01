@@ -107,7 +107,7 @@ apiRoutes.use(function (err, req, res, next) {
     console.log(err);
 });
 
-var io = require("socket.io")(http);
+var io = require("socket.io")(https);
 var turns = io;
 
 io.on('connection', function(socket){
