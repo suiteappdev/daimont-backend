@@ -348,8 +348,10 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
+
 						sclient = app.locals._sfind(REQ._user._id ? REQ._user._id : REQ._user);
         				sclient.socket.emit("CREDIT_UPDATED", data);
+						console.log("client", sclient);
 
  						var _html_credit_deposited = _compiler.render({ _data : {
                             user : (REQ._user.name + ' ' + REQ._user.last_name),

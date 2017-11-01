@@ -132,6 +132,7 @@ mongoose.connection.on('open', function(ref){
   io.on('connection', function(socket){
       socket.on("MAIN", function(data){
         _clients.push({ socket : socket , uid : data});
+        console.log("client list", _clients);
         console.log("connected to::", socket);
         console.log("connected to ROOM::", data);
       });
