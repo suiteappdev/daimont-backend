@@ -54,8 +54,7 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : { $ne : 'Finalizado'}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
-			
-        				sclient = app.locals._sfind(rs._id);
+        				sclient = app.locals._sfind(rs._user._id);
         				sclient.socket.emit("CREDIT_UPDATED", rs);
 
 						res.status(200).json(rs || []);
