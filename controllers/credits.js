@@ -56,7 +56,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 			
         				sclient = app.locals._sfind(rs._id);
-        				sclient.sid.emit("CREDIT_UPDATED", rs);
+        				sclient.socket.emit("CREDIT_UPDATED", rs);
 
 						res.status(200).json(rs || []);
 					}else{
