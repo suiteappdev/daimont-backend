@@ -107,16 +107,6 @@ apiRoutes.use(function (err, req, res, next) {
     console.log(err);
 });
 
-var io = require("socket.io")(https);
-var turns = io;
-
-io.on('connection', function(socket){
-    socket.on("_company", function(_company){
-      socket.join(_company);
-      console.log("connected to::", socket);
-      console.log("connected to ROOM::", _company);
-    });
-});
 
 mongoose.connection.on('open', function(ref){
     console.log('Conectado a Mongo');
@@ -127,7 +117,17 @@ mongoose.connection.on('open', function(ref){
         console.log("app listen on " + config.appPort);
     }); 
 
-    https.createServer(options, app).listen(8443);
+   var server =  https.createServer(options, app).listen(8443);
+
+  var io = require("socket.io")(server);
+  
+  io.on('connection', function(socket){
+      socket.on("_company", function(_company){
+        socket.join(_company);
+        console.log("connected to::", socket);
+        console.log("connected to ROOM::", _company);
+      });
+  });
 });
 
 
