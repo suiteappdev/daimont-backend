@@ -54,10 +54,7 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : { $ne : 'Finalizado'}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
-        				sclient = app.locals._sfind(rs._user._id);
-        				sclient.socket.emit("CREDIT_UPDATED", rs);
-
-						res.status(200).json(rs || []);
+        				res.status(200).json(rs || []);
 					}else{
 						res.status(500).json(err);
 					}
@@ -284,6 +281,9 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
+					sclient = app.locals._sfind(data._user._id || data._user );
+        		    sclient.socket.emit("CREDIT_UPDATED", data);
+
 					res.status(200).json(rs);
 				}else{
 					res.status(500).json(err)
@@ -305,6 +305,9 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
+						sclient = app.locals._sfind(data._user._id || data._user );
+        				sclient.socket.emit("CREDIT_UPDATED", data);
+ 						
  						var _html_credit_approved = _compiler.render({ _data : {
                             user : (REQ._user.name + ' ' + REQ._user.last_name)
                          }}, 'credit_approved/credit_approved.ejs');
@@ -345,6 +348,9 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
+						sclient = app.locals._sfind(data._user._id || data._user );
+        				sclient.socket.emit("CREDIT_UPDATED", data);
+
  						var _html_credit_deposited = _compiler.render({ _data : {
                             user : (REQ._user.name + ' ' + REQ._user.last_name),
                             monto : formatCurrency(REQ.data.amount[0], opts),
@@ -405,6 +411,8 @@ module.exports = function(app, apiRoutes, io){
 				                  res.status(200).json(rs);                
 				              }
 				          });*/
+						sclient = app.locals._sfind(data._user._id || data._user );
+        				sclient.socket.emit("CREDIT_UPDATED", data);
 
 						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
 							if(!error){
