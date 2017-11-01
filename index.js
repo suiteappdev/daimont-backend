@@ -119,13 +119,15 @@ mongoose.connection.on('open', function(ref){
 
    var server =  https.createServer(options, app).listen(8443);
 
-  var io = require("socket.io")(server);
-  
+   var io = require("socket.io")(server);
+
+   var _clients = [];
+
   io.on('connection', function(socket){
-      socket.on("_company", function(_company){
-        socket.join(_company);
+      socket.on("MAIN", function(data){
+        socket.join(data);
         console.log("connected to::", socket);
-        console.log("connected to ROOM::", _company);
+        console.log("connected to ROOM::", data);
       });
   });
 });
