@@ -281,9 +281,6 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
-					sclient = app.locals._sfind(REQ._user._id ? REQ._user._id : REQ._user);
-        		    sclient.socket.emit("CREDIT_UPDATED", data);
-
 					res.status(200).json(rs);
 				}else{
 					res.status(500).json(err)
