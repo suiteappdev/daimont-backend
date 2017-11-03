@@ -128,7 +128,6 @@ mongoose.connection.on('open', function(ref){
 
    var io = require("socket.io")(server);
 
-
   io.on('connection', function(socket){
       socket.on("MAIN", function(data){
         _clients.push({ socket : socket , uid : data});
