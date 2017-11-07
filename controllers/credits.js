@@ -299,7 +299,7 @@ module.exports = function(app, apiRoutes, io){
 				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
 
-			data.data.deposited_time_server = new Date(Date.now()).toLocaleString();
+			data.data.deposited_time_server = new Date(Date.now());
 
 			data = { $set : data };          
 
