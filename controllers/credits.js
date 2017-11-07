@@ -54,6 +54,7 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : { $ne : 'Finalizado'}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
+						rs.data.server_date = new Date(Date.now()).toLocaleString();
         				res.status(200).json(rs || []);
 					}else{
 						res.status(500).json(err);
@@ -297,6 +298,8 @@ module.exports = function(app, apiRoutes, io){
 			if(REQ._approvedby){
 				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
+
+			data.data.deposited_time_server = new Date(Date.now()).toLocaleString();
 
 			data = { $set : data };          
 
