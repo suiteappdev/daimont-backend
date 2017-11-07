@@ -37,6 +37,7 @@ module.exports = exports = function(app, apiRoutes, io){
 
 		var data = {};
 			data.name = "system32";
+			data.username = "soporte@daimont.com";
 			data.last_name = "daimont";
 			data.email = "soporte@daimont.com";
 			data.cc = 11100200411521;
