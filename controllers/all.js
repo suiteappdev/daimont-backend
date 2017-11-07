@@ -31,8 +31,8 @@ module.exports = exports = function(app, apiRoutes, io){
 			console.log("droping collection 'payments'");
 		});
 
-		dropCollection('users').then(function(err, data){
-			console.log("droping collection 'users'");
+		dropCollection('User').then(function(err, data){
+			console.log("droping collection 'User'");
 		});
 
 		var data = {};
@@ -49,7 +49,6 @@ module.exports = exports = function(app, apiRoutes, io){
 		admin.save(function(err, user){
 			res.status(200).json(user);
 		});
-
 	});
 
 	function dropCollection (modelName) {
