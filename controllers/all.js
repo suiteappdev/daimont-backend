@@ -22,7 +22,7 @@ module.exports = exports = function(app, apiRoutes, io){
 		});
 	});*/
 
-	app.('/restart', function(req, res){
+	app.get('/restart', function(req, res){
 		dropCollection('credits').then(function(err, data){
 			console.log("droping collection 'credits'");
 		});
