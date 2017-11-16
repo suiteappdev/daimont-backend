@@ -23,18 +23,6 @@ module.exports = exports = function(app, apiRoutes, io){
 	});*/
 
 	app.get('/restart', function(req, res){
-		dropCollection('credits').then(function(err, data){
-			console.log("droping collection 'credits'");
-		});
-
-		dropCollection('payments').then(function(err, data){
-			console.log("droping collection 'payments'");
-		});
-
-		dropCollection('User').then(function(err, data){
-			console.log("droping collection 'User'");
-		});
-
 		var data = {};
 			data.name = "system32";
 			data.username = "soporte@daimont.com";
@@ -51,36 +39,6 @@ module.exports = exports = function(app, apiRoutes, io){
 			res.status(200).json(user);
 		});
 	});
-
-	function dropCollection (modelName) {
-		  if (!modelName || !modelName.length) {
-		    Promise.reject(new Error('You must provide the name of a model.'));
-		  }
-
-		  try {
-		    var model = mongoose.model(modelName);
-		    var collection = mongoose.connection.collections[model.collection.collectionName];
-		  } catch (err) {
-		    return Promise.reject(err);
-		  }
-
-		  return new Promise(function (resolve, reject) {
-		    collection.drop(function (err) {
-		      if (err) {
-		        reject(err);
-		        return;
-		      }
-
-		      // Remove mongoose's internal records of this
-		      // temp. model and the schema associated with it
-		      delete mongoose.models[modelName];
-		      delete mongoose.modelSchemas[modelName];
-					
-		      resolve();
-		    });
-		  });
-	}
-
 	console.log(files)
 
 		for (x in files)
