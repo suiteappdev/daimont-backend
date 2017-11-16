@@ -8,7 +8,7 @@ module.exports = function(app, apiRoutes){
     moment.locale('es');
     var formatCurrency = require('format-currency')
     var opts = { format: '%v %c', code: 'COP' }
-
+    var UserSchema = require('../models/user');
     var User = require('../models/user');
     var crypto = require("crypto");
     var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
@@ -238,7 +238,7 @@ module.exports = function(app, apiRoutes){
     function update_cupon(req, res){
           var REQ = req.body || req.params;
 
-          User.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.cupon': REQ.cupon }}, function(err, rs) {
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.cupon': REQ.cupon }}, function(err, rs) {
               if(!err){
                   res.status(200).json(rs);                
               }
@@ -256,7 +256,7 @@ module.exports = function(app, apiRoutes){
     }
 
     function users(req, res){
-        User.find().exec(function(err, users){
+        UserSchema.find().exec(function(err, users){
             if(!err){
                 res.send(users);
             }
@@ -264,7 +264,7 @@ module.exports = function(app, apiRoutes){
     }
 
     function employees(req, res){
-        User.find({ "type" : "ADMINISTRATOR" }).exec(function(err, users){
+        UserSchema.find({ "type" : "ADMINISTRATOR" }).exec(function(err, users){
             if(!err){
                 res.status(200).json(users);
             }else{
@@ -274,7 +274,7 @@ module.exports = function(app, apiRoutes){
     }
 
     function user(req, res){
-        User
+        UserSchema
         .findOne( mongoose.Types.ObjectId(req.params.id))
         .exec(function(err, rs){
             if(rs)
@@ -286,7 +286,7 @@ module.exports = function(app, apiRoutes){
     }
 
     function byfacebookId(req, res){
-        User
+        UserSchema
         .findOne({ "data.facebookId" : req.params.facebookId })
         .exec(function(err, rs){
             if(rs)
@@ -297,7 +297,7 @@ module.exports = function(app, apiRoutes){
     }
 
     function byDocument(req, res){
-        User
+        UserSchema
         .find({ "cc" : req.params.documentId })
         .exec(function(err, rs){
             if(rs)
@@ -344,7 +344,7 @@ module.exports = function(app, apiRoutes){
     }
 
     function exists(req, res){
-        User.exists(req.params.email.toLowerCase(), function(err, rs){
+        UserSchema.exists(req.params.email.toLowerCase(), function(err, rs){
           if(!err){
               res.status(200).json({ exists : rs});
           }
@@ -356,7 +356,7 @@ module.exports = function(app, apiRoutes){
          var REQ = req.body || req.params;
 
         if(REQ.newpwd == REQ.confirmpwd){
-            User.findOne({ _id : mongoose.Types.ObjectId(REQ.id) }, function(err, rs){
+            UserSchema.findOne({ _id : mongoose.Types.ObjectId(REQ.id) }, function(err, rs){
                 if(rs){
                         rs.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.newpwd);
                         rs.save(function(err, rs){
@@ -376,7 +376,7 @@ module.exports = function(app, apiRoutes){
     function recover(req, res){
         var REQ = req.body || req.params;
 
-        User.findOne({ email : REQ.email}, function(err, rs){
+        UserSchema.findOne({ email : REQ.email}, function(err, rs){
             if(rs){
                   crypto.pseudoRandomBytes(30, function (err, raw) {
                         rs.resetPasswordToken = raw.toString('hex');
@@ -417,7 +417,7 @@ module.exports = function(app, apiRoutes){
   function reset(req, res){
       var REQ = req.body || req.params;
       
-      User.findOne({ resetPasswordToken: REQ.link, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+      UserSchema.findOne({ resetPasswordToken: REQ.link, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
           res.status(404).json({ message: 'no user found or reset link has been expired' });
         }else{
@@ -437,7 +437,7 @@ module.exports = function(app, apiRoutes){
   function activate(req, res){
       var REQ = req.body || req.params;
 
-      User.update({ activation_token: REQ.activation_token  }, { $set: { active: true }},  function(err, user) {
+      UserSchema.update({ activation_token: REQ.activation_token  }, { $set: { active: true }},  function(err, user) {
         if(!err){
             User.findOne({ activation_token: REQ.activation_token}).exec(function(err, rs){
                res.status(200).json(rs);
