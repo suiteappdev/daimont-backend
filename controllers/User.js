@@ -237,6 +237,16 @@ module.exports = function(app, apiRoutes){
           });   
     }
 
+    function updatedProfile(req, res){
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.updated': true }}, function(err, rs) {
+              if(!err){
+                  res.status(200).json(rs);                
+              }
+          });
+    }
+
+
+
     function update_cupon(req, res){
           var REQ = req.body || req.params;
 
@@ -465,6 +475,7 @@ module.exports = function(app, apiRoutes){
     app.post("/api/login", login);
     
     apiRoutes.put("/user/:id", update);
+    apiRoutes.put("/user/updated/:id", updatedProfile);
     apiRoutes.put("/user/:id/update-cupon", update_cupon);
     apiRoutes.delete("/user/:id", remove);
 
