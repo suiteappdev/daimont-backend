@@ -238,7 +238,11 @@ module.exports = function(app, apiRoutes){
     }
 
     function updatedProfile(req, res){
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.updated': true }}, function(err, rs) {
+          var data = {};
+          !REQ.data || (data.data = REQ.data);
+          data = { $set : data }; 
+
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), data, function(err, rs) {
               if(!err){
                   res.status(200).json(rs);                
               }
