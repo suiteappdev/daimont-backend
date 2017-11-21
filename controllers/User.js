@@ -230,7 +230,7 @@ module.exports = function(app, apiRoutes){
 
           data = { $set : data }; 
 
-          user_manager.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
+          User.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
               if(rs){
                   res.json(rs);
               }
