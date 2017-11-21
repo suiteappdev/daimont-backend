@@ -226,6 +226,8 @@ module.exports = function(app, apiRoutes){
             data.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.password);
           } 
 
+          console.log("data", data);
+
           data = { $set : data }; 
 
           user_manager.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
