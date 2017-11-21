@@ -230,11 +230,11 @@ module.exports = function(app, apiRoutes){
 
           data = { $set : data }; 
 
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data': data }}, function(err, rs) {
-              if(!err){
-                  res.status(200).json(rs);                
+          user_manager.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
+              if(rs){
+                  res.json(rs);
               }
-          });
+          });   
     }
 
     function update_cupon(req, res){
