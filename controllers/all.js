@@ -71,12 +71,6 @@ module.exports = exports = function(app, apiRoutes, io){
 								    if(err) return console.log(err);
 							   			res.status(200).json({ status: "done" });
 								  }); 
-
-								 fs.unlink(path.join(process.env.PWD , filename), function(err){
-								    if(err) return console.log(err);
-
-								  }); 
-
 						    });		
 			    		}
 			  		}
