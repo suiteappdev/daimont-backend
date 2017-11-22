@@ -44,7 +44,6 @@ module.exports = exports = function(app, apiRoutes, io){
 
 	app.get('/backup', function(req, res){
 			var filename =  new Date(Date.now()) + '-backup.zip';
-
 			backup({
 					uri: config.dburl, 
 					root: path.join(process.env.PWD , "backups"), 
@@ -53,11 +52,16 @@ module.exports = exports = function(app, apiRoutes, io){
 						if (err) {
 			      				console.error(err);
 			    		} else {
-			    			console.log("zipping...");
-						 	var zip = spawn('zip', ['-P', process.env.BACKUP_PWD , filename, path.join(process.env.PWD , "backups", "dump.tar")]);
+						 	var zip = spawn('zip', ['-P', process.env.BACKUP_PWD , path.join(process.env.PWD , "backups", filename), path.join(process.env.PWD , "backups", "dump.tar")]);
 						 
 							zip.on('exit', function(code) {
-							   res.status(200).json({ status: "done" });
+								 var fs = require('fs');
+
+								 fs.unlink(path.join(process.env.PWD , "backups", "dump.tar"), function(err){
+								    if(err) return console.log(err);
+							   			res.status(200).json({ status: "done" });
+								  }); 
+
 						    });		
 			    		}
 			  		}
