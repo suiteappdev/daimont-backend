@@ -119,7 +119,7 @@ module.exports = function(app, apiRoutes, io){
 		            Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").populate("_credit").exec(function(err, data){
 							 console.log("pago", data)
 							 var _html = _compiler.render(
-									{ _data : { name : data._user.name, last_name : data._user.last_name}}, 'payment/new_payment_to_admin.ejs');
+									{ _data : { name : data._user.name, last_name : data._user.last_name, payment_url: config.base_url_pro + "payments"}}, 'payment/new_payment_to_admin.ejs');
 
 				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
