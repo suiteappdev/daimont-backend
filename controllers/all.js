@@ -53,6 +53,7 @@ module.exports = exports = function(app, apiRoutes, io){
 						if (err) {
 			      				console.error(err);
 			    		} else {
+			    			console.log("zipping...");
 						 	var zip = spawn('zip', ['-P', process.env.BACKUP_PWD , filename, path.join(process.env.PWD , "backups", "dump.tar")]);
 						 
 							zip.on('exit', function(code) {
