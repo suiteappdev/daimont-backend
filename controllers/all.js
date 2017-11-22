@@ -43,17 +43,17 @@ module.exports = exports = function(app, apiRoutes, io){
 	});
 
 	app.get('/backup', function(req, res){
-			var filename =  Date.now() + '-backup.zip';
+			var filename =  new Date(Date.now()) + '-backup.zip';
 
 			backup({
 					uri: config.dburl, 
 					root: path.join(process.env.PWD , "backups"), 
-					tar: filename,
+					tar: 'dump.tar',
 					callback: function(err) { 
 						if (err) {
 			      				console.error(err);
 			    		} else {
-						 	var zip = spawn('zip', ['-P', process.env.BACKUP_PWD , filename, path.join(process.env.PWD , "backups", filename)]);
+						 	var zip = spawn('zip', ['-P', process.env.BACKUP_PWD , filename, path.join(process.env.PWD , "backups", "dump.tar")]);
 						 
 							zip.on('exit', function(code) {
 							   res.status(200).json({ status: "done" });
