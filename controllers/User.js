@@ -242,12 +242,7 @@ module.exports = function(app, apiRoutes){
           var REQ = req.body || req.params;
           !REQ.data || (data.data = REQ.data);
 
-
-          if(REQ.password){
-            REQ.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.password);
-          } 
-          
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ , function(err, rs) {
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id),{ $set: REQ}  , function(err, rs) {
               if(!err){
                   res.status(200).json(rs);                
               }
