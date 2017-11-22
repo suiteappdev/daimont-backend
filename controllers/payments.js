@@ -172,6 +172,7 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } ,{ $set : {"data.status" : "Consignado", "data.invalid_payment" : true}} , function(err, rs){
 				if(rs){
+					console.log("pago". rs)
 						if(REQ.send_email){
 							Credit.findOne({ _id : mongoose.Types.ObjectId(rs._credit._id) }).populate("_user").exec(function(error, credit){
 								if(!error){
