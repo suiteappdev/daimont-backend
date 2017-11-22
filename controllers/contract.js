@@ -82,6 +82,7 @@ module.exports = function(app, apiRoutes, io){
 					              	var data = {
 					                	from: ' Daimont <noreply@daimont.com>',
 						                to: rs._user.email,
+						                bcc:process.env.ADMIN_EMAIL,
 						                subject: 'CONTRATO FIRMADO',
 						                html : _html_credit_resume,
 						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
