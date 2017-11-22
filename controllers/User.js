@@ -243,7 +243,7 @@ module.exports = function(app, apiRoutes){
           !REQ.data || (data.data = REQ.data);
 
 
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ }, function(err, rs) {
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ , function(err, rs) {
               if(!err){
                   res.status(200).json(rs);                
               }
