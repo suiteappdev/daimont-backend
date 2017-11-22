@@ -174,7 +174,7 @@ module.exports = function(app, apiRoutes, io){
 				if(rs){
 					console.log("pago",  rs);
 						if(REQ.send_email){
-							Credit.findOne({ _id : mongoose.Types.ObjectId(rs._credit._id) }).populate("_user").exec(function(error, credit){
+							Credit.findOne({ _id : mongoose.Types.ObjectId(req.params.credit) }).populate("_user").exec(function(error, credit){
 								if(!error){
 									console.log("CREDIT", credit);
 			 						var _html_payment_rejected = _compiler.render({ _data : {
@@ -232,7 +232,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/all", all);
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.post("/" + _url_alias, upload, post);
-		apiRoutes.post("/" + _url_alias + "/:id/invalidate", invalidate);
+		apiRoutes.post("/" + _url_alias + "/:id/invalidate/:credit", invalidate);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
 
