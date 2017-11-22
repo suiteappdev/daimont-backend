@@ -78,6 +78,7 @@ module.exports = function(app, apiRoutes, io){
 									  .pipe(fs.createWriteStream('contrato_firmado.pdf'));
 
 								 stream.on('close', function() {
+								 	console.log("pdf end")
 					              	var data = {
 					                	from: ' Daimont <noreply@daimont.com>',
 						                to: rs._user.email,
@@ -88,7 +89,7 @@ module.exports = function(app, apiRoutes, io){
 						              };
 
 						              mailgun.messages().send(data, function (error, body) {
-						                console.log("mailgun body", body);
+						                console.log("Enviando contrato formado", body);
 						              });	
 								 });
   
