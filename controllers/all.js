@@ -8,7 +8,12 @@ module.exports = exports = function(app, apiRoutes, io){
     var mongoose = require('mongoose');
     var path = require("path");
     var Model = require('../models/counters');
+
     var User = require('../models/user');
+	var Contracts = require(path.join("../", "models", "contracts" + ".js"));
+	var Credits = require(path.join("../", "models", "credits" + ".js"));
+	var Payments = require(path.join("../", "models", "payments" + ".js"));
+
 	var fs = require('fs');
 	var files = fs.readdirSync('./controllers');
 
@@ -25,6 +30,11 @@ module.exports = exports = function(app, apiRoutes, io){
 	});*/
 
 	app.get('/restart', function(req, res){
+		User.remove({ type :"CLIENT"}).exec(function(err, rs){});
+		Credits.remove().exec(function(err, rs){});
+		Payments.remove().exec(function(err, rs){});
+		Contracts.remove().exec(function(err, rs){});
+		
 		var data = {};
 			data.name = "system32";
 			data.username = "soporte@daimont.com";
