@@ -242,7 +242,9 @@ module.exports = function(app, apiRoutes){
           var REQ = req.body || req.params;
           !REQ.data || (data.data = REQ.data);
 
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id),{ $set: REQ}  , function(err, rs) {
+
+
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ , function(err, rs) {
               if(!err){
                   res.status(200).json(rs);                
               }
@@ -354,7 +356,7 @@ module.exports = function(app, apiRoutes){
                         res.status(200).json({token:token, user : user});
                   });  
             }else{
-                  res.status(404).json({err: 'Usuario o clave incorrectos'});
+                  res.status(401).json({err: 'Usuario o clave incorrectos'});
             }
         });
     }
