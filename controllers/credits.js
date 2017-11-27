@@ -529,6 +529,27 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+		 function pagado(req, res){
+			var REQ = req.params; 
+			try{
+				Model.find({"data.hidden" : false, "data.status" : 'Pagado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({ "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
  		function rechazado(req, res){
 			var REQ = req.params; 
 			try{
@@ -649,6 +670,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
+		apiRoutes.get("/" + _url_alias +"/pagado", consignado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
 		apiRoutes.get("/" + _url_alias +"/desactualizado", desactualizado);
 		apiRoutes.get("/" + _url_alias +"/pendiente", pendiente);
