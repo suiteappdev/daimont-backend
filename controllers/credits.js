@@ -414,7 +414,10 @@ module.exports = function(app, apiRoutes, io){
 				              }
 				          });*/
 						sclient = app.locals._sfind(REQ._user._id ? REQ._user._id : REQ._user);
-        				sclient.socket.emit("CREDIT_UPDATED", data);
+						
+						if(sclient){
+        					sclient.socket.emit("CREDIT_UPDATED", data);
+						}
 
 						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
 							if(!error){
