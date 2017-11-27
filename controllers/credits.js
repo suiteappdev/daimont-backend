@@ -677,7 +677,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
-		apiRoutes.get("/" + _url_alias +"/pagado", consignado);
+		apiRoutes.get("/" + _url_alias +"/pagado", pagado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
 		apiRoutes.get("/" + _url_alias +"/desactualizado", desactualizado);
 		apiRoutes.get("/" + _url_alias +"/pendiente", pendiente);
