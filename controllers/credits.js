@@ -124,7 +124,7 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : "Finalizado"}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs.filter(function(credit){ return credit._payment}) || []);
+						res.status(200).json(rs || []);
 					}else{
 						res.status(500).json(err);
 					}
