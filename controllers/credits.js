@@ -122,7 +122,7 @@ module.exports = function(app, apiRoutes, io){
 		function getHistory(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
+				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : "Finalizado"}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs.filter(function(credit){ return credit._payment}) || []);
 					}else{
