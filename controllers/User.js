@@ -356,7 +356,7 @@ module.exports = function(app, apiRoutes){
                         res.status(200).json({token:token, user : user});
                   });  
             }else{
-                  res.status(401).json({err: 'Usuario o clave incorrectos'});
+                  res.status(401+ ).json({err: 'Usuario o clave incorrectos'});
             }
         });
     }
@@ -464,9 +464,41 @@ module.exports = function(app, apiRoutes){
       });
   }
 
+  function activate(req, res){
+      var REQ = req.body || req.params;
+
+      UserSchema.update({ activation_token: REQ.activation_token  }, { $set: { active: true }},  function(err, user) {
+        if(!err){
+            User.findOne({ activation_token: REQ.activation_token}).exec(function(err, rs){
+               res.status(200).json(rs);
+            });
+        }
+      });
+  }
+
+
+  function new_device(req, res){
+         var data = {};
+         var REQ = req.body || req.params;
+
+        UserSchema.findOne({ _id : mongoose.Types.ObjectId(REQ.id) }, function(err, rs){
+            if(rs){
+                    rs.data.device_token = req.body.device_token;
+                    rs.save(function(err, rs){
+                        if(rs){
+                            res.status(200).json({message : "ok"});
+                        }
+                    })
+            }else{
+                res.status(404).json({ message : "user not found"})
+            }
+        });            
+  }
+
     apiRoutes.get('/user', users);
     apiRoutes.get('/user/employees', employees);
     apiRoutes.get('/user/:id', user);
+    apiRoutes.put('/new_device/:user', new_device);
     apiRoutes.get('/user/facebook/:facebookId', byfacebookId);
     apiRoutes.get('/user/documento/:documentId', byDocument);
 
