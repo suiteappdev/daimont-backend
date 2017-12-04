@@ -150,7 +150,7 @@ module.exports = function(app, apiRoutes, io){
 						if(records.length > 0){
 							res.status(200).json({ amount : Math.max(records.map(function(c){ return c.data.amount[0]}))});
 						}else{
-							res.status(200).json({})
+							res.status(200).json({amount : false});
 						}
 					}else{
 						res.status(500).json(err);

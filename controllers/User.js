@@ -13,6 +13,23 @@ module.exports = function(app, apiRoutes){
     var crypto = require("crypto");
     var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 
+    var SNS = require('sns-mobile');
+
+    // Just some environment variables configured
+    var SNS_KEY_ID = process.env['SNS_KEY_ID'],
+      SNS_ACCESS_KEY = process.env['SNS_ACCESS_KEY'],
+      ANDROID_ARN = process.env['SNS_ANDROID_ARN'];
+
+    // Object to represent the PlatformApplication we're interacting with
+    var myApp = new SNS({
+        platform: 'android',
+        region: 'eu-west-1',
+        apiVersion: '2010-03-31',
+        accessKeyId: SNS_KEY_ID,
+        secretAccessKey: SNS_ACCESS_KEY
+        platformApplicationArn: ANDROID_ARN
+    }); 
+
     var api_key = process.env.MAILGUN_API_KEY || null;
     var domain = 'daimont.com';
     var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
@@ -483,12 +500,25 @@ module.exports = function(app, apiRoutes){
 
         UserSchema.findOne({ _id : mongoose.Types.ObjectId(REQ.id) }, function(err, rs){
             if(rs){
-                    rs.data.device_token = req.body.device_token;
-                    rs.save(function(err, rs){
-                        if(rs){
-                            res.status(200).json({message : "ok"});
+                    console.log('\nRegistering user with deviceId: ' + req.body.device_token);
+
+                    if(req.body.device_type == "Android"){
+                        myApp.addUser(req.body.device_token, null, function(err, endpointArn) { 
+                            if(!err) {
+                                  rs.data.device_token = req.body.device_token;
+                                  rs.data.arn = endpointArn;
+                                  rs.data.device_type = req.body.device_type;
+
+                                  rs.save(function(err, rs){
+                                      if(rs){
+                                          res.status(200).json({ message : "device registered" });
+                                      }
+                                  })
+                            }                      
                         }
-                    })
+                  }else{
+
+                    }
             }else{
                 res.status(404).json({ message : "user not found"})
             }

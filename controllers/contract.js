@@ -58,7 +58,7 @@ module.exports = function(app, apiRoutes, io){
 								 		ciudad : rs._user.data.ciudad,
 								 		direccion : rs._user.data.direccion,
 								 		dias : rs._credit.data.days[0],
-								 		fecha_vencimiento : moment(rs._credit.data.pay_day).format('MMMM DD, YYYY'),
+								 		fecha_vencimiento : moment(new Date(rs._credit.data.pay_day)).format('MMMM DD, YYYY'),
 								 		fecha_actual :  moment(new Date(Date.now()).toLocaleString()).format('MMMM DD YYYY, h:mm:ss a'),
 								 		interes : formatCurrency(rs._credit.data.interestsDays, opts),
 								 		monto : formatCurrency(rs._credit.data.amount[0], opts),
