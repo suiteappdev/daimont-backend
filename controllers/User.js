@@ -16,7 +16,7 @@ module.exports = function(app, apiRoutes){
     var SNS = require('sns-mobile');
 
     // Just some environment variables configured
-    var SNS_KEY_ID = process.env['SNS_KEY_ID'],
+    /*var SNS_KEY_ID = process.env['SNS_KEY_ID'],
       SNS_ACCESS_KEY = process.env['SNS_ACCESS_KEY'],
       ANDROID_ARN = process.env['SNS_ANDROID_ARN'];
 
@@ -28,7 +28,7 @@ module.exports = function(app, apiRoutes){
         accessKeyId: SNS_KEY_ID,
         secretAccessKey: SNS_ACCESS_KEY
         platformApplicationArn: ANDROID_ARN
-    }); 
+    }); */
 
     var api_key = process.env.MAILGUN_API_KEY || null;
     var domain = 'daimont.com';
@@ -499,7 +499,7 @@ module.exports = function(app, apiRoutes){
          var REQ = req.body || req.params;
 
         UserSchema.findOne({ _id : mongoose.Types.ObjectId(REQ.id) }, function(err, rs){
-            if(rs){
+            /*if(rs){
                     console.log('\nRegistering user with deviceId: ' + req.body.device_token);
 
                     if(req.body.device_type == "Android"){
@@ -521,7 +521,7 @@ module.exports = function(app, apiRoutes){
                     }
             }else{
                 res.status(404).json({ message : "user not found"})
-            }
+            }*/
         });            
   }
 
