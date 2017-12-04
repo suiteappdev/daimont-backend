@@ -373,7 +373,7 @@ module.exports = function(app, apiRoutes){
                         res.status(200).json({token:token, user : user});
                   });  
             }else{
-                  res.status(401+ ).json({err: 'Usuario o clave incorrectos'});
+                  res.status(401).json({err: 'Usuario o clave incorrectos'});
             }
         });
     }
