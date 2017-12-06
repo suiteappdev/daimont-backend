@@ -198,7 +198,7 @@ module.exports = function(app, apiRoutes, io){
 					                  system_quoteDays : credit.data.system_quoteDays,
 					                  finance_quote : credit.data.finance_quote,
 					                  ivaDays : credit.data.ivaDays,
-					                  total_payment : credit.data.total_payment
+					                  total_payment : credit.data.total_payment,
 					                  status : credit.data.status
 					               }}, 'credit_resume/index.ejs');
 
