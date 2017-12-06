@@ -186,7 +186,7 @@ module.exports = function(app, apiRoutes, io){
 			model.save(function(err, credit){
 				if(credit){
 			        if(facebook_token){
-			            /*FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
+			            FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
 			                if(response && !response.error){
 			                	console.log("facebook response", response);
 
@@ -199,7 +199,7 @@ module.exports = function(app, apiRoutes, io){
 					                  finance_quote : credit.data.finance_quote,
 					                  ivaDays : credit.data.ivaDays,
 					                  total_payment : credit.data.total_payment
-					                  //status : credit.data.status
+					                  status : credit.data.status
 					               }}, 'credit_resume/index.ejs');
 
 					              var data = {
@@ -217,11 +217,10 @@ module.exports = function(app, apiRoutes, io){
 			                }else{
 			                  res.status(401).json(response);
 			                }
-			            });*/
+			            });
 			        }else{
 			        	
 			        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
-			        		console.log("credit" , rs);
 			        		if(!err){
 								var _html_credit_resume = _compiler.render({ _data : {
 		                            user : (rs._user.name + ' ' + rs._user.last_name) ,
