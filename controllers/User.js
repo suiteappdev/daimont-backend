@@ -520,11 +520,11 @@ module.exports = function(app, apiRoutes){
     apiRoutes.get('/user', users);
     apiRoutes.get('/user/employees', employees);
     apiRoutes.get('/user/:id', user);
-    apiRoutes.put('/new_device/:user', new_device);
     apiRoutes.get('/user/facebook/:facebookId', byfacebookId);
     apiRoutes.get('/user/documento/:documentId', byDocument);
 
     app.get('/api/user/exists/:email', exists);
+    app.put('/new_device/:user', new_device);
     app.post('/api/user/activate', activate);
     app.post('/api/reset/:token', reset);
     app.post('/api/password-reset/', passwordReset);
