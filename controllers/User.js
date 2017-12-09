@@ -498,30 +498,22 @@ module.exports = function(app, apiRoutes){
          var data = {};
          var REQ = req.body || req.params;
 
-        UserSchema.findOne({ _id : mongoose.Types.ObjectId(REQ.id) }, function(err, rs){
-            /*if(rs){
+        UserSchema.findOne({ _id : mongoose.Types.ObjectId(REQ.user) }, function(err, rs){
+            if(rs){
                     console.log('\nRegistering user with deviceId: ' + req.body.device_token);
 
-                    if(req.body.device_type == "Android"){
-                        myApp.addUser(req.body.device_token, null, function(err, endpointArn) { 
-                            if(!err) {
-                                  rs.data.device_token = req.body.device_token;
-                                  rs.data.arn = endpointArn;
-                                  rs.data.device_type = req.body.device_type;
+                    rs.data.device_token = req.body.device_token;
+                    rs.data.device_type = req.body.device_type;
 
-                                  rs.save(function(err, rs){
-                                      if(rs){
-                                          res.status(200).json({ message : "device registered" });
-                                      }
-                                  })
-                            }                      
+                    rs.save(function(err, rs){
+                        if(rs){
+                            res.status(200).json({ message : "device registered" });
                         }
-                  }else{
+                    })
 
-                    }
             }else{
                 res.status(404).json({ message : "user not found"})
-            }*/
+            }
         });            
   }
 
