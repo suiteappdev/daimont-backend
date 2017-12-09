@@ -524,7 +524,7 @@ module.exports = function(app, apiRoutes){
     apiRoutes.get('/user/documento/:documentId', byDocument);
 
     app.get('/api/user/exists/:email', exists);
-    app.put('/api/user/new_device/:user', new_device);
+    app.post('/api/user/new_device/:user', new_device);
     app.post('/api/user/activate', activate);
     app.post('/api/reset/:token', reset);
     app.post('/api/password-reset/', passwordReset);
