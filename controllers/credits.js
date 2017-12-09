@@ -11,6 +11,11 @@ module.exports = function(app, apiRoutes, io){
     	var user_manager = require('../models/user_manager');
     	var moment = require('moment');
    		moment.locale('es');
+   		var FCM = require('fcm-push');
+
+		var serverKey = 'AAAA-FF5Je4:APA91bF9BZA5wB7-xsYdCJditrkXdNQYgTljsVSRqlQCxo81ufIrHZf9kcNFAlnAh58FIQCnYaIIk9_ecWmC6mTT4brftR24DvGDKo3bdgxqBQG85tOwgrLbGt8_BhjQgRGJPhBJQJkw';
+		var fcm = new FCM(serverKey);
+
     	var formatCurrency = require('format-currency')
 		var opts = { format: '%v %c', code: 'COP' }
 		FB.setApiVersion("v2.2");
@@ -375,8 +380,30 @@ module.exports = function(app, apiRoutes, io){
                           if(data){
                               console.log("New deposit has been done to user " + REQ._user.email, body);
                           }
-                        });                            
+                        }); 
 
+				        User.findOne({ _id : mongoose.Types.ObjectId(REQ._user._id) }, function(err, rs){
+				            if(rs){
+									var message = {
+									    to: rs.data.device_token, // required fill with device token or topics
+									    notification: {
+									        title: 'Informacion de Préstamo',
+									        body: 'El estado de tu préstamo ha cambiado'
+									    }
+									};
+
+									fcm.send(message, function(err, response){
+									    if (err) {
+									        console.log("Something has gone wrong!");
+									    } else {
+									        console.log("Successfully sent with response: ", response);
+									    }
+									});
+
+				            }else{
+				                console.log("user not found");
+				            }
+				        });   
 					res.status(200).json(rs);
 
 				}else{
