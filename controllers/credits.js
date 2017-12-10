@@ -378,33 +378,37 @@ module.exports = function(app, apiRoutes, io){
                         mailgun.messages().send(data_credit_deposited, function (error, body) {
                           if(data){
                               console.log("New deposit has been done to user " + REQ._user.email, body);
+					        
+					        User.findOne({ "_id" : mongoose.Types.ObjectId(REQ._user._id) }, function(err, rs){
+					            if(rs){
+					            		if(rs.data.device_token){
+											var payload = {
+												to:rs.data.device_token,
+												priority: "high",
+											    notification:{
+													title: "Información de Préstamo",
+											        body: "El estado de tu préstamo ha cambiado", //yes, emojis work
+													sound: "notification",
+												    vibrate: 1,
+												    content_available: 1,
+											    }
+											}
+
+											fcm.send(payload)
+											    .then(function (response) {
+											        console.log(response)
+											 })				            			
+					            		}
+					            }else{
+					                console.log("user not found");
+					            }
+					        });  
                           }
                         }); 
-
-				        User.findOne({ _id : mongoose.Types.ObjectId(REQ._user._id) }, function(err, rs){
-				            if(rs){
-				            		if(rs.data.device_token){
-										var payload = {
-											to:rs.data.device_token,
-										    notification:{
-										        title: 'Informacion de Préstamo',
-										        body: 'El estado de tu préstamo ha cambiado' //yes, emojis work
-										    }
-										}
-
-										fcm.send(payload)
-										    .then(function (response) {
-										        console.log(response)
-										 })				            			
-				            		}
-				            }else{
-				                console.log("user not found");
-				            }
-				        });   
-					res.status(200).json(rs);
-
+ 
+						res.status(200).json(rs);
 				}else{
-					res.status(500).json(err)
+						res.status(500).json(err)
 				}
 			});
 		}
