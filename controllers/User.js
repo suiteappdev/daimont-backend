@@ -499,7 +499,7 @@ module.exports = function(app, apiRoutes){
          var REQ = req.body || req.params;
          console.log("device_token", req.body.device_token);
 
-        UserSchema.findOne({ _id : mongoose.Types.ObjectId(REQ.user) }, function(err, rs){
+         User.findOne({ _id : mongoose.Types.ObjectId(REQ.user) }).exec(function(err, rs){
             if(rs){
                     console.log('\nRegistering user with deviceId: ' + req.body.device_token + " user" + rs._id);
 
@@ -516,7 +516,7 @@ module.exports = function(app, apiRoutes){
               console.log("no found user");
                 res.status(404).json({ message : "user not found"})
             }
-        });            
+        });
   }
 
     apiRoutes.get('/user', users);
