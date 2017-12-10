@@ -500,6 +500,7 @@ module.exports = function(app, apiRoutes){
          console.log("device_token", req.body.device_token);
 
          UserSchema.findOne({ "_id" : mongoose.Types.ObjectId( req.params.user) }).exec(function(err, rs){
+          console.log("user", rs);
             if(!err){
                     console.log('\nRegistering user with deviceId: ' + req.body.device_token + " user" + rs._id);
 
