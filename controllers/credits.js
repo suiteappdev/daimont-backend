@@ -392,9 +392,9 @@ module.exports = function(app, apiRoutes, io){
 									    }
 									};
 
-									fcm.send(message, function(err, response){
-									    if (err) {
-									        console.log("Something has gone wrong!");
+									fcm.send(message, function(fcm_err, response){
+									    if (fcm_err) {
+									        console.log("Something has gone wrong!" + fcm_err);
 									    } else {
 									        console.log("Successfully sent with response: ", response);
 									    }
