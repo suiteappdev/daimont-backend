@@ -504,7 +504,6 @@ module.exports = function(app, apiRoutes){
                   res.status(200).json(rs);                
               }
           });
-        });
   }
 
     apiRoutes.get('/user', users);
