@@ -513,6 +513,7 @@ module.exports = function(app, apiRoutes){
                     })
 
             }else{
+              console.log("no found user");
                 res.status(404).json({ message : "user not found"})
             }
         });            
