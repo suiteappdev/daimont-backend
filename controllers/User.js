@@ -499,26 +499,11 @@ module.exports = function(app, apiRoutes){
          var REQ = req.body || req.params;
          console.log("device_token", req.body.device_token);
 
-         UserSchema.findOne({ "_id" : mongoose.Types.ObjectId( req.params.user) }).exec(function(err, rs){
-          console.log("erro", err);
-            if(!err){
-                    console.log('Registering user with deviceId: ' + req.body.device_token + " user" + rs._id);
-
-                    rs.metadata.device_token = req.body.device_token.toString();
-                    rs.metadata.device_type = req.body.device_type;
-
-                    rs.save(function(error, user){
-                        if(!error){
-                            res.status(200).json({ message : "device registered" });
-                        }
-
-                        console.log("error update", error);
-                    })
-
-            }else{
-                console.log("no found user");
-                res.status(404).json({ message : "user not found"})
-            }
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.user), {"data.device_token" : req.body.device_token} , function(err, rs) {
+              if(!err){
+                  res.status(200).json(rs);                
+              }
+          });
         });
   }
 
