@@ -385,7 +385,7 @@ module.exports = function(app, apiRoutes, io){
 				            if(rs){
 				            		if(rs.data.device_token){
 										var payload = {
-											registration_ids:[rs.data.device_token],
+											to:rs.data.device_token,
 										    data: {
 										        doggie: 'Cane Corso',
 										        name: 'Abel'
