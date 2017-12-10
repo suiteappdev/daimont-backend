@@ -386,10 +386,6 @@ module.exports = function(app, apiRoutes, io){
 				            		if(rs.data.device_token){
 										var payload = {
 											to:rs.data.device_token,
-										    data: {
-										        doggie: 'Cane Corso',
-										        name: 'Abel'
-										    },
 										    notification:{
 										        title: 'Informacion de Préstamo',
 										        body: 'El estado de tu préstamo ha cambiado' //yes, emojis work
