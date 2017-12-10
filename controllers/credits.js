@@ -13,7 +13,7 @@ module.exports = function(app, apiRoutes, io){
    		moment.locale('es');
    		var FCM = require('fcm-push');
 
-		var serverKey = 'AAAA-FF5Je4:APA91bF9BZA5wB7-xsYdCJditrkXdNQYgTljsVSRqlQCxo81ufIrHZf9kcNFAlnAh58FIQCnYaIIk9_ecWmC6mTT4brftR24DvGDKo3bdgxqBQG85tOwgrLbGt8_BhjQgRGJPhBJQJkw';
+		var serverKey = 'AIzaSyCOgQeNoM3X0fnKPqSPngUpQP8Bzrr5Hqs';
 		var fcm = new FCM(serverKey);
 
     	var formatCurrency = require('format-currency')
