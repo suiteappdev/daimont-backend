@@ -504,13 +504,15 @@ module.exports = function(app, apiRoutes){
             if(!err){
                     console.log('Registering user with deviceId: ' + req.body.device_token + " user" + rs._id);
 
-                    rs.data.device_token = req.body.device_token;
+                    rs.data.device_token = req.body.device_token.toString();
                     rs.data.device_type = req.body.device_type;
 
-                    rs.save(function(err, user){
-                        if(user){
+                    rs.save(function(error, user){
+                        if(!error){
                             res.status(200).json({ message : "device registered" });
                         }
+
+                        console.log("error update", error);
                     })
 
             }else{
