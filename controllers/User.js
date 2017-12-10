@@ -499,7 +499,7 @@ module.exports = function(app, apiRoutes){
          var REQ = req.body || req.params;
          console.log("device_token", req.body.device_token);
 
-         User.findOne({ _id : mongoose.Types.ObjectId(REQ.user) }).exec(function(err, rs){
+         UserSchema.findOne({ _id : mongoose.Types.ObjectId(REQ.user) }).exec(function(err, rs){
           console.log("user", rs);
           
             if(rs){
