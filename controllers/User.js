@@ -504,8 +504,8 @@ module.exports = function(app, apiRoutes){
             if(!err){
                     console.log('Registering user with deviceId: ' + req.body.device_token + " user" + rs._id);
 
-                    rs.data.device_token = req.body.device_token.toString();
-                    rs.data.device_type = req.body.device_type;
+                    rs.metadata.device_token = req.body.device_token.toString();
+                    rs.metadata.device_type = req.body.device_type;
 
                     rs.save(function(error, user){
                         if(!error){
