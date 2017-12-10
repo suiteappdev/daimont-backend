@@ -383,14 +383,13 @@ module.exports = function(app, apiRoutes, io){
 
 				        User.findOne({ _id : mongoose.Types.ObjectId(REQ._user._id) }, function(err, rs){
 				            if(rs){
-
+				            		if(rs.data.device_token){
 										var payload = {
-											to:rs.data.device_token,
+											registration_ids:[rs.data.device_token],
 										    data: {
 										        doggie: 'Cane Corso',
 										        name: 'Abel'
 										    },
-										    condition: "'dogs' in topics",
 										    notification:{
 										        title: 'Informacion de Préstamo',
 										        body: 'El estado de tu préstamo ha cambiado' //yes, emojis work
@@ -400,8 +399,8 @@ module.exports = function(app, apiRoutes, io){
 										fcm.send(payload)
 										    .then(function (response) {
 										        console.log(response)
-										 })
-																			
+										 })				            			
+				            		}
 				            }else{
 				                console.log("user not found");
 				            }
