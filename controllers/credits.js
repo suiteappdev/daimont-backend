@@ -11,10 +11,9 @@ module.exports = function(app, apiRoutes, io){
     	var user_manager = require('../models/user_manager');
     	var moment = require('moment');
    		moment.locale('es');
-   		var FCM = require('fcm-push');
 
-		var serverKey = 'AIzaSyCOgQeNoM3X0fnKPqSPngUpQP8Bzrr5Hqs';
-		var fcm = new FCM(serverKey);
+		var SimpleFcm = require('simple-fcm');
+		var fcm = new SimpleFcm('AIzaSyCOgQeNoM3X0fnKPqSPngUpQP8Bzrr5Hqs');
 
     	var formatCurrency = require('format-currency')
 		var opts = { format: '%v %c', code: 'COP' }
@@ -384,22 +383,25 @@ module.exports = function(app, apiRoutes, io){
 
 				        User.findOne({ _id : mongoose.Types.ObjectId(REQ._user._id) }, function(err, rs){
 				            if(rs){
-									var message = {
-									    to: rs.data.device_token, // required fill with device token or topics
-									    notification: {
-									        title: 'Informacion de Préstamo',
-									        body: 'El estado de tu préstamo ha cambiado'
-									    }
-									};
 
-									fcm.send(message, function(fcm_err, response){
-									    if (fcm_err) {
-									        console.log("Something has gone wrong!" + fcm_err);
-									    } else {
-									        console.log("Successfully sent with response: ", response);
-									    }
-									});
+										var payload = {
+											to:rs.data.device_token,
+										    data: {
+										        doggie: 'Cane Corso',
+										        name: 'Abel'
+										    },
+										    condition: "'dogs' in topics",
+										    notification:{
+										        title: 'Informacion de Préstamo',
+										        body: 'El estado de tu préstamo ha cambiado' //yes, emojis work
+										    }
+										}
 
+										fcm.send(payload)
+										    .then(function (response) {
+										        console.log(response)
+										 })
+																			
 				            }else{
 				                console.log("user not found");
 				            }
