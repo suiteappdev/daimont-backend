@@ -270,7 +270,7 @@ module.exports = function(app, apiRoutes, io){
 								});		      				//aqui save
 		      			}else{
 		      				console.log("isBanned");
-		      				res.status(200).json({ time_to_left : now.diff(system, 'days')});
+		      				res.status(200).json({ time_to_left : now.diff(system, 'days') == 0 ?  1 : now.diff(system, 'days')});
 		      			}
 
 					}else{
