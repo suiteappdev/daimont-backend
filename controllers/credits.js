@@ -186,6 +186,7 @@ module.exports = function(app, apiRoutes, io){
 			}
 
 			User.findOne({"_id" : mongoose.Types.ObjectId(data._user)}).exec(function(err, user){
+				console.log("user", user);
 				if(user){
 					if(user.data.banned_time){
 	 	  				var system = moment(user.data.banned_time);
@@ -277,9 +278,6 @@ module.exports = function(app, apiRoutes, io){
 					}
 				}
 			});
-
-	        
-
 		}
 
 
