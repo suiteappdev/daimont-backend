@@ -259,7 +259,7 @@ module.exports = function(app, apiRoutes){
           var REQ = req.body || req.params;
           !REQ.data || (data.data = REQ.data);
 
-
+          console.log("USER UPDATE REQ", REQ);
 
           UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ , function(err, rs) {
               if(!err){
