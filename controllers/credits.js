@@ -387,6 +387,7 @@ module.exports = function(app, apiRoutes, io){
 												priority: "high",
 											    notification:{
 													title: "Información de Préstamo",
+													icon  : "notification_icon",
 											        body: "El estado de tu préstamo ha cambiado", //yes, emojis work
 													sound: "notification",
 												    vibrate: 1,
