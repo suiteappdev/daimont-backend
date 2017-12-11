@@ -467,7 +467,33 @@ module.exports = function(app, apiRoutes, io){
 		                        };
 
 		                        mailgun.messages().send(data_credit_rejected, function (error, body) {
-		                          if(data){
+		                          if(body){
+									        User.findOne({ "_id" : mongoose.Types.ObjectId(REQ._user._id) }, function(err, rs){
+									            if(rs){
+									            		if(rs.data.device_token){
+															var payload = {
+																to:rs.data.device_token,
+																priority: "high",
+															    notification:{
+																	title: "Información de Préstamo",
+																	icon  : "notification_icon",
+															        body: "El estado de tu préstamo ha cambiado", //yes, emojis work
+																	sound: "notification",
+																    vibrate: 1,
+																    content_available: 1,
+															    }
+															}
+
+															fcm.send(payload)
+															    .then(function (response) {
+															        console.log(response)
+															 })				            			
+									            		}
+									            }else{
+									                console.log("user not found");
+									            }
+									        }); 
+									         
 		                              console.log("Deposit reject has been done to user " + credit._user.email, body);
 		                          }
 		                        });   								
