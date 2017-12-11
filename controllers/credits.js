@@ -187,10 +187,12 @@ module.exports = function(app, apiRoutes, io){
 
 			User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user)}).exec(function(err, user){
 				if(user){
-					var system = moment(user.data.banned_time);
-	      			var now = moment(new Date().toISOString());
+					if(user.data.banned_time){
+						var system = moment(user.data.banned_time);
+		      			var now = moment(new Date().toISOString());
 
-					console.log("diff", now.diff(system, 'days'));					
+						console.log("diff", now.diff(system, 'days'));	
+					}
 				}
 			});
 	        
@@ -452,11 +454,7 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
-				          /*User.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.banned': true, "data.banTime" : new Date(Date.now()}}, function(err, rs) {
-				              if(!err){
-				                  res.status(200).json(rs);                
-				              }
-				          });*/
+						User.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), { $set: {'data.banned_time': new Date()}}, function(err, rs) {});
 						sclient = app.locals._sfind(REQ._user._id ? REQ._user._id : REQ._user);
 						
 						if(sclient){
