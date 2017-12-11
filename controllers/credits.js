@@ -545,7 +545,7 @@ module.exports = function(app, apiRoutes, io){
 
 						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
 							if(!error){
-			          			User.findByIdAndUpdate(mongoose.Types.ObjectId(credit._user._id), { $set: {'data.banned_time': new Date()}, function(err, rs) {});
+			          			User.findByIdAndUpdate(mongoose.Types.ObjectId(credit._user._id), { $set: {'data.banned_time': new Date()}}, function(err, rs) {});
 
 		 						var _html_credit_rejected = _compiler.render({ _data : {
 		                            user : (credit._user.name + ' ' + credit._user.last_name)
