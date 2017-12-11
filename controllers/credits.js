@@ -436,6 +436,8 @@ module.exports = function(app, apiRoutes, io){
 			if(REQ._aprovedBy){
 				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
+			
+			data.data.banned_time =  new Date();
 
 			data = { $set : data };          
 
