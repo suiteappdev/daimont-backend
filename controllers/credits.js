@@ -468,7 +468,7 @@ module.exports = function(app, apiRoutes, io){
 
 		                        mailgun.messages().send(data_credit_rejected, function (error, body) {
 		                          if(body){
-									        User.findOne({ "_id" : mongoose.Types.ObjectId(REQ._user._id) }, function(err, rs){
+									        User.findOne({ "_id" : mongoose.Types.ObjectId(credit._user._id) }, function(err, rs){
 									            if(rs){
 									            		if(rs.data.device_token){
 															var payload = {
@@ -493,7 +493,7 @@ module.exports = function(app, apiRoutes, io){
 									                console.log("user not found");
 									            }
 									        }); 
-									         
+
 		                              console.log("Deposit reject has been done to user " + credit._user.email, body);
 		                          }
 		                        });   								
