@@ -190,6 +190,9 @@ module.exports = function(app, apiRoutes, io){
 					if(user.data.banned_time){
 	 	  				var system = moment(user.data.banned_time);
 	      				var now = moment(new Date().toISOString());
+
+	      				console.log("banned_time en dias", now.diff(system, 'days'));
+
 	      				if(now.diff(system, 'days') > 60){
 								var model = new Model(data);
 
@@ -268,6 +271,7 @@ module.exports = function(app, apiRoutes, io){
 									}
 								});
 	      				}else{
+	      					console.log("banned_time en dias else", now.diff(system, 'days'));
 							res.status(200).json({ time_to_left : now.diff(system, 'days')});
 	      				}
 					}
