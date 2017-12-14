@@ -114,6 +114,12 @@ app.locals._sfind = function(id){
   })[0]; 
 }
 
+app.locals._sfindAll = function(id){
+  return _clients.filter(function(client){
+      return client.socket.id == id || client.uid == id;
+  })[0]; 
+}
+
 
 mongoose.connection.on('open', function(ref){
     console.log('Conectado a Mongo');

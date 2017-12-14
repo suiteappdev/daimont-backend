@@ -37,7 +37,8 @@ module.exports = function(app, apiRoutes, io){
 			 Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						if(rs){
-							console.log("rs", rs);
+	        					io.emit("NEW_CREDIT_TO_ADMIN", rs._credit);
+								console.log("rs", rs);
 								var _html_credit_resume = _compiler.render({ _data : {
 		                            user : (rs._user.name + ' ' + rs._user.last_name) ,
 		                            amount : formatCurrency(rs._credit.data.amount[0], opts),
