@@ -120,14 +120,6 @@ app.locals._sfindAll = function(id){
 
 
 mongoose.connection.on('open', function(ref){
-    console.log('Conectado a Mongo');
-    require("./controllers/all")(app, apiRoutes, io); 
-    app.use("/api", apiRoutes);
-
-    http.listen(config.appPort, function(){
-        console.log("app listen on " + config.appPort);
-    }); 
-
    var server =  https.createServer(options, app).listen(8443);
    var io = require("socket.io")(server);
 
@@ -148,6 +140,15 @@ mongoose.connection.on('open', function(ref){
         console.log("connected to ROOM::", data);
       });
   });
+
+    console.log('Conectado a Mongo');
+    require("./controllers/all")(app, apiRoutes, io); 
+    app.use("/api", apiRoutes);
+
+    http.listen(config.appPort, function(){
+        console.log("app listen on " + config.appPort);
+    }); 
+
 });
 
 
