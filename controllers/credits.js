@@ -818,11 +818,34 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+		function finalizado(req, res){
+			var REQ = req.params; 
+			try{
+				Model.find({"data.hidden" : false, "data.status" : 'Finalizado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
 
 
 
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 
+		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
+		apiRoutes.get("/" + _url_alias +"/finalizado", finalizado);
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/pagado", pagado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
