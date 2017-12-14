@@ -115,9 +115,7 @@ app.locals._sfind = function(id){
 }
 
 app.locals._sfindAll = function(id){
-  return _clients.filter(function(client){
-      return client.socket.id == id || client.uid == id;
-  })[0]; 
+  return _clients; 
 }
 
 
@@ -135,6 +133,9 @@ mongoose.connection.on('open', function(ref){
 
   io.on('connection', function(socket){
       socket.on("MAIN", function(data){
+        socket.join('all');
+
+// then simply use to or in (they are the same) when broadcasting or emitting (server-side)
         _client = app.locals._sfind(data);
 
         if(_client){
