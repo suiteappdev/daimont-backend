@@ -307,7 +307,7 @@ module.exports = function(app, apiRoutes){
         user_manager.remove(req.params.id, function(err, user){
             if(!err){
                 user.remove();
-                res.status(200)
+                res.status(200).json(user);
                 res.end();
             }
         })

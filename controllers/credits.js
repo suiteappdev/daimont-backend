@@ -182,7 +182,7 @@ module.exports = function(app, apiRoutes, io){
 
 			if(REQ.metadata._provider == 'FACEBOOK'){
 	        	var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
-				console.log("fbt", facebook_token)
+				console.log("facebook_token", facebook_token)
 			}
 
 			User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user)}).exec(function(err, user){
