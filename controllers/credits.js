@@ -240,44 +240,8 @@ module.exports = function(app, apiRoutes, io){
 
 					}else{
 						var model = new Model(data);
-
 						model.save(function(err, credit){
 							if(credit){
-						        if(facebook_token){
-						            /*FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
-						                if(response && !response.error){
-						                	console.log("facebook response", response);
-
-								              var _html = _compiler.render({ _data : {
-								              	  user : credit.first_name,
-								                  amount : credit.data.amount[0],
-								                  interestsDays : credit.data.interestsDays,
-								                  pay_day : credit.data.pay_day,
-								                  system_quoteDays : credit.data.system_quoteDays,
-								                  finance_quote : credit.data.finance_quote,
-								                  ivaDays : credit.data.ivaDays,
-								                  total_payment : credit.data.total_payment
-								                  //status : credit.data.status
-								               }}, 'credit_resume/index.ejs');
-
-								              var data = {
-								                from: ' Daimont <noreply@daimont.com>',
-								                to: response.email,
-								                subject: 'Resumen de credito',
-								                text: 'Detalle y estado de su credito actual',
-								                html: _html
-								              };
-
-								              mailgun.messages().send(data, function (error, body) {
-								                console.log("mailgun body", body);
-								                console.log("mailgun errr", error);
-								              });
-						                }else{
-						                  res.status(401).json(response);
-						                }
-						            });*/
-						        }else{
-						        	
 						        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
 						        		console.log("credit" , rs);
 						        		if(!err){
@@ -309,9 +273,8 @@ module.exports = function(app, apiRoutes, io){
 					                        }); 			        			
 						        		}
 						        	});
-						        }
-
-						    	res.status(200).json(credit);
+						    		
+						    		res.status(200).json(credit);
 							}else{
 								res.status(500).json(err);
 							}
@@ -319,8 +282,6 @@ module.exports = function(app, apiRoutes, io){
 					}
 				}
 			});
-	        
-
 		}
 
 
