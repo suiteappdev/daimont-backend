@@ -196,7 +196,6 @@ module.exports = function(app, apiRoutes, io){
 
 								model.save(function(err, credit){
 									if(credit){
-								        if(facebook_token){
 								        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
 								        		console.log("credit" , rs);
 								        		if(!err){
@@ -228,44 +227,8 @@ module.exports = function(app, apiRoutes, io){
 							                        }); 			        			
 								        		}
 								        	});
-								        }
-								        
-								    	res.status(200).json(credit);
-								        }else{
-								        	
-								        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
-								        		console.log("credit" , rs);
-								        		if(!err){
-													var _html_credit_resume = _compiler.render({ _data : {
-							                            user : (rs._user.name + ' ' + rs._user.last_name) ,
-							                            amount : formatCurrency(rs.data.amount[0], opts),
-							                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
-							                            pay_day : moment(rs.data.pay_day).format('MMMM DD, YYYY'),
-							                            system_quoteDays : formatCurrency(rs.data.system_quoteDays, opts),
-							                            finance_quote : formatCurrency(rs.data.finance_quote, opts),
-							                            ivaDays : formatCurrency(rs.data.ivaDays, opts),
-							                            total_payment : formatCurrency(rs.data.total_payment, opts),
-							                            status : rs.data.status
-							                         }}, 'credit_resume/index.ejs');
 
-							                        var data_credit_resume = {
-							                          	from: ' Daimont <noreply@daimont.com>',
-							                          	to: rs._user.email,
-							                          	subject: 'RESUMEN DEL CRÉDITO',
-							                          	text: 'Estado y resumen de su actual credito',
-							                          	html: _html_credit_resume,
-						                    			attachment : path.join(process.env.PWD , "docs", "contrato.pdf")
-							                        };
-
-							                        mailgun.messages().send(data_credit_resume, function (error, body) {
-							                          if(data){
-							                              console.log("New credit request has been sended to", body);
-							                          }
-							                        }); 			        			
-								        		}
-								        	});
-								        }
-								    	res.status(200).json(credit);
+								    	    res.status(200).json(credit);
 									}else{
 										res.status(500).json(err);
 									}
@@ -347,7 +310,7 @@ module.exports = function(app, apiRoutes, io){
 						        		}
 						        	});
 						        }
-						        
+
 						    	res.status(200).json(credit);
 							}else{
 								res.status(500).json(err);
