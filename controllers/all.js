@@ -29,7 +29,7 @@ module.exports = exports = function(app, apiRoutes, io){
 		});
 	});*/
 
-	app.get('/restart', function(req, res){
+	/*app.get('/restart', function(req, res){
 		User.remove({ type :"CLIENT"}).exec(function(err, rs){});
 		Credits.remove().exec(function(err, rs){});
 		Payments.remove().exec(function(err, rs){});
@@ -50,9 +50,9 @@ module.exports = exports = function(app, apiRoutes, io){
 		admin.save(function(err, user){
 			res.status(200).json(user);
 		});
-	});
+	});*/
 
-	app.get('/backup', function(req, res){
+	/*app.get('/backup', function(req, res){
 			var filename =  new Date(Date.now()) + '-backup.zip';
 			backup({
 					uri: config.dburl, 
@@ -75,7 +75,7 @@ module.exports = exports = function(app, apiRoutes, io){
 			    		}
 			  		}
 			});
-	});
+	});*/
 
 	console.log(files)
 
