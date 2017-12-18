@@ -42,7 +42,7 @@ module.exports = function(app, apiRoutes){
         user_manager.create(data, function(err, user){
           
           if(err){
-            console.log("error", error);
+            console.log("error", err);
               res.status(409).json({code : 11000});
               return;
           }
