@@ -16,7 +16,7 @@ var _Schema = new Schema({
 	  name : { type : String, trim : true,  lowercase : true},
 	  last_name : { type : String, trim : true, lowercase : true},
 	  full_name : { type : String, trim : true, lowercase : true},
-      email : { type : String, trim : true , unique : true, lowercase:true},
+      email : { type : String, trim : true , lowercase:true},
 	  cc : { type : String, trim : true , unique : true, lowercase:true},
       phone : {type: String, required : false},
 	  data:{ type : Object},
