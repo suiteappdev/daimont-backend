@@ -536,6 +536,7 @@ module.exports = function(app, apiRoutes){
 
       User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ.user)}).exec(function(err, user){
         if(!err){
+          console.log("User", user)
           if(user.data.banned_time){
                 var system = moment(user.data.banned_time);
                 var now = moment(new Date().toISOString());
