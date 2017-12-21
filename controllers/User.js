@@ -534,7 +534,7 @@ module.exports = function(app, apiRoutes){
     function banned_time (req, res) {
       var REQ = req.body || req.params;
 
-      User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ.user)}).exec(function(err, user){
+      User.findOne({ _id  : mongoose.Types.ObjectId(req.params.user)}).exec(function(err, user){
         if(!err){
           console.log("User", user)
           if(user.data.banned_time){
