@@ -415,7 +415,9 @@ module.exports = function(app, apiRoutes, io){
 						}
  						
  						var _html_credit_approved = _compiler.render({ _data : {
-                            user : (REQ._user.name + ' ' + REQ._user.last_name)
+                            user : (REQ._user.name + ' ' + REQ._user.last_name),
+                            monto : formatCurrency(REQ.data.amount[0], opts),
+                            pagare : REQ.data.id
                          }}, 'credit_approved/credit_approved.ejs');
 
                         var data_credit_approved = {
@@ -450,6 +452,7 @@ module.exports = function(app, apiRoutes, io){
 				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
 
+			data.data.deposited_time_server = new Date(Date.now());
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
