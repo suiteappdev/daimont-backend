@@ -563,7 +563,7 @@ module.exports = function(app, apiRoutes){
     app.post("/api/login", login);
     
     apiRoutes.put("/user/:id", update);
-    apiRoutes.put("/user/banned_time/:user", banned_time);
+    apiRoutes.get("/user/banned_time/:user", banned_time);
     apiRoutes.put("/user/updated/:id", updatedProfile);
     apiRoutes.put("/user/:id/update-cupon", update_cupon);
     apiRoutes.delete("/user/:id", remove);
