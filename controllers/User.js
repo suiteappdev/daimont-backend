@@ -535,13 +535,13 @@ module.exports = function(app, apiRoutes){
       var REQ = req.body || req.params;
 
       User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ.user)}).exec(function(err, user){
-        if(user){
-          console.log("USER", user);
-           if(user.data.banned_time){
+        if(!err){
+          if(user.data.banned_time){
                 var system = moment(user.data.banned_time);
                 var now = moment(new Date().toISOString());
-
                 res.status(200).json({ time_to_left : now.diff(system, 'days') == 0 ?  1 : now.diff(system, 'days')});
+          }else{
+             res.status(200).json({ allowed : true });
           }
         }
       });
@@ -552,6 +552,7 @@ module.exports = function(app, apiRoutes){
     apiRoutes.get('/user/:id', user);
     apiRoutes.get('/user/facebook/:facebookId', byfacebookId);
     apiRoutes.get('/user/documento/:documentId', byDocument);
+    apiRoutes.get("/user/banned_time/:user", banned_time);
 
     app.get('/api/user/exists/:email', exists);
     app.post('/api/user/new_device/:user', new_device);
@@ -565,7 +566,6 @@ module.exports = function(app, apiRoutes){
     app.post("/api/login", login);
     
     apiRoutes.put("/user/:id", update);
-    apiRoutes.get("/user/banned_time/:user", banned_time);
     apiRoutes.put("/user/updated/:id", updatedProfile);
     apiRoutes.put("/user/:id/update-cupon", update_cupon);
     apiRoutes.delete("/user/:id", remove);
