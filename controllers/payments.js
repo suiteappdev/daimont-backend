@@ -68,16 +68,16 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var where;
 
-			 Model.find({}).populate("_user").populate("_credit").exec(function(err, rs){
+			 Model.find().populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs);
+						res.status(200).json(rs.filter(function(payment){
+							return payment._credit.data.status == 'Finalizado';
+						}));
 					}else{
 						res.json(err);
 					}
 			 });
 		}
-
-
 
 		function getById(req, res){
 			var REQ = req.params; 
