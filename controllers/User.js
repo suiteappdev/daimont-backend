@@ -530,6 +530,21 @@ module.exports = function(app, apiRoutes){
           });
   }
 
+
+    function banned_time (req, res) {
+      var REQ = req.body || req.params;
+      User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user)}).exec(function(err, user){
+        if(user){
+          if(user.data.banned_time){
+            var system = moment(user.data.banned_time);
+                var now = moment(new Date().toISOString());
+
+                res.status(200).json({ time_to_left : now.diff(system, 'days') == 0 ?  1 : now.diff(system, 'days')});
+          }
+        }
+      });
+    }
+
     apiRoutes.get('/user', users);
     apiRoutes.get('/user/employees', employees);
     apiRoutes.get('/user/:id', user);
@@ -548,6 +563,7 @@ module.exports = function(app, apiRoutes){
     app.post("/api/login", login);
     
     apiRoutes.put("/user/:id", update);
+    apiRoutes.put("/user/banned_time/:user", banned_time);
     apiRoutes.put("/user/updated/:id", updatedProfile);
     apiRoutes.put("/user/:id/update-cupon", update_cupon);
     apiRoutes.delete("/user/:id", remove);

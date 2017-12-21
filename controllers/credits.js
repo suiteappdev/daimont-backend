@@ -848,9 +848,6 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
-
-
-
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
