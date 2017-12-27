@@ -84,11 +84,11 @@ module.exports = function(app, apiRoutes, io){
 								 	console.log("pdf end")
 					              	var data = {
 					                	from: ' Daimont <noreply@daimont.com>',
-						                to: rs._user.email,
+						                to: rs._user.email + ', ' + process.env.ADMIN_EMAIL,
 						                bcc:process.env.ADMIN_EMAIL,
 						                subject: 'CONTRATO FIRMADO',
 						                html : _html_credit_resume,
-						                text: 'Por favor revisa el contrato adjunto donde se describe todos los terminos entre las partes.',
+						                text: 'Por favor revisa el contrato adjunto donde se describe todos los términos entre las partes.',
 						                attachment : path.join(process.env.PWD , "contrato_firmado.pdf")
 						              };
 
