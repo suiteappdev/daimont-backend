@@ -84,7 +84,7 @@ module.exports = function(app, apiRoutes, io){
 								 	console.log("pdf end")
 					              	var data = {
 					                	from: ' Daimont <noreply@daimont.com>',
-						                to: rs._user.email + ', ' + process.env.ADMIN_EMAIL,
+						                to: rs._user.email,
 						                bcc:process.env.ADMIN_EMAIL,
 						                subject: 'CONTRATO FIRMADO',
 						                html : _html_credit_resume,
