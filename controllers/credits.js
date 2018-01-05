@@ -155,7 +155,7 @@ module.exports = function(app, apiRoutes, io){
 
 						if(records.length > 0){
 							console.log("records > 0", records);
-
+							console.log("maximos amount", records.map(function(c){ return c.data.amount[0]}));
 							res.status(200).json({ amount : Math.max(records.map(function(c){ return c.data.amount[0]}))});
 						}else{
 							res.status(200).json({amount : false});
