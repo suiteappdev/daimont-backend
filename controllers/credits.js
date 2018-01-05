@@ -520,9 +520,13 @@ module.exports = function(app, apiRoutes, io){
 		function all (req, res){
 			var REQ = req.params; 
 			
-			 Model.find({}).populate("_user").populate("_payment").exec(function(err, rs){
+			 Model.find().populate("_user").populate("_payment").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs);
+						var result = rs.filter(function(credit){
+							return credit._user.data.updated;
+						});
+
+						res.status(200).json(result);
 					}else{
 						res.status(500).json(err);
 					}
