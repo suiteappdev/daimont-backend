@@ -523,7 +523,7 @@ module.exports = function(app, apiRoutes, io){
 			 Model.find().populate("_user").populate("_payment").exec(function(err, rs){
 					if(!err){
 						var result = rs.filter(function(credit){
-							if(credit._user.data){
+							if(credit._user && credit._user.data){
 								return credit._user.data.updated;
 							}
 						});
