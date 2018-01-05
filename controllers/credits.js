@@ -151,12 +151,9 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						var records = rs.filter(function(credit){ return credit._payment});
-						console.log("records", records);
-
+						
 						if(records.length > 0){
-							console.log("records > 0", records);
-							console.log("maximos amount", records.map(function(c){ return c.data.amount[0]}));
-							res.status(200).json({ amount : Math.max(records.map(function(c){ return c.data.amount[0]}))});
+							res.status(200).json({ amount : Math.max.apply(null, records.map(function(c){ return c.data.amount[0]}))});
 						}else{
 							res.status(200).json({amount : false});
 						}
