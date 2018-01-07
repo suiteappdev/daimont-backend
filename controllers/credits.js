@@ -150,13 +150,21 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.find({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
-						var records = rs.filter(function(credit){ return credit._payment});
-						
-						if(records.length > 0){
-							res.status(200).json({ amount : Math.max.apply(null, records.map(function(c){ return c.data.amount[0]}))});
-						}else{
-							res.status(200).json({amount : false});
-						}
+							Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : "Finalizado"}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, credit){
+								if(credit){
+									var records = rs.filter(function(credit){ return credit._payment});
+									
+									if(records.length > 0){
+										res.status(200).json({ amount : Math.max.apply(null, records.map(function(c){ return c.data.amount[0]})), credit: credit});
+									}else{
+										res.status(200).json({amount : false});
+									}
+								}else{
+									res.status(404).json(err);
+								}
+							});	
+
+
 					}else{
 						res.status(500).json(err);
 					}
