@@ -863,10 +863,33 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+		function finalizado_count(req, res){
+			var REQ = req.params; 
+			try{
+				Model.count({"data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+					if(!err){
+						res.status(200).json({ count : count});
+					}else{
+						res.status(500).json(err);
+					}
+				})
+			}catch(error){
+				Model.count({"data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				})
+			}
+		}
+
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
+		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/finalizado", finalizado);
+		apiRoutes.get("/" + _url_alias +"/finalizado/count", finalizado_count);
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/pagado", pagado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
