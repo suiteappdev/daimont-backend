@@ -866,7 +866,7 @@ module.exports = function(app, apiRoutes, io){
 		function finalizado_count(req, res){
 			var REQ = req.params; 
 			try{
-				Model.count({"data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+				Model.count({ _user: mongoose.Types.ObjectId(req.params.user), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 					if(!err){
 						res.status(200).json({ count : count});
 					}else{
@@ -874,7 +874,7 @@ module.exports = function(app, apiRoutes, io){
 					}
 				})
 			}catch(error){
-				Model.count({"data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+				Model.count({ _user: mongoose.Types.ObjectId(req.params.user), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -889,7 +889,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/finalizado", finalizado);
-		apiRoutes.get("/" + _url_alias +"/finalizado/count", finalizado_count);
+		apiRoutes.get("/" + _url_alias +"/finalizado/:user/count", finalizado_count);
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/pagado", pagado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
