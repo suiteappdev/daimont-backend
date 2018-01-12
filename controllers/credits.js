@@ -693,12 +693,14 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 
 						var credits  = rs.map(function(credit){
+
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 								if(!err){
 										credit.data.count = count || 0;
-										return credit;
 								}
 							})
+
+							return credit;
 						});
 
 						res.status(200).json(credits || []);
