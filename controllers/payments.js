@@ -114,7 +114,10 @@ module.exports = function(app, apiRoutes, io){
 			
 			model.save(function(err, payment){
 				if(payment){
-					io.to('all').emit('NEW_PAYMENT_TO_ADMIN', payment);
+					Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").populate("_credit").exec(function(err, rs){
+						io.to('all').emit('NEW_PAYMENT_TO_ADMIN', rs);
+					});
+
 			    	res.status(200).json(payment);
 
 		            Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").populate("_credit").exec(function(err, data){
