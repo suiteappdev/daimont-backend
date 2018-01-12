@@ -695,8 +695,7 @@ module.exports = function(app, apiRoutes, io){
 						var credits  = rs.map(function(credit){
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 								if(!err){
-										credit.data.count = count;
-
+										credit.data.count = count || 0;
 										return credit;
 								}
 							})
