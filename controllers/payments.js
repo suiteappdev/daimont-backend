@@ -157,7 +157,6 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update( where , data , function(err, rs){
 				if(rs){
-					io.to('all').emit('NEW_PAYMENT_UPDATED_TO_ADMIN', data);
 					res.status(200).json(rs);
 				}else{
 					res.status(500).json(err)
