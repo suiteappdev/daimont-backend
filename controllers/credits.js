@@ -691,7 +691,19 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.find({"data.hidden" : false, "data.status" : 'Firmado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
+
+						var credits  = rs.filter(function(credit){
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count;
+
+										return credit;
+								}
+							})
+						});
+
 						res.status(200).json(rs || []);
+
 					}else{
 						res.status(500).json(err);
 					}
