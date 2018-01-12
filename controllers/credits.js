@@ -1,4 +1,5 @@
 module.exports = function(app, apiRoutes, io){
+		var async = require('async');
 		var _entity ="credits";
 		var _url_alias = "credits";
 		var path = require("path");
@@ -692,18 +693,17 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({"data.hidden" : false, "data.status" : 'Firmado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 
-						var credits  = rs.map(function(credit){
-
+						async.map(rs, function (credit, next) {
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 								if(!err){
 										credit.data.count = count || 0;
+										next(err, credit);
 								}
-							})
-
-							return credit;
+							});
+						},
+						function (err, result) {
+						 	res.status(200).json(result || []);
 						});
-
-						res.status(200).json(credits || []);
 
 					}else{
 						res.status(500).json(err);
