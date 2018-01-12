@@ -114,10 +114,10 @@ module.exports = function(app, apiRoutes, io){
 			
 			model.save(function(err, payment){
 				if(payment){
+					io.to('all').emit('NEW_PAYMENT_TO_ADMIN', payment);
 			    	res.status(200).json(payment);
 
 		            Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").populate("_credit").exec(function(err, data){
-							 console.log("pago", data)
 							 var _html = _compiler.render(
 									{ _data : { name : data._user.name, last_name : data._user.last_name, payment_url: config.base_url_pro + "payments"}}, 'payment/new_payment_to_admin.ejs');
 
