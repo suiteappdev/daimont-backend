@@ -894,7 +894,7 @@ module.exports = function(app, apiRoutes, io){
 		function finalizado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "data.status" : 'Finalizado'}).populate("_user").populate("_payment").populate("_contract").populate("_approvedby").sort("_payment.createdAt", -1).exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Finalizado'}).populate("_user").populate({ path: '"_payment"', options: { sort: { 'createdAt': -1 } } }).populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
