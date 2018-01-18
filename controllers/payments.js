@@ -71,7 +71,7 @@ module.exports = function(app, apiRoutes, io){
 			 Model.find({}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs.filter(function(payment){
-							if(payment._credit.data){
+							if(payment._credit && payment._credit.data){
 									return payment._credit.data.status != 'Finalizado';
 							}
 						}));
