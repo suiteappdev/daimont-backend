@@ -783,7 +783,7 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.find({"data.hidden" : false, "data.status" : 'Pendiente').sort("-createdAt").populate("_user").populate("_payment").populate("_contract").lean().exec(function(err, rs){
 					if(!err){
-						var rs = rs.filter(function(credit){
+						var result = rs.filter(function(credit){
 							if(credit._user && credit._user.data){
 								return credit._user.data.updated;
 							}
