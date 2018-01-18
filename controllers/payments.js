@@ -68,7 +68,7 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var where;
 
-			 Model.find({}).populate("_user").populate("_credit").exec(function(err, rs){
+			 Model.find({ "data.invalid_payment" : false }).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs.filter(function(payment){
 							return payment._credit.data.status != 'Finalizado';
