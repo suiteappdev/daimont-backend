@@ -52,7 +52,7 @@ module.exports = function(app, apiRoutes, io){
 			var where;
 
 			if(req.headers['x-daimont-user']){
-				where = { "metadata._author" :  mongoose.Types.ObjectId.isValid(req.headers['x-daimont-user']) ? mongoose.Types.ObjectId(req.headers['x-daimont-user']) :req.headers['x-daimont-user'] , "data.hidden" : false, "data.invalid_payment" : false};
+				where = { "metadata._author" :  mongoose.Types.ObjectId.isValid(req.headers['x-daimont-user']) ? mongoose.Types.ObjectId(req.headers['x-daimont-user']) :req.headers['x-daimont-user'] , "data.hidden" : false};
 			}
 
 			 Model.find( where || {} ).populate("_user").populate("_credit").exec(function(err, rs){
@@ -68,7 +68,7 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var where;
 
-			 Model.find({ "data.invalid_payment" : false }).populate("_user").populate("_credit").exec(function(err, rs){
+			 Model.find({}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs.filter(function(payment){
 							return payment._credit.data.status != 'Finalizado';
