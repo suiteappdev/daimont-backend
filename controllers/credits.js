@@ -570,7 +570,7 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data); 
 
 			data.data.hidden = true;
-			
+
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
@@ -781,9 +781,15 @@ module.exports = function(app, apiRoutes, io){
  		function pendiente(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "data.status" : 'Pendiente'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").lean().exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Pendiente').sort("-createdAt").populate("_user").populate("_payment").populate("_contract").lean().exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs || []);
+						var rs = rs.filter(function(credit){
+							if(credit._user && credit._user.data){
+								return credit._user.data.updated;
+							}
+						});
+
+						res.status(200).json(result || []);
 					}else{
 						res.status(500).json(err);
 					}
