@@ -563,6 +563,25 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function nulled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+
+			data.data.hidden = true;
+			
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
 		function all (req, res){
 			var REQ = req.params; 
 			
@@ -661,7 +680,85 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function rejected(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
 
+			!REQ.data || (data.data = REQ.data); 
+			data.data.status = 'Rechazado';
+			
+			if(REQ._aprovedBy){
+				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
+			}
+
+			data.data.banned_time =  new Date();
+
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+						User.findByIdAndUpdate(mongoose.Types.ObjectId(REQ._user._id ? REQ._user._id : REQ._user), { $set: {'data.banned_time': new Date()}}, function(err, rs) {});
+						sclient = app.locals._sfind(REQ._user._id ? REQ._user._id : REQ._user);
+						
+						if(sclient){
+        					sclient.socket.emit("CREDIT_UPDATED", data);
+						}
+
+						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
+							if(!error){
+		 						var _html_credit_rejected = _compiler.render({ _data : {
+		                            user : (credit._user.name + ' ' + credit._user.last_name)
+		                         }}, 'rejected/rejected.ejs');
+
+		                        var data_credit_rejected = {
+		                          from: ' Daimont <noreply@daimont.com>',
+		                          to: credit._user.email,
+		                          subject: 'RECHAZO DE PRÉSTAMO',
+		                          text: (credit._user.name + ' ' + credit._user.last_name) + ' Lamentamos informarle que por motivos financieros su crédito no ha sido aprobado. Sírvase realizar su solicitud nuevamente dentro de 60 días hábiles.',
+		                          html: _html_credit_rejected
+		                        };
+
+		                        mailgun.messages().send(data_credit_rejected, function (error, body) {
+		                          if(body){
+									        User.findOne({ "_id" : mongoose.Types.ObjectId(credit._user._id) }, function(err, rs){
+									            if(rs){
+									            		if(rs.data.device_token){
+															var payload = {
+																to:rs.data.device_token,
+																priority: "high",
+															    notification:{
+																	title: "Información de Préstamo",
+																	icon  : "notification_icon",
+															        body: "El estado de tu préstamo ha cambiado", //yes, emojis work
+																	sound: "notification",
+																    vibrate: 1,
+																    content_available: 1,
+															    }
+															}
+
+															fcm.send(payload)
+															    .then(function (response) {
+															        console.log(response)
+															 })				            			
+									            		}
+									            }else{
+									                console.log("user not found");
+									            }
+									        }); 
+
+		                              console.log("Deposit reject has been done to user " + credit._user.email, body);
+		                          }
+		                        });   								
+							}
+						});
+                         
+					res.status(200).json(rs);
+
+				}else{
+					res.status(500).json(err)
+				}
+			});
+		}
 
 		function remove(req, res){
 			var where = {} ;
@@ -959,6 +1056,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/unlock/:id", unlock);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
+		apiRoutes.put("/" + _url_alias + "/nulled/:id", nulled);
 		apiRoutes.put("/" + _url_alias + "/deposited/:id", deposit);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 
