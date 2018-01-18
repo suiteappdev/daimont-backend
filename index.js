@@ -121,6 +121,7 @@ app.locals._sfindAll = function(id){
 
 mongoose.connection.on('open', function(ref){
    var server =  https.createServer(options, app).listen(8443);
+   server.keepAliveTimeout = 60000 * 2;
    var io = require("socket.io")(server);
 
   io.on('connection', function(socket){
