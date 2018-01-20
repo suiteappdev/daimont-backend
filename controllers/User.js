@@ -227,17 +227,6 @@ module.exports = function(app, apiRoutes){
         });
     }
 
-    function allow_cupon(req, res){
-          var REQ = req.body || req.params;
-
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.cupon_updated': false }}, function(err, rs) {
-              if(!err){
-                  res.status(200).json(rs);                
-              }
-          });
-    }
-
-
     function update(req, res){
          var data = {};
          var REQ = req.body || req.params;
@@ -581,7 +570,6 @@ module.exports = function(app, apiRoutes){
     apiRoutes.put("/user/:id", update);
     apiRoutes.put("/user/updated/:id", updatedProfile);
     apiRoutes.put("/user/:id/update-cupon", update_cupon);
-    apiRoutes.post("/user/:id/allow_cupon", allow_cupon);
     apiRoutes.delete("/user/:id", remove);
 
     return this;
