@@ -227,6 +227,16 @@ module.exports = function(app, apiRoutes){
         });
     }
 
+    function allow_cupon(req, res){
+          var REQ = req.body || req.params;
+
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.cupon_updated': false }}, function(err, rs) {
+              if(!err){
+                  res.status(200).json(rs);                
+              }
+          });
+    }
+
 
     function update(req, res){
          var data = {};
@@ -304,15 +314,7 @@ module.exports = function(app, apiRoutes){
 
 
 
-    function allow_cupon(req, res){
-          var REQ = req.body || req.params;
 
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.cupon_updated': false }}, function(err, rs) {
-              if(!err){
-                  res.status(200).json(rs);                
-              }
-          });
-    }
 
     function remove(req, res){
         user_manager.remove(req.params.id, function(err, user){
