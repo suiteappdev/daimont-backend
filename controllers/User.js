@@ -267,6 +267,41 @@ module.exports = function(app, apiRoutes){
           });
     }
 
+    function update_cupon(req, res){
+          var REQ = req.body || req.params;
+
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$set: {'data.cupon': REQ.cupon }}, function(err, rs) {
+              if(!err){
+                    User.findOne({ "_id" : mongoose.Types.ObjectId(req.params.id) }, function(err, rs){
+                        if(rs){
+                            if(rs.data.device_token){
+                              var payload = {
+                                  to:rs.data.device_token,
+                                  priority: "high",
+                                  notification:{
+                                  title: "Cupon actualizado",
+                                  icon  : "notification_icon",
+                                  body: "Tu cupon maximo de prestamo ha cambiado", //yes, emojis work
+                                  sound: "notification",
+                                    vibrate: 1,
+                                    content_available: 1,
+                                  }
+                              }
+
+                              fcm.send(payload)
+                                  .then(function (response) {
+                                      console.log(response)
+                               })                         
+                            }
+                        }else{
+                            console.log("user not found");
+                        }
+                    }); 
+                  res.status(200).json(rs);                
+              }
+          });
+    }
+
 
 
     function allow_cupon(req, res){
