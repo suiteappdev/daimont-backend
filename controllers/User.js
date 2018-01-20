@@ -581,7 +581,7 @@ module.exports = function(app, apiRoutes){
     apiRoutes.put("/user/:id", update);
     apiRoutes.put("/user/updated/:id", updatedProfile);
     apiRoutes.put("/user/:id/update-cupon", update_cupon);
-    apiRoutes.put("/user/:id/allow_cupon", allow_cupon);
+    apiRoutes.post("/user/:id/allow_cupon", allow_cupon);
     apiRoutes.delete("/user/:id", remove);
 
     return this;
