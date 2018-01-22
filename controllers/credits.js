@@ -1087,7 +1087,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 		apiRoutes.put("/" + _url_alias + "/nulled/:id", nulled);
-		apiRoutes.put("/" + _url_alias + "/viewed/:id", nulled);
+		apiRoutes.put("/" + _url_alias + "/viewed/:id", viewed);
 		apiRoutes.put("/" + _url_alias + "/deposited/:id", deposit);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 
