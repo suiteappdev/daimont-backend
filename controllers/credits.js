@@ -593,11 +593,9 @@ module.exports = function(app, apiRoutes, io){
 
 			!REQ.data || (data.data = REQ.data); 
 
-			data.data.viewed = true;
-
 			data = { $set : data };          
-
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+ 
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { "data.viewed" : true } , function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
