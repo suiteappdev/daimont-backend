@@ -611,7 +611,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						var result = rs.filter(function(credit){
 							if(credit._user && credit._user.data){
-								return credit._user.data.updated && (credit._user.data.hidden == false);
+								return credit._user.data.updated && (credit.data.hidden == false);
 							}
 						});
 
