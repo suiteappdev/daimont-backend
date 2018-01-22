@@ -574,7 +574,7 @@ module.exports = function(app, apiRoutes, io){
 
 			!REQ.data || (data.data = REQ.data); 
 
-			data.data.hidden = true;
+			data.data.status = "Anulado";
 
 			data = { $set : data };          
 
