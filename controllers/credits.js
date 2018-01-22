@@ -587,7 +587,7 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
-		function nulled(req, res){
+		function viewed(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
 
