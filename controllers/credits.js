@@ -587,6 +587,25 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function nulled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+
+			data.data.viewed = true;
+
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
 		function all (req, res){
 			var REQ = req.params; 
 			
@@ -1068,6 +1087,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 		apiRoutes.put("/" + _url_alias + "/nulled/:id", nulled);
+		apiRoutes.put("/" + _url_alias + "/viewed/:id", nulled);
 		apiRoutes.put("/" + _url_alias + "/deposited/:id", deposit);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 
