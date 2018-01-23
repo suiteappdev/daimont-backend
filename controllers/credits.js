@@ -59,14 +59,15 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : { $ne : 'Finalizado'}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(rs){
-						
 						if((rs.data.status == 'Pendiente') && (moment(rs.data.pay_day).isBefore(moment(new Date(Date.now()))))){
-        						res.status(200).json({ expired_request : true, id: rs.data.id});
+								Model.update({ _id : mongoose.Types.ObjectId(rs._id) } , {"data.hidden" : true} , function(err, creditExpired){
+        							res.status(200).json({ expired_request : true, id: rs.data.id});
+								});
 						}else{
 							rs.data.server_date = new Date(Date.now());
         					res.status(200).json(rs || []);
 						}
-						
+
 					}else{
 						res.status(404).json(err);
 					}
