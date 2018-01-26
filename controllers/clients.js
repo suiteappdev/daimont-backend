@@ -38,7 +38,7 @@ module.exports = function(app, apiRoutes){
     }
 
     function clients(req, res){
-        UserSchema.find().exec(function(err, users){
+        UserSchema.find({"data.updated" : true}).exec(function(err, users){
             if(!err){
                 res.send(users);
             }
