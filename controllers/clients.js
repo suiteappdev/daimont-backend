@@ -2,7 +2,7 @@ module.exports = function(app, apiRoutes){
     var mongoose = require('mongoose');
     var user_manager = require('../models/user_manager');
     var path = require("path");
-    var credit = require('../models/credits');
+    var Credits = require('../models/credits');
     var config = require(process.env.PWD + '/config.js');
     var moment = require('moment');
     moment.locale('es');
@@ -15,9 +15,6 @@ module.exports = function(app, apiRoutes){
 
     function create(req, res){
        var data = req.body;
-       var password_text = req.body.password;
-       var credit = req.body.credit;
-
         user_manager.create(data, function(err, user){
             if(err){
               return; res.status(409).json({code : 11000});
@@ -84,7 +81,20 @@ module.exports = function(app, apiRoutes){
 
     }
 
+    function credits(req, res){
+        Credits
+        .findOne( mongoose.Types.ObjectId(req.params.user)).populate("_contract")
+        .exec(function(err, rs){
+            if(rs)
+                res.json(rs);
+            else
+                res.json(err);
+        })
+
+    }
+
     apiRoutes.get('/clients', clients);
+    apiRoutes.get('/clients/credit/:user', credits);
     apiRoutes.get('/clients/:id', client);
     app.post("/api/clients", create);
     apiRoutes.put("/clients/:id", update);
