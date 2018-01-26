@@ -58,7 +58,7 @@ module.exports = function(app, apiRoutes){
     }
 
     apiRoutes.get('/clients', clients);
-    apiRoutes.get('/clients/:id', user);
+    apiRoutes.get('/clients/:id', client);
     app.post("/api/clients", create);
     apiRoutes.put("/clients/:id", update);
     apiRoutes.delete("/clients/:id", remove);
