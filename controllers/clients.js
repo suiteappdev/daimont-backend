@@ -83,7 +83,7 @@ module.exports = function(app, apiRoutes){
 
     function credits(req, res){
         Credits
-        .find({ _user : mongoose.Types.ObjectId(req.params.user), "data.status" : "Finalizado"}).populate("_contract").populate("_user")
+        .find({ _user : mongoose.Types.ObjectId(req.params.user)}).populate("_contract").populate("_user")
         .exec(function(err, rs){
             if(rs)
                 res.json(rs);
