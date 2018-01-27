@@ -81,9 +81,9 @@ module.exports = function(app, apiRoutes){
 
     }
 
-    function credits(req, res){
+    function credits(req, res){s
         Credits
-        .find({ _user : mongoose.Types.ObjectId(req.params.user), "data.status" : { $eq: 'Finalizado'} }}).populate("_contract").populate("_user")
+        .find({ _user : mongoose.Types.ObjectId(req.params.user)}).populate("_contract").populate("_user")
         .exec(function(err, rs){
             if(rs)
                 res.json(rs);
@@ -95,7 +95,7 @@ module.exports = function(app, apiRoutes){
 
     function consignado(req, res){
         Credits
-        .find({ _user : mongoose.Types.ObjectId(req.params.user), "data.status" : "Finalizado"}).populate("_contract").populate("_user")
+        .find({ _user : mongoose.Types.ObjectId(req.params.user), "data.status" : "Consignado"}).populate("_contract").populate("_user")
         .exec(function(err, rs){
             if(rs)
                 res.json(rs);
