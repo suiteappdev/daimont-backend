@@ -83,7 +83,31 @@ module.exports = function(app, apiRoutes){
 
     function credits(req, res){
         Credits
-        .find({ _user : mongoose.Types.ObjectId(req.params.user)}).populate("_contract").populate("_user")
+        .find({ _user : mongoose.Types.ObjectId(req.params.user), "data.status" : { $eq: 'Finalizado'} }}).populate("_contract").populate("_user")
+        .exec(function(err, rs){
+            if(rs)
+                res.json(rs);
+            else
+                res.json(err);
+        })
+
+    }
+
+    function consignado(req, res){
+        Credits
+        .find({ _user : mongoose.Types.ObjectId(req.params.user), "data.status" : "Finalizado"}}).populate("_contract").populate("_user")
+        .exec(function(err, rs){
+            if(rs)
+                res.json(rs);
+            else
+                res.json(err);
+        })
+
+    }
+
+    function finalizado(req, res){
+        Credits
+        .find({ _user : mongoose.Types.ObjectId(req.params.user), "data.status" : "Finalizado"}}).populate("_contract").populate("_user")
         .exec(function(err, rs){
             if(rs)
                 res.json(rs);
@@ -95,6 +119,8 @@ module.exports = function(app, apiRoutes){
 
     apiRoutes.get('/clients', clients);
     apiRoutes.get('/clients/credit/:user', credits);
+    apiRoutes.get('/clients/credit/:user/finalizado', credits);
+    apiRoutes.get('/clients/credit/:user/consignado', credits);
     apiRoutes.get('/clients/:id', client);
     app.post("/api/clients", create);
     apiRoutes.put("/clients/:id", update);
