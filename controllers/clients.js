@@ -26,11 +26,15 @@ module.exports = function(app, apiRoutes){
     }
 
     function remove(req, res){
-        user_manager.remove(req.params.id, function(err, user){
+        User.remove({ _id : mongoose.Types.ObjectId(req.params.id)}, function(err){
             if(!err){
-                user.remove();
-                res.status(200).json(user);
-                res.end();
+                Credits.remove({ _user: mongoose.Types.ObjectId(req.params.id)}, function( err){
+                    if(!err){
+                        res.status(200).json({ deleted : true });
+                    }else{
+                        res.status(500).json({error : err});
+                    }
+                });
             }
         })
     }
