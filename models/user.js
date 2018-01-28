@@ -37,7 +37,7 @@ _Schema.pre('save', function (next) {
     this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
     var _self = this;
 
-    if(this.credit){
+    /*if(this.credit){
     	var credit = mongoose.model('credits');
 
         _self.data = _self.data || {};
@@ -59,7 +59,7 @@ _Schema.pre('save', function (next) {
 				next();    			
     		}
     	});
-    }
+    }*/
     next();
 });
 
