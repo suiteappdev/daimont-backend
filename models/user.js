@@ -36,8 +36,8 @@ _Schema.pre('save', function (next) {
     this.full_name = (this.name || '') + ' ' + (this.last_name  || '');
     this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
     var _self = this;
-    _self.data = _self.data || {};
-    _self.data.updated = false;
+    this.data = this.data || {};
+    this.data.updated = false;
 
 
     /*if(this.credit){
