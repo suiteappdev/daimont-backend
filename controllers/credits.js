@@ -860,7 +860,12 @@ module.exports = function(app, apiRoutes, io){
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 								if(!err){
 										credit.data.count = count || 0;
-										next(err, credit);
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													next(err, credit);
+											}
+										});
 								}
 							});
 						},
