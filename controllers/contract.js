@@ -172,23 +172,23 @@ module.exports = function(app, apiRoutes, io){
 			            Model.findOne({ _id : mongoose.Types.ObjectId(contract._id)}).populate("_user").exec(function(err, data){
 							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 	                        
-	                        	var phone = ("+57" + data._user.data.phone.toString());
-	                        	var firma = buffer.toString('hex');
-	                        	var message = "Por favor usa este código "+ firma.toString() +" para firmar tu contrato de préstamo DAIMONT."
-		                        
-		                        var params = {
-								    Message: message,
-								    MessageStructure: "string",
-								    PhoneNumber:phone,
-								    Subject: "FIRMA DIGITAL DEL CONTRATO"
-								};
+	                        	if( data._user.data.phone){
+		                        	var phone = ("+57" + data._user.data.phone.toString());
+		                        	var firma = buffer.toString('hex');
+		                        	var message = "Por favor usa este código "+ firma.toString() +" para firmar tu contrato de préstamo DAIMONT."
+			                        
+			                        var params = {
+									    Message: message,
+									    MessageStructure: "string",
+									    PhoneNumber:phone,
+									    Subject: "FIRMA DIGITAL DEL CONTRATO"
+									};
 
-								console.log("params", params);
-
-								sns.publish(params, function(err, data){
-								   if (err) console.log(err, err.stack); 
-					   			   else console.log("SMS ${data}");  
-								});
+									sns.publish(params, function(err, data){
+									   if (err) console.log(err, err.stack); 
+						   			   else console.log("SMS ${data}");  
+									});	                        		
+	                        	}
 
 				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
