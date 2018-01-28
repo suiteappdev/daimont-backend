@@ -36,12 +36,13 @@ _Schema.pre('save', function (next) {
     this.full_name = (this.name || '') + ' ' + (this.last_name  || '');
     this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
     var _self = this;
+    _self.data = _self.data || {};
+    _self.data.updated = false;
+
 
     /*if(this.credit){
     	var credit = mongoose.model('credits');
 
-        _self.data = _self.data || {};
-        _self.data.updated = false;
         var new_credit = new credit(_self.credit);
 
         new_credit._user = mongoose.Types.ObjectId(_self._id);
