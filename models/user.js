@@ -13,17 +13,17 @@ var metadata = require('./plugins/metadata');
 var _Schema = new Schema({
 	  username : { type : String, trim : true, lowercase : true},
 	  password : {type: String, required : false},
-      name : { type : String, trim : true,  lowercase : true},
+    name : { type : String, trim : true,  lowercase : true},
 	  second_name : { type : String, trim : true,  lowercase : true},
-      last_name : { type : String, trim : true, lowercase : true},
+    last_name : { type : String, trim : true, lowercase : true},
 	  second_last_name : { type : String, trim : true, lowercase : true},
 	  full_name : { type : String, trim : true, lowercase : true},
-      email : { type : String, trim : true , lowercase:true},
+    email : { type : String, trim : true , lowercase:true},
 	  cc : { type : String, trim : true , lowercase:true},
-      phone : {type: String, required : false},
+    phone : {type: String, required : false},
 	  data:{ type : Object},
 	  credit:{ type : Object},
-      _plan : { type : Schema.Types.ObjectId , ref : 'plans', required: false},
+    _plan : { type : Schema.Types.ObjectId , ref : 'plans', required: false},
 	  active : { type : Boolean, default : false},
 	  type : { type : String, trim : true, default : 'CLIENT'},
 	  _role : [{ type : Schema.Types.ObjectId , ref : 'Role'}],
@@ -35,8 +35,7 @@ var _Schema = new Schema({
 _Schema.pre('save', function (next) {
     this.full_name = (this.name || '') + ' ' + (this.last_name  || '');
     this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
-    var _self = this;
-    this.data = this.data || {};
+    this.data = {};
     this.data.updated = false;
 
 
