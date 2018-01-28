@@ -6,7 +6,7 @@ module.exports = function(app, apiRoutes, io){
 		      secretAccessKey: process.env.AWS_KEY
 		});
 		var sns = new AWS.SNS();
-		
+
 		var _entity ="contracts";
 		var _url_alias = "contracts";
 		var path = require("path");
@@ -20,6 +20,8 @@ module.exports = function(app, apiRoutes, io){
    		moment.locale('es');
     	var formatCurrency = require('format-currency')
 		var opts = { format: '%v %c', code: 'COP' }
+   		 var Credit = require('../models/credits');
+
 
 	    var fs = require("fs");
 	    var api_key = process.env.MAILGUN_API_KEY || null;;
@@ -45,8 +47,11 @@ module.exports = function(app, apiRoutes, io){
 			 Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						if(rs){
-								console.log("IO", io);
-								io.to('all').emit('NEW_CREDIT_TO_ADMIN', rs._credit);
+								Credit.find({ _id : mongoose.Types.ObjectId(rs._credit._id)}).exec(function(err, credit){
+									if(!err){
+										io.to('all').emit('NEW_CREDIT_TO_ADMIN', credit);
+									}
+								});
 
 								console.log("rs", rs);
 								var _html_credit_resume = _compiler.render({ _data : {
