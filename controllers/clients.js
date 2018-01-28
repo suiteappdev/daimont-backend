@@ -1,4 +1,5 @@
 module.exports = function(app, apiRoutes){
+    var async = require('async');
     var mongoose = require('mongoose');
     var user_manager = require('../models/user_manager');
     var path = require("path");
@@ -37,7 +38,17 @@ module.exports = function(app, apiRoutes){
     function clients(req, res){
         UserSchema.find({"data.updated" : true}).exec(function(err, users){
             if(!err){
-                res.send(users);
+                async.map(users, function (user, next) {
+                  Credits.count({ _user: mongoose.Types.ObjectId(user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+                    if(!err){
+                        user.data.count = count || 0;
+                        next(err, user);
+                    }
+                  });
+                },
+                function (err, result) {
+                  res.status(200).json(result || []);
+                });
             }
         });
     }
