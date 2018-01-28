@@ -175,7 +175,7 @@ module.exports = function(app, apiRoutes, io){
 	                        	var phone = ("+57" + data._user.data.phone.toString());
 
 		                        var params = {
-								    Message: "por favor usa este código "+ buffer.toString('hex') +" para firmar tu contrato de préstamo.",
+								    Message: "Por favor usa este código "+ buffer.toString('hex') +" para firmar tu contrato de préstamo DAIMONT.",
 								    MessageStructure: "string",
 								    PhoneNumber:phone,
 								    Subject: "FIRMA DIGITAL DEL CONTRATO"
