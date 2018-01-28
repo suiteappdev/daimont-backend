@@ -172,11 +172,13 @@ module.exports = function(app, apiRoutes, io){
 			            Model.findOne({ _id : mongoose.Types.ObjectId(contract._id)}).populate("_user").exec(function(err, data){
 							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 	                        
+	                        	var phone = ("+57" + data._user.data.phone.toString());
+
 		                        var params = {
-								    Message: 'por favor usa este código '+ buffer.toString('hex') +' para firmar tu contrato de préstamo.',
-								    MessageStructure: 'string',
-								    PhoneNumber:  ("+57" + data._user.data.phone.toString()),
-								    Subject: 'FIRMA DIGITAL DEL CONTRATO'
+								    Message: "por favor usa este código '+ buffer.toString('hex') +' para firmar tu contrato de préstamo.",
+								    MessageStructure: "string",
+								    PhoneNumber:phone,
+								    Subject: "FIRMA DIGITAL DEL CONTRATO"
 								};
 
 								console.log("params", params);
