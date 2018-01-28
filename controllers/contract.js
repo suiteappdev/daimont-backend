@@ -48,6 +48,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						if(rs){
 								Credit.find({ _id : mongoose.Types.ObjectId(rs._credit._id)}).exec(function(err, credit){
+									console.log("credito emit", credit);
 									if(!err){
 										io.to('all').emit('NEW_CREDIT_TO_ADMIN', credit);
 									}
@@ -207,7 +208,7 @@ module.exports = function(app, apiRoutes, io){
 									   if (err) console.log(err, err.stack); 
 						   			   else console.log("SMS ${data}");  
 									});
-										     
+
 				                	console.log("mailgun body", body);
 				              });    
 			              });
