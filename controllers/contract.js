@@ -175,7 +175,7 @@ module.exports = function(app, apiRoutes, io){
 		                        var params = {
 								    Message: 'por favor usa este código para firmar tu contrato de préstamo.',
 								    MessageStructure: 'string',
-								    PhoneNumber: data._user.data.phone,
+								    PhoneNumber:  '+57' + data._user.data.phone,
 								    Subject: 'FIRMA DIGITAL DEL CONTRATO'
 								};
 
