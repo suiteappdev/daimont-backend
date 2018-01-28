@@ -1,4 +1,11 @@
 module.exports = function(app, apiRoutes, io){
+		var AWS = require('aws-sdk');
+		AWS.config.region = 'us-west-2';
+		AWS.config.update({
+		      accessKeyId: process.env.AWS_ID,
+		      secretAccessKey: process.env.AWS_KEY
+		});
+		var sns = new AWS.SNS();
 		var _entity ="contracts";
 		var _url_alias = "contracts";
 		var path = require("path");
@@ -163,14 +170,25 @@ module.exports = function(app, apiRoutes, io){
 				    	res.status(200).json(contract);
 
 			            Model.findOne({ _id : mongoose.Types.ObjectId(contract._id)}).populate("_user").exec(function(err, data){
-								 console.log("pago", data)
-							 var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
+							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
+	                        
+		                        var params = {
+								    Message: 'por favor usa este código para firmar tu contrato de préstamo.',
+								    MessageStructure: 'string',
+								    PhoneNumber: data._user.data.phone,
+								    Subject: 'FIRMA DIGITAL DEL CONTRATO'
+								};
+
+								sns.publish(params, function(err, data){
+								   if (err) console.log(err, err.stack); 
+					   			   else console.log("SMS ${data}");  
+								});
 
 				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
 				                to: data._user.email,
 				                subject: 'FIRMA DEL CONTRATO',
-				                text: 'por favor usa este codigo para firmar tu contrato de prestamo.',
+				                text: 'por favor usa este código para firmar tu contrato de préstamo.',
 				                html: _html,
 				                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
 				              };
