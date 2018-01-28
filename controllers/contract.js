@@ -173,9 +173,11 @@ module.exports = function(app, apiRoutes, io){
 							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 	                        
 	                        	var phone = ("+57" + data._user.data.phone.toString());
-
+	                        	var firma = buffer.toString('hex');
+	                        	var message = "Por favor usa este código "+ firma.toString() +" para firmar tu contrato de préstamo DAIMONT."
+		                        
 		                        var params = {
-								    Message: "Por favor usa este código "+ buffer.toString('hex') +" para firmar tu contrato de préstamo DAIMONT.",
+								    Message: message,
 								    MessageStructure: "string",
 								    PhoneNumber:phone,
 								    Subject: "FIRMA DIGITAL DEL CONTRATO"
