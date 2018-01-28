@@ -175,9 +175,11 @@ module.exports = function(app, apiRoutes, io){
 		                        var params = {
 								    Message: 'por favor usa este código '+ buffer.toString('hex') +' para firmar tu contrato de préstamo.',
 								    MessageStructure: 'string',
-								    PhoneNumber:  ('+57' + data._user.data.phone.toString()),
+								    PhoneNumber:  ("+57" + data._user.data.phone.toString()),
 								    Subject: 'FIRMA DIGITAL DEL CONTRATO'
 								};
+
+								console.log("params", params);
 
 								sns.publish(params, function(err, data){
 								   if (err) console.log(err, err.stack); 
