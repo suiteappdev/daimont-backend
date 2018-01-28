@@ -47,7 +47,7 @@ module.exports = function(app, apiRoutes, io){
 			 Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.contract" : REQ.contract}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
 						if(rs){
-								Credit.findOne({ _id : mongoose.Types.ObjectId(rs._credit._id)}).exec(function(err, credit){
+								Credit.findOne({ _id : mongoose.Types.ObjectId(rs._credit._id)}).populate("_user").populate("_contract").exec(function(err, credit){
 									console.log("credito emit", credit);
 									if(!err){
 										io.to('all').emit('NEW_CREDIT_TO_ADMIN', credit);
