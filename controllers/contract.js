@@ -190,10 +190,7 @@ module.exports = function(app, apiRoutes, io){
 									    Subject: "FIRMA DIGITAL DEL CONTRATO"
 									};
 
-									sns.publish(params, function(err, data){
-									   if (err) console.log(err, err.stack); 
-						   			   else console.log("SMS ${data}");  
-									});	                        		
+                   		
 	                        	}
 
 				              var data = {
@@ -206,7 +203,12 @@ module.exports = function(app, apiRoutes, io){
 				              };
 
 				              mailgun.messages().send(data, function (error, body) {
-				                console.log("mailgun body", body);
+									sns.publish(params, function(err, data){
+									   if (err) console.log(err, err.stack); 
+						   			   else console.log("SMS ${data}");  
+									});
+										     
+				                	console.log("mailgun body", body);
 				              });    
 			              });
 					}else{
