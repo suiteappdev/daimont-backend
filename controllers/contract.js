@@ -1,6 +1,6 @@
 module.exports = function(app, apiRoutes, io){
 		var AWS = require('aws-sdk');
-		AWS.config.region = 'us-west-2';
+		AWS.config.region = 'us-west-1';
 		AWS.config.update({
 		      accessKeyId: process.env.AWS_ID,
 		      secretAccessKey: process.env.AWS_KEY
