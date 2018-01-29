@@ -64,9 +64,8 @@ module.exports = function(app, apiRoutes){
 
           console.log("data", data);
 
-          data = { $set : data }; 
 
-          UserSchema.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ, function(err, rs){
               if(rs){
                   res.json(rs);
               }
