@@ -62,11 +62,15 @@ module.exports = function(app, apiRoutes){
           var REQ = req.body || req.params;
           !REQ.data || (data.data = REQ.data);
 
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ , function(err, rs) {
-              if(!err){
-                  res.status(200).json(rs);                
+          console.log("data", data);
+
+          data = { $set : data }; 
+
+          User.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
+              if(rs){
+                  res.json(rs);
               }
-          });
+          });   
     }
 
     function client(req, res){
