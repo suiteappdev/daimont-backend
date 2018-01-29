@@ -58,17 +58,30 @@ module.exports = function(app, apiRoutes){
     }
 
     function update(req, res){
-          var data = {};
-          var REQ = req.body || req.params;
-          !REQ.data || (data.data = REQ.data);
+         var data = {};
+         var REQ = req.body || req.params;
+         !REQ.metadata || (data.metadata = REQ.metadata);
+         !REQ.data || (data.data = REQ.data);
+         !REQ.username || (data.username = REQ.username);
+         !REQ.password || (data.password = REQ.password);
+         !REQ.cc || (data.cc = REQ.cc);
+         !REQ.email || (data.email = REQ.email);
+         !REQ.name || (data.name = REQ.name);
+         !REQ.last_name || (data.last_name = REQ.last_name);
 
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ, function(err, rs){
-              if(!err){
-                  return res.status(200).json(rs);
+          if(REQ.password){
+            data.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.password);
+          } 
+
+          console.log("data", data);
+
+          data = { $set : data }; 
+
+          user_manager.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
+              if(rs){
+                  res.json(rs);
               }
-
-              res.status(500).json(err);
-          });   
+          });     
     }
 
     function client(req, res){
