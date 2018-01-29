@@ -66,9 +66,11 @@ module.exports = function(app, apiRoutes){
 
 
           UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), REQ, function(err, rs){
-              if(rs){
-                  res.json(rs);
+              if(!err){
+                  return res.status(200).json(rs);
               }
+
+              res.status(500).json(err);
           });   
     }
 
