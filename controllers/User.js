@@ -2,7 +2,7 @@ module.exports = function(app, apiRoutes){
     var mongoose = require('mongoose');
     var user_manager = require('../models/user_manager');
     var path = require("path");
-    var Credit = require('../models/credits');
+    var credit = require('../models/credits');
     var config = require(process.env.PWD + '/config.js');
     var moment = require('moment');
     moment.locale('es');
