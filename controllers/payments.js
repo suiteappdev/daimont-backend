@@ -108,9 +108,7 @@ module.exports = function(app, apiRoutes, io){
 				where = { "metadata._author" : req.headers['x-daimont-user'] };
 			}
 
-			where._user = mongoose.Types.ObjectId(REQ.id);
-
-			Model.find(where || {}).populate("_user").populate("_credit").exec(function(err, rs){
+			Model.find( { _user : mongoose.Types.ObjectId(req.params.id) } ).populate("_user").populate("_credit").exec(function(err, rs){
 				if(!err){
 					res.status(200).json(rs);
 				}else{
