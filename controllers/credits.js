@@ -57,7 +57,7 @@ module.exports = function(app, apiRoutes, io){
 		function getCurrent(req, res){
 			var REQ = req.params; 
 			try{
-				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : { $ne : 'Finalizado'}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
+				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false, "data.status" : { $nin : ['Finalizado', 'Anulado']}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(rs){
 						if((rs.data.status == 'Pendiente') && (moment(rs.data.pay_day).isBefore(moment(new Date(Date.now()))))){
 								Model.update({ _id : mongoose.Types.ObjectId(rs._id) } , {"data.hidden" : true} , function(err, creditExpired){
