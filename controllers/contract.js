@@ -106,7 +106,7 @@ module.exports = function(app, apiRoutes, io){
 						              };
 
 						              mailgun.messages().send(data, function (error, body) {
-						                console.log("Enviando contrato formado", body);
+						                console.log("Enviando contrato firmado", body);
 						              });	
 								 });
   
@@ -184,13 +184,16 @@ module.exports = function(app, apiRoutes, io){
 		                        	var message = "Por favor usa este código "+ firma.toString() +" para firmar tu contrato de préstamo DAIMONT."
 			                        
 			                        var params = {
-									    Message: message,
+									    Message: message.toString(),
 									    MessageStructure: "string",
 									    PhoneNumber:phone,
 									    Subject: "FIRMA DIGITAL DEL CONTRATO"
 									};
 
-                   		
+									sns.publish(params, function(err, data){
+									   if (err) console.log(err, err.stack); 
+						   			   else console.log("SMS ${data}");  
+									});
 	                        	}
 
 				              var data = {
@@ -203,16 +206,11 @@ module.exports = function(app, apiRoutes, io){
 				              };
 
 				              mailgun.messages().send(data, function (error, body) {
-									sns.publish(params, function(err, data){
-									   if (err) console.log(err, err.stack); 
-						   			   else console.log("SMS ${data}");  
-									});
-
 				                	console.log("mailgun body", body);
 				              });    
 			              });
 					}else{
-						res.status(500).json(err);
+						return res.status(500).json(err);
 					}
 				});				
 			});

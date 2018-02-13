@@ -88,7 +88,7 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.findOne({ "_user" : mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false,  "_id" : mongoose.Types.ObjectId(REQ.id)}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").limit(1).exec(function(err, rs){
 					if(!err){
-							var _html_credit_resume = _compiler.render({ _data : {
+							/*var _html_credit_resume = _compiler.render({ _data : {
 	                            user : (rs._user.name + ' ' + rs._user.last_name) ,
 	                            amount : formatCurrency(rs.data.amount[0], opts),
 	                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
@@ -113,7 +113,7 @@ module.exports = function(app, apiRoutes, io){
 	                          if(body){
 	                              console.log("New credit request has been sended to", body);
 	                          }
-	                        });
+	                        });*/
 
 						res.status(200).json(rs || []);
 					}else{
