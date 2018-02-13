@@ -77,6 +77,10 @@ apiRoutes.use(function(req, res, next) {
                     });
                 }
 
+                if (token_err) {
+                      return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
+                };
+
                 Session.find({token : token}, function(err, rs){
                     if(!err){ 
                           if(rs.length > 0){ 
