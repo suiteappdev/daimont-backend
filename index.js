@@ -63,7 +63,7 @@ apiRoutes.use(function(req, res, next) {
             jwt.verify(token, app.get("secret"), function(err, decoded) {
                 var Session = require("./models/session");
                   
-                if(err.name == 'TokenExpiredError'){
+                if(err && err.name == 'TokenExpiredError'){
                     return res.status(401).json(err); 
                 }  
 
