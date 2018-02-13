@@ -246,7 +246,7 @@ module.exports = function(app, apiRoutes, io){
 								                  res.status(401).json(response);
 								                }
 								            });*/
-								        }else{
+								        }else{ 
 								        	
 								        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
 								        		console.log("credit" , rs);
@@ -280,14 +280,14 @@ module.exports = function(app, apiRoutes, io){
 								        		}
 								        	});
 								        }
-								    	res.status(200).json(credit);
+								    	return res.status(200).json(credit);
 									}else{
-										res.status(500).json(err);
+										return res.status(500).json(err);
 									}
 								});		      				//aqui save
 		      			}else{
 		      				console.log("isBanned");
-		      				res.status(200).json({ time_to_left : now.diff(system, 'days') == 0 ?  1 : now.diff(system, 'days')});
+		      				return res.status(200).json({ time_to_left : now.diff(system, 'days') == 0 ?  1 : now.diff(system, 'days')});
 		      			}
 
 					}else{
@@ -368,9 +368,9 @@ module.exports = function(app, apiRoutes, io){
 						        		}
 						        	});
 						        }
-						    	res.status(200).json(credit);
+						    	return res.status(200).json(credit);
 							}else{
-								res.status(500).json(err);
+								return res.status(500).json(err);
 							}
 						});
 					}
