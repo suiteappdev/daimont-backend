@@ -68,7 +68,7 @@ apiRoutes.use(function(req, res, next) {
                 if(req.headers['x-daimont-user']){
                     User.findOne({ _id : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).exec(function(err, user){
                         if(user.type == "CLIENT"){
-                            if(err && err.name == 'TokenExpiredError'){
+                            if(token_err && token_err.name == 'TokenExpiredError'){
                                 return res.status(401).json(err); 
                             }else if(token_err){
                                 return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
@@ -76,11 +76,7 @@ apiRoutes.use(function(req, res, next) {
                         }
                     });
                 }
-
-                if (token_err) {
-                      return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
-                };
-
+                
                 Session.find({token : token}, function(err, rs){
                     if(!err){ 
                           if(rs.length > 0){ 
