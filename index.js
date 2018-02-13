@@ -69,7 +69,7 @@ apiRoutes.use(function(req, res, next) {
                         if(user.type == "CLIENT"){
                             if(err && err.name == 'TokenExpiredError'){
                                 return res.status(401).json(err); 
-                            }else{
+                            }else if(err){
                                 return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
                             }  
                         }
