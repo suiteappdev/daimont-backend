@@ -73,7 +73,7 @@ apiRoutes.use(function(req, res, next) {
                     });
                 }
 
-                if (err){
+                if (err && err.name != 'TokenExpiredError'){
                         return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
                 }
 
