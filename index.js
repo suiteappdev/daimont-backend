@@ -12,7 +12,7 @@ var morgan = require('morgan');
 var cluster = require('cluster');
 var cores = require('os').cpus().length;  
 var passport = require("passport");
-//var User = require('./models/user');
+var User = require('./models/user');
 var FB = require('facebook-node');
 var path = require("path");
 var helmet = require('helmet');
@@ -62,10 +62,16 @@ apiRoutes.use(function(req, res, next) {
         if (token) {
             jwt.verify(token, app.get("secret"), function(err, decoded) {
                 var Session = require("./models/session");
-                  
-                if(err && err.name == 'TokenExpiredError'){
-                    return res.status(401).json(err); 
-                }  
+                
+                if(req.headers['x-daimont-user']){
+                    User.find({ _id : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).exec(function(err, user){
+                        if(user.type == "CLIENT"){
+                            if(err && err.name == 'TokenExpiredError'){
+                                return res.status(401).json(err); 
+                            }  
+                        }
+                    });
+                }
 
                 if (err){
                         return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 

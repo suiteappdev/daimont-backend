@@ -403,7 +403,7 @@ module.exports = function(app, apiRoutes){
                  
                   if(user && user.type == 'CLIENT'){
                       var token = jwt.sign(user, app.get('secret'), {
-                        expiresIn: "4h" // 24 horas (suficientes para una jornada laboral)
+                        expiresIn: "2m" // 24 horas (suficientes para una jornada laboral)
                       });                    
                   }
 
