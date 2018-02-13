@@ -402,7 +402,7 @@ module.exports = function(app, apiRoutes){
                     user.password = null;
                     
                     var token = jwt.sign(user, app.get('secret'), {
-                      expiresIn: "4h" // 24 horas (suficientes para una jornada laboral)
+                      expiresIn: "1h" // 24 horas (suficientes para una jornada laboral)
                     });                    
 
                   user_manager.createSession({token : token, user : user }, function(err, userToken){
