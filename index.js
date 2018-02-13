@@ -62,7 +62,8 @@ apiRoutes.use(function(req, res, next) {
         if (token) {
             jwt.verify(token, app.get("secret"), function(err, decoded) {
                 var Session = require("./models/session");
-
+                console.log("error token", err);
+                
                 if(req.headers['x-daimont-user']){
                     User.findOne({ _id : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).exec(function(err, user){
                         if(user.type == "CLIENT"){
