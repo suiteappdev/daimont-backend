@@ -17,6 +17,7 @@ var FB = require('facebook-node');
 var path = require("path");
 var helmet = require('helmet');
 var _clients = [];
+var Session = require("./models/session");
 
 var options = {
   key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
