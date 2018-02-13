@@ -400,10 +400,12 @@ module.exports = function(app, apiRoutes){
 
             if(user.auth(req.body.password)){
                   user.password = null;
-
-                  var token = jwt.sign(user, app.get('secret'), {
-                      expiresIn: "2m" // 24 horas (suficientes para una jornada laboral)
-                    });
+                 
+                  if(user && user.type == 'CLIENT'){
+                      var token = jwt.sign(user, app.get('secret'), {
+                        expiresIn: "2m" // 24 horas (suficientes para una jornada laboral)
+                      });                    
+                  }
 
                   user_manager.createSession({token : token, user : user }, function(err, userToken){
                         res.status(200).json({token:token, user : user});
