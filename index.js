@@ -63,19 +63,17 @@ apiRoutes.use(function(req, res, next) {
             jwt.verify(token, app.get("secret"), function(err, decoded) {
                 var Session = require("./models/session");
                 console.log("error token", err);
-                
+
                 if(req.headers['x-daimont-user']){
                     User.findOne({ _id : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).exec(function(err, user){
                         if(user.type == "CLIENT"){
                             if(err && err.name == 'TokenExpiredError'){
                                 return res.status(401).json(err); 
+                            }else{
+                                return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
                             }  
                         }
                     });
-                }
-
-                if (err && err.name != 'TokenExpiredError'){
-                        return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
                 }
 
                 Session.find({token : token}, function(err, rs){
