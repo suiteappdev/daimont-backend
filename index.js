@@ -60,40 +60,47 @@ apiRoutes.use(function(req, res, next) {
         }
 
         if (token) {
-            jwt.verify(token, app.get("secret"), function(err, decoded) {
-                var Session = require("./models/session");
-                console.log("error token", err);
+              if(req.headers['x-daimont-user']){
+                  User.findOne({ _id : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).exec(function(err, user){
+                      if(user.type == "CLIENT"){
+                        jwt.verify(token, app.get("secret"), function(token_err, decoded) {
+                            if(token_err && token_err.name == 'TokenExpiredError'){
+                                return res.status(401).json(err); 
+                            }
 
-                if(err){
-                  var token_err = err;
-                  
-                  if(req.headers['x-daimont-user']){
-                      User.findOne({ _id : mongoose.Types.ObjectId(req.headers['x-daimont-user'])}).exec(function(err, user){
-                          if(user.type == "CLIENT"){
-                              if(token_err && token_err.name == 'TokenExpiredError'){
-                                  return res.status(401).json(err); 
-                              }else if(token_err){
-                                  return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
-                              }  
-                          }else{
-                              return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
-                          }
-                      });
-                  }
-                }
+                            Session.find({token : token}, function(err, rs){
+                                    if(!err){ 
+                                          if(rs.length > 0){ 
+                                              req.decoded = decoded;    
+                                              next();
+                                           }
+                                           else{
+                                                res.status(401).json({ success : false, message : 'invalid token'});
+                                           }
+                                    }
+                                })  
+                            });
+                      }else if(user.type == "ADMINISTRATOR"){
+                        jwt.verify(token, app.get("secret"),{ ignoreExpiration : true }, function(token_err, decoded) {
+                            if(token_err && token_err.name == 'TokenExpiredError'){
+                                return res.status(401).json(err); 
+                            }
 
-                Session.find({token : token}, function(err, rs){
-                    if(!err){ 
-                          if(rs.length > 0){ 
-                              req.decoded = decoded;    
-                              next();
-                           }
-                           else{
-                                res.status(401).json({ success : false, message : 'invalid token'});
-                           }
-                    }
-                })  
-          });
+                            Session.find({token : token}, function(err, rs){
+                                if(!err){ 
+                                      if(rs.length > 0){ 
+                                          req.decoded = decoded;    
+                                          next();
+                                       }
+                                       else{
+                                            res.status(401).json({ success : false, message : 'invalid token'});
+                                       }
+                                }
+                            })                           
+                        });
+                      }
+                  });
+              }
         }else{
           return res.status(403).send({ 
               success: false, 
