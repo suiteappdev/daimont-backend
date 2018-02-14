@@ -67,7 +67,7 @@ module.exports = function(app, apiRoutes, io){
 		                         }}, 'credit_resume/index.ejs');
 
 								 var _html = _compiler.render({ _data : { 
-								 		fullname : rs._user.name + ' ' + rs._user.data.second_name || '' + ' ' + rs._user.last_name || '' + ' ' + rs._user.data.second_last_name || '',
+								 		fullname : (rs._user.name + ' ' + rs._user.data.second_name || '' + ' ' + rs._user.last_name || '' + ' ' + rs._user.data.second_last_name || '').toUpperCase(),
 								 		nombre : rs._user.name + ' ' +rs._user.last_name,
 								 		email : rs._user.email,
 								 		telefono : rs._user.data.phone || 'sin telefono',
