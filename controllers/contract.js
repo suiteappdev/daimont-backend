@@ -54,6 +54,8 @@ module.exports = function(app, apiRoutes, io){
 									}
 								});
 
+								console.log("USUARIO", rs._user);
+
 								var _html_credit_resume = _compiler.render({ _data : {
 		                            user : (rs._user.name + ' ' + rs._user.last_name) ,
 		                            amount : formatCurrency(rs._credit.data.amount[0], opts),
@@ -66,11 +68,9 @@ module.exports = function(app, apiRoutes, io){
 		                            status : rs._credit.data.status
 		                         }}, 'credit_resume/index.ejs');
 
-								console.log("USUARIO", rs._user);
-
 								 var _html = _compiler.render({ _data : { 
-								 		fullname : (rs._user.name + ' ' + rs._user.data.second_name || '' + ' ' + rs._user.last_name || '' + ' ' + rs._user.data.second_last_name || '').toUpperCase(),
 								 		nombre : rs._user.name + ' ' +rs._user.last_name,
+								 		fullname : rs._user.name + ' ' + rs._user.data.second_name || '' + ' ' + rs._user.last_name || '' + ' ' + rs._user.data.second_last_name || '',
 								 		email : rs._user.email,
 								 		telefono : rs._user.data.phone || 'sin telefono',
 								 		cedula : rs._user.cc,
@@ -114,8 +114,6 @@ module.exports = function(app, apiRoutes, io){
 						                console.log("Enviando contrato firmado", body);
 						              });	
 								 });
-  
-						  		
 						}
 
 						res.status(200).json(rs ? rs : []);
@@ -184,19 +182,20 @@ module.exports = function(app, apiRoutes, io){
 							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 	                        
 	                        	if( data._user.data.phone){
-		                        	var phone = "+57" + data._user.data.phone.toString();
+		                        	var phone = ("+57" + data._user.data.phone.toString());
 		                        	var firma = buffer.toString('hex');
-		                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
+		                        	var message = "Por favor usa este código "+ firma.toString() +" para firmar tu contrato de préstamo DAIMONT."
 			                        
 			                        var params = {
 									    Message: message.toString(),
 									    MessageStructure: "string",
-									    PhoneNumber:phone
+									    PhoneNumber:phone,
+									    Subject: "FIRMA DIGITAL DEL CONTRATO"
 									};
 
 									sns.publish(params, function(err, data){
 									   if (err) console.log(err, err.stack); 
-						   			   else console.log("SMS", data);  
+						   			   else console.log("SMS ${data}");  
 									});
 	                        	}
 
