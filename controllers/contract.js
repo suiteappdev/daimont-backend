@@ -66,6 +66,8 @@ module.exports = function(app, apiRoutes, io){
 		                            status : rs._credit.data.status
 		                         }}, 'credit_resume/index.ejs');
 
+								console.log("USUARIO", rs._user);
+
 								 var _html = _compiler.render({ _data : { 
 								 		fullname : (rs._user.name + ' ' + rs._user.data.second_name || '' + ' ' + rs._user.last_name || '' + ' ' + rs._user.data.second_last_name || '').toUpperCase(),
 								 		nombre : rs._user.name + ' ' +rs._user.last_name,
