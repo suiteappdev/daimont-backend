@@ -184,7 +184,7 @@ module.exports = function(app, apiRoutes, io){
 	                        	if( data._user.data.phone){
 		                        	var phone = "+57" + data._user.data.phone.toString();
 		                        	var firma = buffer.toString('hex');
-		                        	var message = "Por favor usa este código "+ firma.toString() +" para firmar tu contrato de préstamo DAIMONT."
+		                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
 			                        
 			                        var params = {
 									    Message: message.toString(),
