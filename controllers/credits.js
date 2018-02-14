@@ -354,8 +354,8 @@ module.exports = function(app, apiRoutes, io){
 					                        var data_credit_resume = {
 					                          	from: ' Daimont <noreply@daimont.com>',
 					                          	to: rs._user.email,
-					                          	subject: 'RESUMEN DEL CRÉDITO',
-					                          	text: 'Estado y resumen de su actual credito',
+					                          	subject: 'Resumen de Préstamo',
+					                          	text: 'Estado y resumen de su actual de préstamo',
 					                          	html: _html_credit_resume,
 				                    			attachment : path.join(process.env.PWD , "docs", "contrato.pdf")
 					                        };
@@ -440,7 +440,7 @@ module.exports = function(app, apiRoutes, io){
                         var data_credit_approved = {
                           from: ' Daimont <noreply@daimont.com>',
                           to: REQ._user.email,
-                          subject: 'CORREO DE APROBACIÓN',
+                          subject: 'Aprobación de préstamo',
                           text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos aprobado tu credito.',
                           html: _html_credit_approved
                         };
@@ -490,7 +490,7 @@ module.exports = function(app, apiRoutes, io){
                         var data_credit_deposited = {
                           from: ' Daimont <noreply@daimont.com>',
                           to: REQ._user.email,
-                          subject: 'DESEMBOLSO.',
+                          subject: 'Desembolsó de préstamo.',
                           text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos depositado el monto solicitado a tu cuenta.',
                           html: _html_credit_deposited
                         };
