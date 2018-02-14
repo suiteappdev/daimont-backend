@@ -3736,8 +3736,8 @@ line-height:115%;mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><
 style='mso-list:Ignore'>6.3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span></b><![endif]><span lang=ES-CO style='font-size:10.0pt;
 line-height:115%;mso-bidi-font-family:Arial'>Las gestiones en comento tendrán
-un valor de <span style='color:red'><span style="color:black;"><%= _data.gestion %></span>, cuantía que deberá ser
-asumida por el interesado.<o:p></o:p></span></p>
+un valor de <span style="color:black;"><%= _data.gestion %></span>, cuantía que deberá ser
+asumida por el interesado.<o:p></o:p></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
 auto;text-align:justify;text-indent:-36.0pt;mso-list:l22 level2 lfo7'><![if !supportLists]><b
@@ -4448,7 +4448,7 @@ lang=ES-CO style='font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial'>
 
 <p class=MsoNormal style='text-align:justify'><span lang=ES-CO
 style='font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial'>Yo <span
-style='color:red'><%= _data.fullname %>, </span>DEUDOR de la
+style='color:red'><span style='color:black;'><%= _data.fullname %>,</span> </span>DEUDOR de la
 presente de la obligación, persona mayor de edad e identificada con la cedula <%= _data.fullname %>
 de ciudadanía<span style='color:#00B050'> </span><span style='color:red'>,
 </span><span style='mso-spacerun:yes'> </span>otorgo a <b style='mso-bidi-font-weight:
@@ -4529,7 +4529,7 @@ mso-bidi-font-family:Arial;color:red'>PAGARÉ NÚMERO: <span style="color:black;
 
 <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
 justify;line-height:normal'><span lang=ES-CO style='font-size:10.0pt;
-mso-bidi-font-family:Arial;color:red'>Valor: Interés:<o:p></o:p></span></p>
+mso-bidi-font-family:Arial;color:red'>Valor: Interés:<span style="color:black;"> <%= _data.intereses %></span><o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
 justify;line-height:normal'><span lang=ES-CO style='font-size:10.0pt;
@@ -4729,7 +4729,7 @@ auto;text-align:justify'><span lang=ES-CO style='font-size:10.0pt;line-height:
 <p class=MsoListParagraphCxSpMiddle style='margin-left:39.3pt;mso-add-space:
 auto;text-align:justify'><b style='mso-bidi-font-weight:normal'><span
 lang=ES-CO style='font-size:10.0pt;line-height:115%;mso-bidi-font-family:Arial;
-color:red'>DEUDOR: <span style="color:black;"> <%= _data.nombre %></span><o:p></o:p></span></b></p>
+color:red'>DEUDOR: <span style="color:black;"> <%= _data.fullname %></span><o:p></o:p></span></b></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:39.3pt;mso-add-space:
 auto;text-align:justify'><b style='mso-bidi-font-weight:normal'><span
@@ -4770,7 +4770,7 @@ auto;text-align:justify'><span lang=ES-CO style='font-size:10.0pt;line-height:
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:39.3pt;mso-add-space:
 auto;text-align:justify'><span lang=ES-CO style='font-size:10.0pt;line-height:
-115%;mso-bidi-font-family:Arial;color:red'>Código enviado por email:<o:p></o:p></span></p>
+115%;mso-bidi-font-family:Arial;color:red'>Código enviado por email: <span style="color:black;"> <%= _data.codigo %></span><o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:39.3pt;mso-add-space:
 auto;text-align:justify'><b style='mso-bidi-font-weight:normal'><span
@@ -4979,7 +4979,7 @@ auto;text-align:justify'><span lang=ES-CO style='font-size:10.0pt;line-height:
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:39.3pt;mso-add-space:
 auto;text-align:justify'><span lang=ES-CO style='font-size:10.0pt;line-height:
-115%;mso-bidi-font-family:Arial;color:red'>Código enviado por email: <span style="color:black;"> <%= _data.ip %></span><o:p></o:p></span></p>
+115%;mso-bidi-font-family:Arial;color:red'>Código enviado por email: <span style="color:black;"> <%= _data.codigo %></span><o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:39.3pt;mso-add-space:
 auto;text-align:justify'><span lang=ES-CO style='font-size:10.0pt;line-height:
