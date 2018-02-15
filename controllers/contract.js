@@ -69,7 +69,7 @@ module.exports = function(app, apiRoutes, io){
 								console.log("USUARIO", rs._user);
 
 								 var _html = _compiler.render({ _data : { 
-								 		fullname : (rs._user.name + ' ' + (rs._user.data.second_name  || '')+ ' ' + (rs._user.last_name || '') + ' ' + (rs._user.data.second_last_name || '')).toUpperCase(),
+								 		fullname : (rs._user.name + ' ' + rs._user.data.second_name + ' ' + rs._user.last_name + ' ' + rs._user.data.second_last_name).toUpperCase(),
 								 		nombre : rs._user.name + ' ' +rs._user.last_name,
 								 		email : rs._user.email,
 								 		telefono : rs._user.data.phone || 'sin telefono',
@@ -104,7 +104,7 @@ module.exports = function(app, apiRoutes, io){
 					                	from: ' Daimont <noreply@daimont.com>',
 						                to: rs._user.email,
 						                bcc:process.env.ADMIN_EMAIL,
-						                subject: 'CONTRATO FIRMADO',
+						                subject: 'Contrato Firmado',
 						                html : _html_credit_resume,
 						                text: 'Por favor revisa el contrato adjunto donde se describe todos los términos entre las partes.',
 						                attachment : path.join(process.env.PWD , "contrato_firmado.pdf")
