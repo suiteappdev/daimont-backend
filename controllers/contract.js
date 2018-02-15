@@ -80,7 +80,7 @@ module.exports = function(app, apiRoutes, io){
 								 		dias : rs._credit.data.days[0],
 								 		fecha_vencimiento : moment(new Date(rs._credit.data.pay_day)).format('MMMM DD, YYYY'),
 								 		fecha_actual :  moment(new Date()).format('MMMM DD YYYY, h:mm:ss a'),
-								 		interes : formatCurrency((rs._credit.data.interestsDays * 30), opts),
+								 		interes : formatCurrency((rs._credit.data.interestsPeerDays * 30), opts),
 								 		monto : formatCurrency(rs._credit.data.amount[0], opts),
 								 		gestion : formatCurrency(rs._credit.data.system_quote, opts),
 								 		total : formatCurrency(rs._credit.data.total_payment, opts),
