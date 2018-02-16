@@ -250,10 +250,6 @@ module.exports = function(app, apiRoutes){
          !REQ.name || (data.name = REQ.name);
          !REQ.last_name || (data.last_name = REQ.last_name);
 
-          if(REQ.password){
-            data.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.password);
-          } 
-
           console.log("data", data);
 
           data = { $set : data }; 
