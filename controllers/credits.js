@@ -203,7 +203,7 @@ module.exports = function(app, apiRoutes, io){
 			}
 
 
-			Model.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user), "data.status" : { $in : ["Pagado", "Firmado", "Aceptado"] }}).exec(function(err, rs){
+			Model.findOne({ "_user"  : mongoose.Types.ObjectId(REQ._user), "data.status" : { $in : ["Pagado", "Firmado", "Aceptado"] }}).exec(function(err, rs){
 					if(rs){
 						return res.status(400).json({messages:"Active" , credit : rs});
 					}
