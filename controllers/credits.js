@@ -202,6 +202,13 @@ module.exports = function(app, apiRoutes, io){
 				console.log("facebook_token", facebook_token)
 			}
 
+
+			Model.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user), "data.status" : { $in : ["Pagado", "Firmado"] }).exec(function(err, rs){
+					if(rs){
+						return res.status(400).json({messages:"Active" , credit : rs});
+					}
+			});
+
 			User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user)}).exec(function(err, user){
 				if(user){
 					if(user.data.banned_time){
