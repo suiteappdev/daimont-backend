@@ -203,186 +203,124 @@ module.exports = function(app, apiRoutes, io){
 			}
 
 
-			Model.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user), "data.status" : { $in : ["Pagado", "Firmado"] }).exec(function(err, rs){
+			Model.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user), "data.status" : { $in : ["Pagado", "Firmado", "Aceptado"] }).exec(function(err, rs){
 					if(rs){
 						return res.status(400).json({messages:"Active" , credit : rs});
-					}
-			});
-
-			User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user)}).exec(function(err, user){
-				if(user){
-					if(user.data.banned_time){
-						var system = moment(user.data.banned_time);
-		      			var now = moment(new Date().toISOString());
-
-		      			if(now.diff(system, 'days') > 60){
-								var model = new Model(data);
-
-								model.save(function(err, credit){
-									if(credit){
-								        if(facebook_token){
-								            /*FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
-								                if(response && !response.error){
-								                	console.log("facebook response", response);
-
-										              var _html = _compiler.render({ _data : {
-										              	  user : credit.first_name,
-										                  amount : credit.data.amount[0],
-										                  interestsDays : credit.data.interestsDays,
-										                  pay_day : credit.data.pay_day,
-										                  system_quoteDays : credit.data.system_quoteDays,
-										                  finance_quote : credit.data.finance_quote,
-										                  ivaDays : credit.data.ivaDays,
-										                  total_payment : credit.data.total_payment
-										                  //status : credit.data.status
-										               }}, 'credit_resume/index.ejs');
-
-										              var data = {
-										                from: ' Daimont <noreply@daimont.com>',
-										                to: response.email,
-										                subject: 'Resumen de credito',
-										                text: 'Detalle y estado de su credito actual',
-										                html: _html
-										              };
-
-										              mailgun.messages().send(data, function (error, body) {
-										                console.log("mailgun body", body);
-										                console.log("mailgun errr", error);
-										              });
-								                }else{
-								                  res.status(401).json(response);
-								                }
-								            });*/
-								        }else{ 
-								        	
-								        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
-								        		console.log("credit" , rs);
-								        		if(!err){
-													var _html_credit_resume = _compiler.render({ _data : {
-							                            user : (rs._user.name + ' ' + rs._user.last_name) ,
-							                            amount : formatCurrency(rs.data.amount[0], opts),
-							                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
-							                            pay_day : moment(rs.data.pay_day).format('MMMM DD, YYYY'),
-							                            system_quoteDays : formatCurrency(rs.data.system_quoteDays, opts),
-							                            finance_quote : formatCurrency(rs.data.finance_quote, opts),
-							                            ivaDays : formatCurrency(rs.data.ivaDays, opts),
-							                            total_payment : formatCurrency(rs.data.total_payment, opts),
-							                            status : rs.data.status
-							                         }}, 'credit_resume/index.ejs');
-
-							                        var data_credit_resume = {
-							                          	from: ' Daimont <noreply@daimont.com>',
-							                          	to: rs._user.email,
-							                          	subject: 'RESUMEN DEL CRÉDITO',
-							                          	text: 'Estado y resumen de su actual credito',
-							                          	html: _html_credit_resume,
-						                    			attachment : path.join(process.env.PWD , "docs", "contrato.pdf")
-							                        };
-
-							                        mailgun.messages().send(data_credit_resume, function (error, body) {
-							                          if(data){
-							                              console.log("New credit request has been sended to", body);
-							                          }
-							                        }); 			        			
-								        		}
-								        	});
-								        }
-								    	return res.status(200).json(credit);
-									}else{
-										return res.status(500).json(err);
-									}
-								});		      				//aqui save
-		      			}else{
-		      				console.log("isBanned");
-		      				return res.status(200).json({ time_to_left : now.diff(system, 'days') == 0 ?  1 : now.diff(system, 'days')});
-		      			}
-
 					}else{
-						console.log("creando modelo");
-						var model = new Model(data);
+						User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user)}).exec(function(err, user){
+							if(user){
+								if(user.data.banned_time){
+									var system = moment(user.data.banned_time);
+					      			var now = moment(new Date().toISOString());
 
-						model.save(function(err, credit){
-							if(credit){
-								console.log("guardado modelo");
+					      			if(now.diff(system, 'days') > 60){
+											var model = new Model(data);
 
-						        if(facebook_token){
-								console.log("en nada");
+											model.save(function(err, credit){
+												if(credit){
+											        if(facebook_token){
+											        }else{ 
+											        	
+											        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
+											        		console.log("credit" , rs);
+											        		if(!err){
+																var _html_credit_resume = _compiler.render({ _data : {
+										                            user : (rs._user.name + ' ' + rs._user.last_name) ,
+										                            amount : formatCurrency(rs.data.amount[0], opts),
+										                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
+										                            pay_day : moment(rs.data.pay_day).format('MMMM DD, YYYY'),
+										                            system_quoteDays : formatCurrency(rs.data.system_quoteDays, opts),
+										                            finance_quote : formatCurrency(rs.data.finance_quote, opts),
+										                            ivaDays : formatCurrency(rs.data.ivaDays, opts),
+										                            total_payment : formatCurrency(rs.data.total_payment, opts),
+										                            status : rs.data.status
+										                         }}, 'credit_resume/index.ejs');
 
-						            /*FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
-						                if(response && !response.error){
-						                	console.log("facebook response", response);
+										                        var data_credit_resume = {
+										                          	from: ' Daimont <noreply@daimont.com>',
+										                          	to: rs._user.email,
+										                          	subject: 'RESUMEN DEL CRÉDITO',
+										                          	text: 'Estado y resumen de su actual credito',
+										                          	html: _html_credit_resume,
+									                    			attachment : path.join(process.env.PWD , "docs", "contrato.pdf")
+										                        };
 
-								              var _html = _compiler.render({ _data : {
-								              	  user : credit.first_name,
-								                  amount : credit.data.amount[0],
-								                  interestsDays : credit.data.interestsDays,
-								                  pay_day : credit.data.pay_day,
-								                  system_quoteDays : credit.data.system_quoteDays,
-								                  finance_quote : credit.data.finance_quote,
-								                  ivaDays : credit.data.ivaDays,
-								                  total_payment : credit.data.total_payment
-								                  //status : credit.data.status
-								               }}, 'credit_resume/index.ejs');
+										                        mailgun.messages().send(data_credit_resume, function (error, body) {
+										                          if(data){
+										                              console.log("New credit request has been sended to", body);
+										                          }
+										                        }); 			        			
+											        		}
+											        	});
+											        }
+											    	return res.status(200).json(credit);
+												}else{
+													return res.status(500).json(err);
+												}
+											});		      				//aqui save
+					      			}else{
+					      				console.log("isBanned");
+					      				return res.status(200).json({ time_to_left : now.diff(system, 'days') == 0 ?  1 : now.diff(system, 'days')});
+					      			}
 
-								              var data = {
-								                from: ' Daimont <noreply@daimont.com>',
-								                to: response.email,
-								                subject: 'Resumen de credito',
-								                text: 'Detalle y estado de su credito actual',
-								                html: _html
-								              };
+								}else{
+									console.log("creando modelo");
+									var model = new Model(data);
 
-								              mailgun.messages().send(data, function (error, body) {
-								                console.log("mailgun body", body);
-								                console.log("mailgun errr", error);
-								              });
-						                }else{
-						                  res.status(401).json(response);
-						                }
-						            });*/
-						        }else{
-										console.log("en el else fbtoken");
-						        	
-						        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
-						        		console.log("credit" , rs);
-						        		if(!err){
-											var _html_credit_resume = _compiler.render({ _data : {
-					                            user : (rs._user.name + ' ' + rs._user.last_name) ,
-					                            amount : formatCurrency(rs.data.amount[0], opts),
-					                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
-					                            pay_day : moment(rs.data.pay_day).format('MMMM DD, YYYY'),
-					                            system_quoteDays : formatCurrency(rs.data.system_quoteDays, opts),
-					                            finance_quote : formatCurrency(rs.data.finance_quote, opts),
-					                            ivaDays : formatCurrency(rs.data.ivaDays, opts),
-					                            total_payment : formatCurrency(rs.data.total_payment, opts),
-					                            status : rs.data.status
-					                         }}, 'credit_resume/index.ejs');
+									model.save(function(err, credit){
+										if(credit){
+											console.log("guardado modelo");
 
-					                        var data_credit_resume = {
-					                          	from: ' Daimont <noreply@daimont.com>',
-					                          	to: rs._user.email,
-					                          	subject: 'Resumen de Préstamo',
-					                          	text: 'Estado y resumen de su actual de préstamo',
-					                          	html: _html_credit_resume,
-				                    			attachment : path.join(process.env.PWD , "docs", "contrato.pdf")
-					                        };
+									        if(facebook_token){
+											console.log("en nada");
 
-					                        mailgun.messages().send(data_credit_resume, function (error, body) {
-					                          if(data){
-					                              console.log("New credit request has been sended to", body);
-					                          }
-					                        }); 			        			
-						        		}
-						        	});
-						        }
-						    	return res.status(200).json(credit);
-							}else{
-								return res.status(500).json(err);
+									        }else{
+													console.log("en el else fbtoken");
+									        	
+									        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
+									        		console.log("credit" , rs);
+									        		if(!err){
+														var _html_credit_resume = _compiler.render({ _data : {
+								                            user : (rs._user.name + ' ' + rs._user.last_name) ,
+								                            amount : formatCurrency(rs.data.amount[0], opts),
+								                            interestsDays : formatCurrency(rs.data.interestsDays, opts),
+								                            pay_day : moment(rs.data.pay_day).format('MMMM DD, YYYY'),
+								                            system_quoteDays : formatCurrency(rs.data.system_quoteDays, opts),
+								                            finance_quote : formatCurrency(rs.data.finance_quote, opts),
+								                            ivaDays : formatCurrency(rs.data.ivaDays, opts),
+								                            total_payment : formatCurrency(rs.data.total_payment, opts),
+								                            status : rs.data.status
+								                         }}, 'credit_resume/index.ejs');
+
+								                        var data_credit_resume = {
+								                          	from: ' Daimont <noreply@daimont.com>',
+								                          	to: rs._user.email,
+								                          	subject: 'Resumen de Préstamo',
+								                          	text: 'Estado y resumen de su actual de préstamo',
+								                          	html: _html_credit_resume,
+							                    			attachment : path.join(process.env.PWD , "docs", "contrato.pdf")
+								                        };
+
+								                        mailgun.messages().send(data_credit_resume, function (error, body) {
+								                          if(data){
+								                              console.log("New credit request has been sended to", body);
+								                          }
+								                        }); 			        			
+									        		}
+									        	});
+									        }
+									    	return res.status(200).json(credit);
+										}else{
+											return res.status(500).json(err);
+										}
+									});
+								}
 							}
 						});
 					}
-				}
 			});
+
+
 	        
 
 		}
