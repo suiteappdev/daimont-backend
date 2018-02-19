@@ -187,7 +187,7 @@ module.exports = function(app, apiRoutes, io){
 
 				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
-				                to: data._user.email,
+				                to: _contracto._user.email,
 				                subject: 'FIRMA DEL CONTRATO',
 				                text: 'por favor usa este código para firmar tu contrato de préstamo.',
 				                html: _html,
