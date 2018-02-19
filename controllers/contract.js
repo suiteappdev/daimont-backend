@@ -198,16 +198,37 @@ module.exports = function(app, apiRoutes, io){
 							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 	                        
 
-				              var data = {
+				              /*var data = {
 				                from: ' Daimont <noreply@daimont.com>',
 				                to: data._user.email,
 				                subject: 'FIRMA DEL CONTRATO',
 				                text: 'por favor usa este código para firmar tu contrato de préstamo.',
 				                html: _html,
 				                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
-				              };
+				              };*/
 
-				              mailgun.messages().send(data, function (error, body) {
+									
+							    const mailOptions = {
+									  from: 'info@daimont.com', // sender address
+									  to: data._user.email, // list of receivers
+									  subject: 'FIRMA DEL CONTRATO', // Subject line
+									  text: 'por favor usa este código para firmar tu contrato de préstamo.'
+									  html:html// plain text body
+									  /*attachments: [ 
+									  { filename: 'contrato.pdf',
+   									  contentType: 'application/pdf',
+   									  path: path.join(process.env.PWD , "contrato_firmado.pdf") } 
+   									  ] */
+								};
+
+								transporter.sendMail(mailOptions, function (err, info) {
+								   if(err)
+								     console.log("NODEMAILER ERROR", err);
+								   else
+								     console.log("NODEMAILER INFO", info);
+								});
+
+				              /*mailgun.messages().send(data, function (error, body) {
 				                	console.log("mailgun body", body);
 	                        	if(_contracto._user.data.phone){
 		                        	var phone = "+57" + _contracto._user.data.phone.toString();
@@ -227,7 +248,7 @@ module.exports = function(app, apiRoutes, io){
 									});
 	                        	}
 
-				              });    
+				              });*/    
 			              });
 					}else{
 						return res.status(500).json(err);
