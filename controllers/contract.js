@@ -22,11 +22,12 @@ module.exports = function(app, apiRoutes, io){
 		var opts = { format: '%v %c', code: 'COP' }
    		var Credit = require('../models/credits');
 		var nodemailer = require('nodemailer');
+
 		var transporter = nodemailer.createTransport("SMTP" ,{
 		 service: 'gmail',
 		 auth: {
-		        user: 'info@daimont.com',
-		        pass: 'daimont20'
+		        user: 'daimontoficial@gmail.com',
+		        pass: 'Majo0126*'
 		    }
 		});
 
