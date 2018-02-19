@@ -244,7 +244,6 @@ module.exports = function(app, apiRoutes){
          !REQ.metadata || (data.metadata = REQ.metadata);
          !REQ.data || (data.data = REQ.data);
          !REQ.username || (data.username = REQ.username);
-         !REQ.password || (data.password = REQ.password);
          !REQ.cc || (data.cc = REQ.cc);
          !REQ.email || (data.email = REQ.email);
          !REQ.name || (data.name = REQ.name);

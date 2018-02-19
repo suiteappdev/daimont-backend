@@ -183,22 +183,7 @@ module.exports = function(app, apiRoutes, io){
 			            Model.findOne({ _id : mongoose.Types.ObjectId(contract._id)}).populate("_user").exec(function(err, data){
 							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 	                        
-	                        	if( data._user.data.phone){
-		                        	var phone = "+57" + data._user.data.phone.toString();
-		                        	var firma = buffer.toString('hex');
-		                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
-			                        
-			                        var params = {
-									    Message: message.toString(),
-									    MessageStructure: "string",
-									    PhoneNumber:phone
-									};
 
-									sns.publish(params, function(err, data){
-									   if (err) console.log(err, err.stack); 
-						   			   else console.log("SMS", data);  
-									});
-	                        	}
 
 				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
@@ -211,6 +196,23 @@ module.exports = function(app, apiRoutes, io){
 
 				              mailgun.messages().send(data, function (error, body) {
 				                	console.log("mailgun body", body);
+	                        	if(data._user.data.phone){
+		                        	var phone = "+57" + data._user.data.phone.toString();
+		                        	var firma = buffer.toString('hex');
+		                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
+			                        
+			                        var params = {
+									    Message: message.toString(),
+									    MessageStructure: "string",
+									    PhoneNumber:phone
+									};
+
+									sns.publish(params, function(err, data){
+									   if (err) console.log(err, err.stack);
+									    
+						   			   else console.log("SMS", data);  
+									});
+	                        	}
 				              });    
 			              });
 					}else{
