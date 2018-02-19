@@ -1,6 +1,6 @@
 module.exports = function(app, apiRoutes, io){
 		var AWS = require('aws-sdk');
-		AWS.config.region = 'us-west-2';
+		AWS.config.region = 'us-east-2';
 		AWS.config.update({
 		      accessKeyId: process.env.AWS_ID,
 		      secretAccessKey: process.env.AWS_KEY
@@ -20,12 +20,7 @@ module.exports = function(app, apiRoutes, io){
    		moment.locale('es');
     	var formatCurrency = require('format-currency')
 		var opts = { format: '%v %c', code: 'COP' }
-   		var Credit = require('../models/credits');
-		var nodemailer = require('nodemailer');
-
-		const sgMail = require('@sendgrid/mail');
-		sgMail.setApiKey('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');
-
+   		 var Credit = require('../models/credits');
 
 
 	    var fs = require("fs");
@@ -105,25 +100,19 @@ module.exports = function(app, apiRoutes, io){
 
 								 stream.on('close', function() {
 								 	console.log("pdf end")
-									
-									const mailOptions = {
-									  from: 'info@daimont.com', // sender address
-									  to: rs._user.email, // list of receivers
-									  subject: 'Por favor revisa el contrato adjunto donde se describe todos los términos entre las partes.', // Subject line
-									  html: html_credit_resume,// plain text body
-									  attachments: [ 
-									  { filename: 'contrato.pdf',
-   									  contentType: 'application/pdf',
-   									  path: path.join(process.env.PWD , "contrato_firmado.pdf") } 
-   									  ] 
-									};
+					              	var data = {
+					                	from: ' Daimont <noreply@daimont.com>',
+						                to: rs._user.email,
+						                bcc:process.env.ADMIN_EMAIL,
+						                subject: 'Contrato Firmado',
+						                html : _html_credit_resume,
+						                text: 'Por favor revisa el contrato adjunto donde se describe todos los términos entre las partes.',
+						                attachment : path.join(process.env.PWD , "contrato_firmado.pdf")
+						              };
 
-									transporter.sendMail(mailOptions, function (err, info) {
-									   if(err)
-									     console.log("NODEMAILER ERROR", err);
-									   else
-									     console.log("NODEMAILER INFO", info);
-									});
+						              mailgun.messages().send(data, function (error, body) {
+						                console.log("Enviando contrato firmado", body);
+						              });	
 								 });
   
 						  		
@@ -196,33 +185,16 @@ module.exports = function(app, apiRoutes, io){
 							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 	                        
 
-				              /*var data = {
+				              var data = {
 				                from: ' Daimont <noreply@daimont.com>',
 				                to: data._user.email,
 				                subject: 'FIRMA DEL CONTRATO',
 				                text: 'por favor usa este código para firmar tu contrato de préstamo.',
 				                html: _html,
 				                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
-				              };*/
+				              };
 
-									
-							    const mailOptions = {
-									  from: 'info@daimont.com', // sender address
-									  to: data._user.email, // list of receivers
-									  subject: 'FIRMA DEL CONTRATO', // Subject line
-									  text: 'por favor usa este código para firmar tu contrato de préstamo.',
-									  html:_html// plain text body
-									  /*attachments: [ 
-									  { filename: 'contrato.pdf',
-   									  contentType: 'application/pdf',
-   									  path: path.join(process.env.PWD , "contrato_firmado.pdf") } 
-   									  ] */
-								};
-
-
-								sgMail.send(mailOptions);
-
-				              /*mailgun.messages().send(data, function (error, body) {
+				              mailgun.messages().send(data, function (error, body) {
 				                	console.log("mailgun body", body);
 	                        	if(_contracto._user.data.phone){
 		                        	var phone = "+57" + _contracto._user.data.phone.toString();
@@ -242,7 +214,7 @@ module.exports = function(app, apiRoutes, io){
 									});
 	                        	}
 
-				              });*/    
+				              });    
 			              });
 					}else{
 						return res.status(500).json(err);
