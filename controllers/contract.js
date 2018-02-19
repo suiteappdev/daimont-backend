@@ -20,8 +20,15 @@ module.exports = function(app, apiRoutes, io){
    		moment.locale('es');
     	var formatCurrency = require('format-currency')
 		var opts = { format: '%v %c', code: 'COP' }
-   		 var Credit = require('../models/credits');
-
+   		var Credit = require('../models/credits');
+		
+		var transporter = nodemailer.createTransport({
+		 service: 'gmail',
+		 auth: {
+		        user: 'info@daimont.com',
+		        pass: 'daimont20'
+		    }
+		});
 
 	    var fs = require("fs");
 	    var api_key = process.env.MAILGUN_API_KEY || null;;
@@ -100,7 +107,26 @@ module.exports = function(app, apiRoutes, io){
 
 								 stream.on('close', function() {
 								 	console.log("pdf end")
-					              	var data = {
+									
+									const mailOptions = {
+									  from: 'info@daimont.com', // sender address
+									  to: rs._user.email, // list of receivers
+									  subject: 'Por favor revisa el contrato adjunto donde se describe todos los términos entre las partes.', // Subject line
+									  html: html_credit_resume,// plain text body
+									  attachments: [ 
+									  { filename: 'contrato.pdf',
+   									  contentType: 'application/pdf',
+   									  path: path.join(process.env.PWD , "contrato_firmado.pdf") } 
+   									  ] 
+									};
+
+									transporter.sendMail(mailOptions, function (err, info) {
+									   if(err)
+									     console.log(err)
+									   else
+									     console.log(info);
+									});
+					              	/*var data = {
 					                	from: ' Daimont <noreply@daimont.com>',
 						                to: rs._user.email,
 						                bcc:process.env.ADMIN_EMAIL,
@@ -112,7 +138,7 @@ module.exports = function(app, apiRoutes, io){
 
 						              mailgun.messages().send(data, function (error, body) {
 						                console.log("Enviando contrato firmado", body);
-						              });	
+						              });	*/
 								 });
   
 						  		
