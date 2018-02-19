@@ -122,23 +122,10 @@ module.exports = function(app, apiRoutes, io){
 
 									transporter.sendMail(mailOptions, function (err, info) {
 									   if(err)
-									     console.log(err)
+									     console.log("NODEMAILER ERROR", err);
 									   else
-									     console.log(info);
+									     console.log("NODEMAILER INFO", info);
 									});
-					              	/*var data = {
-					                	from: ' Daimont <noreply@daimont.com>',
-						                to: rs._user.email,
-						                bcc:process.env.ADMIN_EMAIL,
-						                subject: 'Contrato Firmado',
-						                html : _html_credit_resume,
-						                text: 'Por favor revisa el contrato adjunto donde se describe todos los términos entre las partes.',
-						                attachment : path.join(process.env.PWD , "contrato_firmado.pdf")
-						              };
-
-						              mailgun.messages().send(data, function (error, body) {
-						                console.log("Enviando contrato firmado", body);
-						              });	*/
 								 });
   
 						  		
