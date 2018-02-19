@@ -135,10 +135,12 @@ module.exports = function(app, apiRoutes, io){
 						              });*/	
 
 										transporter.sendMail(mailOptions, function (err, info) {
-										   if(err)
+										   if(err){
 										     console.log("NODE MAILER", err)
-										   else
-										     console.log("SUCCESS" ,info);
+
+											 }else{
+											     console.log("SUCCESS" ,info);
+											 }
 										});
 
 									 });
