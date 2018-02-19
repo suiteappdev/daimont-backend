@@ -21,7 +21,7 @@ module.exports = function(app, apiRoutes, io){
     	var formatCurrency = require('format-currency')
 		var opts = { format: '%v %c', code: 'COP' }
    		var Credit = require('../models/credits');
-		
+		var nodemailer = require('nodemailer');
 		var transporter = nodemailer.createTransport({
 		 service: 'gmail',
 		 auth: {
