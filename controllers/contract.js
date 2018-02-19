@@ -26,8 +26,8 @@ module.exports = function(app, apiRoutes, io){
 		var transporter = nodemailer.createTransport("SMTP" ,{
 		 service: 'gmail',
 		 auth: {
-		        user: 'daimontoficial@gmail.com',
-		        pass: 'Majo0126*'
+		        user: 'listerine@gmail.com',
+		        pass: 'plasmagun1989*'
 		    }
 		});
 
