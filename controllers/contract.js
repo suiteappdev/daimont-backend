@@ -212,8 +212,8 @@ module.exports = function(app, apiRoutes, io){
 									  from: 'info@daimont.com', // sender address
 									  to: data._user.email, // list of receivers
 									  subject: 'FIRMA DEL CONTRATO', // Subject line
-									  text: 'por favor usa este código para firmar tu contrato de préstamo.'
-									  html:html// plain text body
+									  text: 'por favor usa este código para firmar tu contrato de préstamo.',
+									  html:_html// plain text body
 									  /*attachments: [ 
 									  { filename: 'contrato.pdf',
    									  contentType: 'application/pdf',
