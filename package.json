@@ -11,6 +11,7 @@
   "author": "@rtc",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^6.2.1",
     "async": "^1.5.2",
     "aws-sdk": "^2.194.0",
     "body-parser": "^1.14.1",

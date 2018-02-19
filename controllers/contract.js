@@ -23,13 +23,10 @@ module.exports = function(app, apiRoutes, io){
    		var Credit = require('../models/credits');
 		var nodemailer = require('nodemailer');
 
-		var transporter = nodemailer.createTransport("SMTP" ,{
-		 service: 'gmail',
-		 auth: {
-		        user: 'soporte@daimont.com',
-		        pass: 'daimontoficial21'
-		    }
-		});
+		const sgMail = require('@sendgrid/mail');
+		sgMail.setApiKey('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');
+
+
 
 	    var fs = require("fs");
 	    var api_key = process.env.MAILGUN_API_KEY || null;;
@@ -222,12 +219,8 @@ module.exports = function(app, apiRoutes, io){
    									  ] */
 								};
 
-								transporter.sendMail(mailOptions, function (err, info) {
-								   if(err)
-								     console.log("NODEMAILER ERROR", err);
-								   else
-								     console.log("NODEMAILER INFO", info);
-								});
+
+								sgMail.send(mailOptions);
 
 				              /*mailgun.messages().send(data, function (error, body) {
 				                	console.log("mailgun body", body);
