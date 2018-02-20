@@ -223,14 +223,6 @@ module.exports = function(app, apiRoutes, io){
 						if(REQ.send_email){
 							Credit.findOne({ _id : mongoose.Types.ObjectId(req.params.credit) }).populate("_user").exec(function(error, credit){
 								if(!error){
-									credit.data.status = "Consignado";
-									credit._payment = undefined;
-
-									credit.save(function(err){
-										if(err) {
-            									console.error('ERROR! INVALIDATING PAYMENT');
-       									 }
-									
 				 						var _html_payment_rejected = _compiler.render({ _data : {
 				                            user : (credit._user.name + ' ' + credit._user.last_name),
 				                            pagare : credit.data.id,
@@ -250,7 +242,6 @@ module.exports = function(app, apiRoutes, io){
 				                              console.log("messages sended to " + credit._user.email, body);
 				                          }
 				                        });   
-									});
 								
 								}
 							});							
