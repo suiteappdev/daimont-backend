@@ -54,6 +54,7 @@ module.exports = function(app, apiRoutes, io){
 
 			if(req.headers['x-daimont-user']){
 				where = { "metadata._author" :  mongoose.Types.ObjectId.isValid(req.headers['x-daimont-user']) ? mongoose.Types.ObjectId(req.headers['x-daimont-user']) :req.headers['x-daimont-user'] , "data.hidden" : false};
+				
 			}
 
 			 Model.find( where || {} ).populate("_user").populate("_credit").exec(function(err, rs){
@@ -73,7 +74,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						res.status(200).json(rs.filter(function(payment){
 							if(payment._credit && payment._credit.data){
-									return payment._credit.data.status != 'Finalizado';
+									return payment._credit.data.status != 'Finalizado' || payment._credit.data.invalid_payment;
 							}
 						}));
 					}else{
@@ -224,7 +225,7 @@ module.exports = function(app, apiRoutes, io){
 								if(!error){
 									credit.data.status = "Consignado";
 									credit.save();
-									
+
 									console.log("CREDIT", credit);
 			 						var _html_payment_rejected = _compiler.render({ _data : {
 			                            user : (credit._user.name + ' ' + credit._user.last_name),
