@@ -74,7 +74,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						res.status(200).json(rs.filter(function(payment){
 							if(payment._credit && payment._credit.data){
-									return payment._credit.data.status != 'Finalizado' || !payment._credit.data.invalid_payment;
+									return payment._credit.data.status != 'Finalizado' && !payment._credit.data.invalid_payment;
 							}
 						}));
 					}else{
