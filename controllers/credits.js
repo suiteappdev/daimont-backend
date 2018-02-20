@@ -206,7 +206,7 @@ module.exports = function(app, apiRoutes, io){
 			Model.findOne({ "_user"  : mongoose.Types.ObjectId(REQ._user), "data.status" : { $in : ["Pagado", "Firmado", "Aceptado"] }}).exec(function(err, rs){
 					if(rs){
 						return res.status(400).json({messages:"Active" , credit : rs});
-					}
+			}
 
 			User.findOne({ "_id"  : mongoose.Types.ObjectId(REQ._user)}).exec(function(err, user){
 				if(user){
@@ -917,7 +917,7 @@ module.exports = function(app, apiRoutes, io){
  		function aceptado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "data.status" : 'Aceptado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.hidden" : true, "data.status" : 'Aceptado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
