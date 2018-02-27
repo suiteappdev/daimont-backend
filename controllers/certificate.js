@@ -13,7 +13,7 @@ module.exports = exports = function(app, apiRoutes, io){
 			if(!err){
 				var name = ((data.name || '') +' '+ (data.data.second_name || '') +' '+ (data.last_name || '') + (data.data.second_last_name || ''))
  				
- 				var _html = _compiler.render({ _data : { name : name, cc : data.cc, date : moment(new Date()).format('MMMM DD YYYY, h:mm:ss a')} }, 'certificate/certificate.ejs');
+ 				var _html = _compiler.render({ _data : { name : name, cc : data.cc, date : moment(new Date()).format('DD MMMM YYYY, h:mm:ss a')} }, 'certificate/certificate.ejs');
 				
 				var wkhtmltopdf = require('wkhtmltopdf');
 				wkhtmltopdf.command = "/home/ec2-user/wkhtmltox/bin/wkhtmltopdf";
