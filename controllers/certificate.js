@@ -1,4 +1,5 @@
 var User = require('../models/user');
+var mongoose = require('mongoose');
 
 module.exports = exports = function(app, apiRoutes, io){
 
