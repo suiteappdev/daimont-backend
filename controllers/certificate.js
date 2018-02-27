@@ -1,6 +1,7 @@
 var User = require('../models/user');
 var mongoose = require('mongoose');
 var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
+var path = require("path");
 
 module.exports = exports = function(app, apiRoutes, io){
 	app.get("/certificate/:id", function(req, res){
