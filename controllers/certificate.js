@@ -2,7 +2,7 @@ var User = require('../models/user');
 
 module.exports = exports = function(app, apiRoutes, io){
 
-	app.get("certificate/:id". function(req, res){
+	app.get("certificate/:id", function(req, res){
 		res.setHeader('Content-Type', 'application/pdf');
 		res.setHeader('Content-Disposition', 'attachment; filename=certificado.pdf');
 		
@@ -17,6 +17,5 @@ module.exports = exports = function(app, apiRoutes, io){
 			}
 		});
 	});
-
 }
 
