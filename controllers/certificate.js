@@ -11,7 +11,7 @@ module.exports = exports = function(app, apiRoutes, io){
 
 		User.findOne({ _id : mongoose.Types.ObjectId(req.params.id)}).exec(function(err, data){
 			if(!err){
-				var name = ((data.name || '') +' '+ (data.data.second_name || '') +' '+ (data.last_name || '') + (data.data.second_last_name || ''))
+				var name = ((data.name || '') +' '+ (data.data.second_name || '') +' '+ (data.last_name || '') +' '+(data.data.second_last_name || ''))
  				
  				var _html = _compiler.render({ _data : { name : name, cc : data.cc, date : moment(new Date()).format('DD MMMM YYYY, h:mm:ss a')} }, 'certificate/certificate.ejs');
 				
