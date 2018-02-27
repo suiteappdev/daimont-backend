@@ -10,9 +10,10 @@ module.exports = exports = function(app, apiRoutes, io){
 
 		User.findOne({ _id : mongoose.Types.ObjectId(req.params.id)}).exec(function(err, data){
 			if(!err){
-				console.log("data", data);
- 				var _html = _compiler.render({ _data : { name : "andrew alexander castro vital", cc : "1103102286"} }, 'certificate/certificate.ejs');
-				console.log("HTML", _html);
+				var name = ((data.name || '') +' '+ (data.data.second_name || '') +' '+ (data.last_name || '') + (data.data.second_last_name || ''))
+ 				
+ 				var _html = _compiler.render({ _data : { name : name, cc : data.cc} }, 'certificate/certificate.ejs');
+				
 				var wkhtmltopdf = require('wkhtmltopdf');
 				wkhtmltopdf.command = "/home/ec2-user/wkhtmltox/bin/wkhtmltopdf";
 
