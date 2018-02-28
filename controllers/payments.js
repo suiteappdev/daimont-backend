@@ -166,6 +166,29 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function postAdmin(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+  			!REQ.metadata || (data.metadata = REQ.metadata);
+			!REQ.data || (data.data = REQ.data);
+
+			data.metadata = data.metadata || {};
+			data._user = mongoose.Types.ObjectId(req.body._user);
+			data._credit = mongoose.Types.ObjectId(REQ._credit);
+			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
+			data.data.transaction = req.file.location;
+			
+			var model = new Model(data);
+			
+			model.save(function(err, payment){
+				if(payment){
+			    	res.status(200).json(payment);
+				}else{
+					res.status(500).json(err);
+				}
+			});
+		}
+
 		function update_payment_admin(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
@@ -294,7 +317,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias + "/:id", getById);
 		apiRoutes.get("/" + _url_alias +"/user/:id", getByUser);
 		apiRoutes.post("/" + _url_alias, upload, post);
-		apiRoutes.post("/" + _url_alias + "/update_payment_admin", upload, update_payment_admin);
+		apiRoutes.post("/" + _url_alias + "/update_payment_admin", upload, postAdmin);
 		apiRoutes.post("/" + _url_alias + "/:id/invalidate/:credit", invalidate);
 		apiRoutes.put("/" + _url_alias + "/:id", update);
 		apiRoutes.delete("/" + _url_alias + "/:id", remove);
