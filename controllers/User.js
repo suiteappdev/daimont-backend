@@ -394,7 +394,7 @@ module.exports = function(app, apiRoutes){
              }
 
              if(user.data && user.data.blocked){
-                  res.status(401).json({ message : "account blocked"});
+                  res.status(401).json({ blocked : "account blocked"});
                   return;
              }
 
