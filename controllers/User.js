@@ -393,6 +393,11 @@ module.exports = function(app, apiRoutes){
                     return;
              }
 
+             if(user.data && user.data.blocked){
+                  res.status(401).json({ message : "account blocked"});
+                  return;
+             }
+
             if(user.auth(req.body.password)){
                     user.password = null;
                     
