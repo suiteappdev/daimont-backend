@@ -112,11 +112,11 @@ module.exports = function(app, apiRoutes, io){
 
 			console.log("params use", REQ.id);
 
-			Model.find({ "_user" : mongoose.Types.ObjectId(REQ.id) }).populate("_user").populate("_credit").populate({ path : "_credit._payment", model : "payments"}).exec(function(err, rs){
+			Model.find({ "_user" : mongoose.Types.ObjectId(REQ.id) }).populate("_user").populate("_credit").exec(function(err, rs){
 				if(!err){
 					Model.populate(rs, { path : "_credit._payment", model:"payments"}, function(err, cre){
 						res.status(200).json(cre);
-					}));
+					});
 				}else{
 					res.status(500).json(err);
 				}
