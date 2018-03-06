@@ -114,7 +114,13 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.find({ "_user" : mongoose.Types.ObjectId(REQ.id) }).populate("_user").populate("_credit").populate("_credit._payment").exec(function(err, rs){
 				if(!err){
-					res.status(200).json(rs);
+					var result = rs.map(function(cre){
+						cre._credit.populate({ path : "_payment", model : "payments"}).exec(function(payments){
+							return cre;
+						});
+					});
+
+					res.status(200).json(result);
 				}else{
 					res.status(500).json(err);
 				}
