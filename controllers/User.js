@@ -248,6 +248,7 @@ module.exports = function(app, apiRoutes){
          !REQ.email || (data.email = REQ.email);
          !REQ.name || (data.name = REQ.name);
          !REQ.last_name || (data.last_name = REQ.last_name);
+         !REQ.type || (data.type = REQ.type);
 
           console.log("data", data);
 
