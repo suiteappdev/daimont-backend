@@ -331,7 +331,7 @@ module.exports = function(app, apiRoutes){
     }
 
     function employees(req, res){
-        UserSchema.find({ "type" : "ADMINISTRATOR" }).exec(function(err, users){
+        UserSchema.find({ "type" : ["ADMINISTRATOR", "SUPERVISOR"] }).exec(function(err, users){
             if(!err){
                 res.status(200).json(users);
             }else{
