@@ -81,7 +81,7 @@ apiRoutes.use(function(req, res, next) {
                                     }
                                 })  
                             });
-                      }else if(user.type == "ADMINISTRATOR"){
+                      }else if(user.type == "ADMINISTRATOR" || user.type == "SUPERVISOR"){
                         jwt.verify(token, app.get("secret"),{ ignoreExpiration : true }, function(token_err, decoded) {
                             if(token_err && token_err.name == 'TokenExpiredError'){
                                 return res.status(401).json(err); 
