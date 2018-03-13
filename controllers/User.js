@@ -12,6 +12,7 @@ module.exports = function(app, apiRoutes){
     var User = require('../models/user');
     var crypto = require("crypto");
     var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
+    var sessionSchema = require('./session');
 
     var SNS = require('sns-mobile');
 
@@ -535,6 +536,12 @@ module.exports = function(app, apiRoutes){
 
       User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $set: { "data.blocked": true }},  function(err, user) {
         if(!err){
+               sessionSchema.find({ _user : mongoose.Types.ObjectId(req.params.id)}).exec(function(err, session){
+                  if(!err){
+                      session.remove();
+                  }
+               });
+
                res.status(200).json(user);
           }
       });
