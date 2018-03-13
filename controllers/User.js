@@ -12,7 +12,7 @@ module.exports = function(app, apiRoutes){
     var User = require('../models/user');
     var crypto = require("crypto");
     var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
-    var sessionSchema = require('./session');
+    var sessionSchema = require('../session');
 
     var SNS = require('sns-mobile');
 
