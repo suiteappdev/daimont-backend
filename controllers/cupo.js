@@ -17,8 +17,8 @@ module.exports = function(app, apiRoutes){
 
     function post(req, res){
        var data = req.body;
-
-       var cupo = new Model(req.body);
+       data.data.status = "Pendiente";
+       var cupo = new Model(data);
 
         cupo.save(data, function(err, user){
             if(err){
