@@ -935,6 +935,30 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+ 		function morosos(req, res){
+			var REQ = req.params; 
+			try{
+				const cutoffDate = new Date()
+				cutoffDate.setDate(cutoffDate.getDate() - 30);
+
+				Model.find({"data.status" : 'Consignado'}).lt('data.deposited_time_server', cutoffDate).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
  		function actualizado(req, res){
 			var REQ = req.params; 
 			try{
@@ -1042,6 +1066,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/pendiente", pendiente);
 		apiRoutes.get("/" + _url_alias +"/firmado", firmado);
 		apiRoutes.get("/" + _url_alias +"/aceptado", aceptado);
+		apiRoutes.get("/" + _url_alias +"/morosos", morosos);
 		apiRoutes.get("/" + _url_alias +"/rechazado", rechazado);
 
 		apiRoutes.get("/" + _url_alias +"/email_request/:id", email_request);
