@@ -389,7 +389,7 @@ module.exports = function(app, apiRoutes){
           var jwt = require('jsonwebtoken');
           var UserSchema = require('../models/user');
 
-         UserSchema.findOne({ email : req.body.email}).exec(function(err, user){
+         UserSchema.findOne({ email : req.body.email.toLowerCase()}).exec(function(err, user){
             if(!user){
                     res.status(404).json({err : 'email address not found'});
                     return;
