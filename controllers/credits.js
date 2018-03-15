@@ -519,6 +519,7 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data); 
 
 			data.data.status = "Anulado";
+			data.data.nulled_time_server = new Date();
 
 			data = { $set : data };          
 
