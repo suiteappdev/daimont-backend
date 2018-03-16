@@ -86,7 +86,7 @@ module.exports = function(app, apiRoutes){
 
     function client(req, res){
         UserSchema
-        .findOne( mongoose.Types.ObjectId(req.params.id))
+        .findOne( { _id : mongoose.Types.ObjectId(req.params.id) })
         .exec(function(err, rs){
             if(rs)
                 res.json(rs);
