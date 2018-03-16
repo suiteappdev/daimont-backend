@@ -899,7 +899,10 @@ module.exports = function(app, apiRoutes, io){
  		function consignado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "data.status" : 'Consignado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				var cutoffDate = new Date()
+				cutoffDate.setDate(cutoffDate.getDate() - 30);
+				
+				Model.find({"data.hidden" : false, "data.status" : 'Consignado', "data.deposited_time_server" : { $lt: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -944,7 +947,7 @@ module.exports = function(app, apiRoutes, io){
 				var cutoffDate = new Date()
 				cutoffDate.setDate(cutoffDate.getDate() - 30);
 
-				Model.find({"data.status" : 'Consignado', "data.deposited_time_server" : { $gte: cutoffDate}}).lt('data.deposited_time_server', cutoffDate).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Consignado', "data.deposited_time_server" : { $gte: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
