@@ -357,6 +357,8 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.body || req.params;
 
 			!REQ.data || (data.data = REQ.data); 
+
+			data.data.approved_server_time = new Date();
 			
 			if(REQ._approvedby){
 				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
@@ -939,10 +941,10 @@ module.exports = function(app, apiRoutes, io){
  		function morosos(req, res){
 			var REQ = req.params; 
 			try{
-				const cutoffDate = new Date()
+				var cutoffDate = new Date()
 				cutoffDate.setDate(cutoffDate.getDate() - 30);
 
-				Model.find({"data.status" : 'Consignado'}).lt('data.deposited_time_server', cutoffDate).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Consignado', "data.deposited_time_server" : { $gte: cutoffDate}}).lt('data.deposited_time_server', cutoffDate).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
