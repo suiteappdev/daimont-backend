@@ -904,14 +904,6 @@ module.exports = function(app, apiRoutes, io){
 				
 				Model.find({"data.hidden" : false, "data.status" : 'Consignado', "data.deposited_time_server" : { $gte: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
-						var _updated_date = rs.map(function(cre){
-								if(!cre.data.deposited_time_server){
-									cre.data.deposited_time_server = cre.data.deposited_time;
-								}
-
-								return cre;
-						});
-
 						res.status(200).json(_updated_date || []);
 					}else{
 						res.status(500).json(err);
