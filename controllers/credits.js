@@ -949,6 +949,15 @@ module.exports = function(app, apiRoutes, io){
 
 				Model.find({"data.status" : 'Consignado', $or : [{"data.deposited_time_server" : { $lte: cutoffDate}}, {"data.deposited_time_server" : { $exists: false}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
+
+						var data = rs.map(function(cre){
+							if(!cre.data.deposited_time_server){
+								cre.data.deposited_time_server = cre.updatedAt;
+							}
+
+							return cre;
+						});
+
 						res.status(200).json(rs || []);
 					}else{
 						res.status(500).json(err);
