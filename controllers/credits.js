@@ -1063,6 +1063,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/finalizado", finalizado);
 		apiRoutes.get("/" + _url_alias +"/finalizado/:user/count", finalizado_count);
+		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/pagado", pagado);
 		apiRoutes.get("/" + _url_alias +"/anulado", anulado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
