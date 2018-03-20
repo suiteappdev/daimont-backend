@@ -952,7 +952,7 @@ module.exports = function(app, apiRoutes, io){
 
 						var data = rs.map(function(cre){
 							if(!cre.data.deposited_time_server){
-								cre.data.deposited_time_server = cre.updatedAt;
+								cre.data.deposited_time_server = cre.deposited_time;
 							}
 
 							return cre;
