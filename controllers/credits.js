@@ -906,7 +906,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						var _updated_date = rs.map(function(cre){
 								if(!cre.data.deposited_time_server){
-									cre.data.deposited_time_server = cre.updatedAt;
+									cre.data.deposited_time_server = cre.data.deposited_time;
 								}
 
 								return cre;
