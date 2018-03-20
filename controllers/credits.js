@@ -923,7 +923,7 @@ module.exports = function(app, apiRoutes, io){
  		function aceptado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.status" : 'Aceptado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Aceptado'}).sort("-updatedAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -947,7 +947,7 @@ module.exports = function(app, apiRoutes, io){
 				var cutoffDate = new Date()
 				cutoffDate.setDate(cutoffDate.getDate() - 30);
 
-				Model.find({"data.status" : 'Consignado', $or : [{"data.deposited_time_server" : { $lte: cutoffDate}}, {"data.deposited_time_server" : { $exists: false}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Consignado', $or : [{"data.deposited_time_server" : { $lte: cutoffDate}}, {"data.deposited_time_server" : { $exists: false}}]}).sort("-updatedAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -1019,7 +1019,7 @@ module.exports = function(app, apiRoutes, io){
 		function finalizado(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "data.status" : 'Finalizado'}).populate("_user").populate({ path: "_payment", options: { sort: { 'createdAt': 1 } } }).populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Finalizado'}).populate("_user").populate({ path: "_payment", options: { sort: { 'updatedAt': 1 } } }).populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
@@ -1061,10 +1061,8 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/current", getCurrent);
 
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
-		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/finalizado", finalizado);
 		apiRoutes.get("/" + _url_alias +"/finalizado/:user/count", finalizado_count);
-		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/pagado", pagado);
 		apiRoutes.get("/" + _url_alias +"/anulado", anulado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
