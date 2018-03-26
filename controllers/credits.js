@@ -912,7 +912,22 @@ module.exports = function(app, apiRoutes, io){
 								return cre;
 						});
 
-						res.status(200).json(_updated_date || []);
+						async.map(_updated_date, function (credit, next) {
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count || 0;
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													next(err, credit);
+											}
+										});
+								}
+							});
+						},
+						function (err, result) {
+						 	res.status(200).json(result || []);
+						});
 					}else{
 						res.status(500).json(err);
 					}
@@ -933,7 +948,23 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.find({"data.status" : 'Aceptado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs || []);
+						async.map(rs, function (credit, next) {
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count || 0;
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													next(err, credit);
+											}
+										});
+								}
+							});
+						},
+						function (err, result) {
+						 	res.status(200).json(result || []);
+						});
+
 					}else{
 						res.status(500).json(err);
 					}
@@ -957,7 +988,22 @@ module.exports = function(app, apiRoutes, io){
 
 				Model.find({"data.status" : 'Consignado', $or : [{"data.deposited_time_server" : { $lte: cutoffDate}}, {"data.deposited_time_server" : { $exists: false}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs || []);
+						async.map(rs, function (credit, next) {
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count || 0;
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													next(err, credit);
+											}
+										});
+								}
+							});
+						},
+						function (err, result) {
+						 	res.status(200).json(result || []);
+						});
 					}else{
 						res.status(500).json(err);
 					}
@@ -1029,7 +1075,22 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.find({"data.hidden" : false, "data.status" : 'Finalizado'}).populate("_user").populate({ path: "_payment", options: { sort: { 'createdAt': 1 } } }).populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs || []);
+						async.map(rs, function (credit, next) {
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count || 0;
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													next(err, credit);
+											}
+										});
+								}
+							});
+						},
+						function (err, result) {
+						 	res.status(200).json(result || []);
+						});
 					}else{
 						res.status(500).json(err);
 					}
