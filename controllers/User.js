@@ -336,6 +336,7 @@ module.exports = function(app, apiRoutes){
             if(!err){
                 res.status(200).json(users);
             }else{
+              console.log("ERR", err);
                 res.status(500).json({err : err});
             }
         });

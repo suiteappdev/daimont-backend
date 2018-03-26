@@ -904,7 +904,15 @@ module.exports = function(app, apiRoutes, io){
 				
 				Model.find({"data.hidden" : false, "data.status" : 'Consignado', "data.deposited_time_server" : { $gte: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs || []);
+						var _updated_date = rs.map(function(cre){
+								if(!cre.data.deposited_time_server){
+									cre.data.deposited_time_server = cre.deposited;
+								}
+
+								return cre;
+						});
+
+						res.status(200).json(_updated_date || []);
 					}else{
 						res.status(500).json(err);
 					}
@@ -949,15 +957,6 @@ module.exports = function(app, apiRoutes, io){
 
 				Model.find({"data.status" : 'Consignado', $or : [{"data.deposited_time_server" : { $lte: cutoffDate}}, {"data.deposited_time_server" : { $exists: false}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
-
-						var data = rs.map(function(cre){
-							if(!cre.data.deposited_time_server){
-								cre.data.deposited_time_server = cre.data.deposited_time;
-							}
-
-							return cre;
-						});
-
 						res.status(200).json(rs || []);
 					}else{
 						res.status(500).json(err);
@@ -1072,7 +1071,6 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/finalizado", finalizado);
 		apiRoutes.get("/" + _url_alias +"/finalizado/:user/count", finalizado_count);
-		apiRoutes.get("/" + _url_alias +"/consignado", consignado);
 		apiRoutes.get("/" + _url_alias +"/pagado", pagado);
 		apiRoutes.get("/" + _url_alias +"/anulado", anulado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
