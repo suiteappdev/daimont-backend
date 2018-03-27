@@ -984,9 +984,9 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			try{
 				var cutoffDate = new Date()
-				cutoffDate.setDate(cutoffDate.getDate() - 30);
+				cutoffDate.setDate(cutoffDate.getDate() + 30);
 
-				Model.find({"data.status" : 'Consignado', $or : [{"data.deposited_time_server" : { $gte: cutoffDate}}, {"data.deposited_time_server" : { $exists: false}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Consignado', $or : [{"data.deposited_time_server" : { $lte: cutoffDate}}, {"data.deposited_time_server" : { $exists: false}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						async.map(rs, function (credit, next) {
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
