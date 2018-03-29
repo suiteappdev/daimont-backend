@@ -620,6 +620,79 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+
+
+
+
+	function payment_whatsapp(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			if(REQ.status){
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onWhatsApps" : true } }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}else{
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onWhatsApps"  : false} }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}
+		}
+
+		function payment_email(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			if(REQ.status){
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail" : true } }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}else{
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail"  : false} }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}
+		}
+
+		function payment_phone(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			if(REQ.status){
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone" : true } }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}else{
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone"  : false} }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}
+		}
+
 		function all (req, res){
 			var REQ = req.params; 
 			
