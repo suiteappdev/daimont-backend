@@ -627,6 +627,32 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function request_email_enable(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+		function request_email_disabled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
 
 	function payment_whatsapp(req, res){
 			var data = {};
@@ -1305,7 +1331,8 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/request/phone/:id/enable", request_phone_enable);
 		apiRoutes.put("/" + _url_alias + "/request/phone/:id/disabled", request_phone_disabled);
 
-		apiRoutes.put("/" + _url_alias + "/request/email/:id/disabled", request_email);
+		apiRoutes.put("/" + _url_alias + "/request/email/:id/enable", request_email_enable);
+		apiRoutes.put("/" + _url_alias + "/request/email/:id/disabled", request_email_disabled);
 
 		apiRoutes.put("/" + _url_alias + "/payment/whatsapp/:id", payment_whatsapp);
 		apiRoutes.put("/" + _url_alias + "/payment/phone/:id", payment_phone);
