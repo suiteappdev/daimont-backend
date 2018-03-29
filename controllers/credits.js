@@ -551,6 +551,75 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function request_whatsapp(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			if(REQ.status){
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onWhatsApps" : true } }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}else{
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onWhatsApps"  : false} }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}
+		}
+
+		function request_email(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			if(REQ.status){
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail" : true } }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}else{
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail"  : false} }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}
+		}
+
+		function request_phone(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			if(REQ.status){
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone" : true } }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}else{
+					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone"  : false} }, function(err, rs){
+						if(rs){
+								res.status(200).json(rs);
+						}else{
+								res.status(500).json(err)
+						}
+					});
+			}
+		}
+
 		function all (req, res){
 			var REQ = req.params; 
 			
@@ -1152,6 +1221,15 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/lock/:id", lock);
 		apiRoutes.put("/" + _url_alias + "/unlock/:id", unlock);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
+
+		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:status?/:id", request_whatsapp);
+		apiRoutes.put("/" + _url_alias + "/request/phone/:status?/:id", request_phone);
+		apiRoutes.put("/" + _url_alias + "/request/email/:status?/:id", request_email);
+
+		apiRoutes.put("/" + _url_alias + "/payment/whatsapp/:status?/:id", payment_whatsapp);
+		apiRoutes.put("/" + _url_alias + "/payment/phone/:status?/:id", payment_phone);
+		apiRoutes.put("/" + _url_alias + "/payment/email/:status?/:id", payment_email);
+
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 		apiRoutes.put("/" + _url_alias + "/nulled/:id", nulled);
 		apiRoutes.put("/" + _url_alias + "/viewed/:id", viewed);
