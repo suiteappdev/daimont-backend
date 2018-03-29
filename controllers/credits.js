@@ -601,27 +601,30 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
-		function request_phone(req, res){
+		function request_phone_enable(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			if(req.params.status){
-					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone" : true } }, function(err, rs){
-						if(rs){
-								res.status(200).json(rs);
-						}else{
-								res.status(500).json(err)
-						}
-					});
-			}else{
-					Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone"  : false} }, function(err, rs){
-						if(rs){
-								res.status(200).json(rs);
-						}else{
-								res.status(500).json(err)
-						}
-					});
-			}
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+		function request_phone_disabled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
 		}
 
 
@@ -1299,8 +1302,10 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/enable", request_whatsapp_enable);
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/disabled", request_whatsapp_disabled);
 
-		apiRoutes.put("/" + _url_alias + "/request/phone/:id/:status?", request_phone);
-		apiRoutes.put("/" + _url_alias + "/request/email/:id/:status?", request_email);
+		apiRoutes.put("/" + _url_alias + "/request/phone/:id/enable", request_phone_enable);
+		apiRoutes.put("/" + _url_alias + "/request/phone/:id/disabled", request_phone_disabled);
+
+		apiRoutes.put("/" + _url_alias + "/request/email/:id/disabled", request_email);
 
 		apiRoutes.put("/" + _url_alias + "/payment/whatsapp/:id", payment_whatsapp);
 		apiRoutes.put("/" + _url_alias + "/payment/phone/:id", payment_phone);
