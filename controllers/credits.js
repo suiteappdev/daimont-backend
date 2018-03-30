@@ -922,7 +922,7 @@ module.exports = function(app, apiRoutes, io){
 			Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
 				if(!error){
 						var notice = _compiler.render({ _data : {
-	                    name : ((rs._user.name || '') +' '+ (rs._user.data.second_name || '') +' '+ (rs._user.last_name || '') + (rs._user.data.second_last_name || '')).toString().replace(/\s\s/g, " ").toLowerCase(),
+	                    name : ((credit._user.name || '') +' '+ (credit._user.data.second_name || '') +' '+ (credit._user.last_name || '') + (credit._user.data.second_last_name || '')).toString().replace(/\s\s/g, " ").toLowerCase(),
 	                    date :  moment(new Date()).format('MMMM DD YYYY, h:mm:ss a'),
 	                    pagare : credit.data.id
 	                 }}, 'notice/notice.ejs');
