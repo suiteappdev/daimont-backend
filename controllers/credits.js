@@ -12,6 +12,7 @@ module.exports = function(app, apiRoutes, io){
     	var user_manager = require('../models/user_manager');
     	var moment = require('moment');
    		moment.locale('es');
+   		var fs = require("fs");
 
 		var SimpleFcm = require('simple-fcm');
 		var fcm = new SimpleFcm('AIzaSyCOgQeNoM3X0fnKPqSPngUpQP8Bzrr5Hqs');
