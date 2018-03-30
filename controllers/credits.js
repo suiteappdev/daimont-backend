@@ -915,7 +915,7 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
-		function notice(req, res){
+		function notice (req, res){
 			var data = {};
 			var REQ = req.body || req.params;
 
@@ -933,7 +933,7 @@ module.exports = function(app, apiRoutes, io){
 						 
 						 wkhtmltopdf.command = "/home/ec2-user/wkhtmltox/bin/wkhtmltopdf";
 
-						 stream = wkhtmltopdf(_html, { pageSize: 'letter' })
+						 stream = wkhtmltopdf(notice, { pageSize: 'letter' })
 							  .pipe(fs.createWriteStream('preaviso.pdf'));
 
 						 stream.on('close', function() {
