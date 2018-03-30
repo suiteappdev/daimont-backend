@@ -915,6 +915,46 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function notice(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
+				if(!error){
+						var notice = _compiler.render({ _data : {
+	                    name : ((rs._user.name || '') +' '+ (rs._user.data.second_name || '') +' '+ (rs._user.last_name || '') + (rs._user.data.second_last_name || '')).toString().replace(/\s\s/g, " ").toLowerCase(),
+	                    date :  moment(new Date()).format('MMMM DD YYYY, h:mm:ss a'),
+	                    pagare : credit.data.id
+	                 }}, 'notice/notice.ejs');
+
+
+
+						 var wkhtmltopdf = require('wkhtmltopdf');
+						 
+						 wkhtmltopdf.command = "/home/ec2-user/wkhtmltox/bin/wkhtmltopdf";
+
+						 stream = wkhtmltopdf(_html, { pageSize: 'letter' })
+							  .pipe(fs.createWriteStream('preaviso.pdf'));
+
+						 stream.on('close', function() {
+			                var data_notice= {
+			                  from: ' Daimont <soporte@daimont.com>',
+			                  to: credit._user.email,
+			                  subject: 'Pre-aviso de reporte negativo en las respectivas centrales de riesgo',
+			                  text:'Buenas tardes señor (a) ' + ((credit._user.name || '') +' '+ (credit._user.data.second_name || '') +' '+ (credit._user.last_name || '') + (credit._user.data.second_last_name || '')).toString().replace(/\s\s/g, " ").toLowerCase() + ' Comunicación Previa. Artículo 12 Ley 1266 de 2008 Pre-aviso de reporte negativo en las respectivas centrales de riesgo',
+				              attachment : path.join(process.env.PWD , "preaviso.pdf")
+			                };
+
+				              mailgun.messages().send(data_notice, function (error, body) {
+				                console.log("Enviando contrato firmado", body);
+				              });	
+						 }); 
+							
+				}
+			});
+	         
+		}
+
 		function remove(req, res){
 			var where = {} ;
 
@@ -1358,7 +1398,8 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/payment/email/:id/enable", payment_email_enable);
 		apiRoutes.put("/" + _url_alias + "/payment/email/:id/disabled", payment_email_disabled);
 
-		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
+		apiRoutes.post("/" + _url_alias + "/rejected/:id", rejected);
+		apiRoutes.post("/" + _url_alias + "/notice/:id", notice);
 		apiRoutes.put("/" + _url_alias + "/nulled/:id", nulled);
 		apiRoutes.put("/" + _url_alias + "/viewed/:id", viewed);
 		apiRoutes.put("/" + _url_alias + "/deposited/:id", deposit);
