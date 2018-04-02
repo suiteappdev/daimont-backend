@@ -950,8 +950,15 @@ module.exports = function(app, apiRoutes, io){
 				                console.log("Enviando contrato firmado", body);
 				              });	
 						 }); 
+
+						Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onNotice" : true } }, function(err, rs){
+							if(rs){
+									res.status(200).json(rs);
+							}else{
+									res.status(500).json(err)
+							}
+						}); 
 					
-					res.status(200).json(rs);
 				}
 			});
 	         
