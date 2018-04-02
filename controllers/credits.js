@@ -1379,7 +1379,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/lock/:id", lock);
 		apiRoutes.put("/" + _url_alias + "/unlock/:id", unlock);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
-		apiRoutes.post("/" + _url_alias + "/rejected/:id", rejected);
+		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/enable", request_whatsapp_enable);
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/disabled", request_whatsapp_disabled);
