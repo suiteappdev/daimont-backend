@@ -950,7 +950,8 @@ module.exports = function(app, apiRoutes, io){
 				                console.log("Enviando contrato firmado", body);
 				              });	
 						 }); 
-							
+					
+					res.status(200).json(rs);
 				}
 			});
 	         
