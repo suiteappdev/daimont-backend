@@ -923,7 +923,7 @@ module.exports = function(app, apiRoutes, io){
 			Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id) }).populate("_user").exec(function(error, credit){
 				if(!error){
 						var notice = _compiler.render({ _data : {
-	                    name : ((credit._user.name || '') +' '+ (credit._user.data.second_name || '') +' '+ (credit._user.last_name || '') + (credit._user.data.second_last_name || '')).toString().replace(/\s\s/g, " ").toLowerCase(),
+	                    name : ((credit._user.name || '') +' '+ (credit._user.data.second_name || '') +' '+ (credit._user.last_name || '') +' '+(credit._user.data.second_last_name || '')),
 	                    date :  moment(new Date()).format('MMMM DD YYYY, h:mm:ss a'),
 	                    pagare : credit.data.id
 	                 }}, 'notice/notice.ejs');
@@ -942,7 +942,7 @@ module.exports = function(app, apiRoutes, io){
 			                  from: ' Daimont <soporte@daimont.com>',
 			                  to: credit._user.email,
 			                  subject: 'Pre-aviso de reporte negativo en las respectivas centrales de riesgo',
-			                  text:'Buenas tardes señor (a) ' + ((credit._user.name || '') +' '+ (credit._user.data.second_name || '') +' '+ (credit._user.last_name || ' ') + (credit._user.data.second_last_name || ' ')).toString().replace(/\s\s/g, " ").toUpperCase() + '\nComunicación Previa. Artículo 12 Ley 1266 de 2008 \nPre-aviso de reporte negativo en las respectivas centrales de riesgo'.toUpperCase(),
+			                  text:'Buenas tardes señor (a) ' + ((credit._user.name || '') +' '+ (credit._user.data.second_name || '') +' '+ (credit._user.last_name || '') +' '+(credit._user.data.second_last_name || '')) + '\nComunicación Previa. Artículo 12 Ley 1266 de 2008 \nPre-aviso de reporte negativo en las respectivas centrales de riesgo'.toUpperCase(),
 				              attachment : path.join(process.env.PWD , "preaviso.pdf")
 			                };
 
