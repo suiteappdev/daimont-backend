@@ -353,22 +353,49 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
-		function preapproved(req, res){
+		function approved(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
 
 			!REQ.data || (data.data = REQ.data); 
 
-			data.data.preapproved_time_server = new Date();
+			data.data.approved_server_time = new Date();
 			
 			if(REQ._approvedby){
 				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
 
+			data.data.deposited_time_server = new Date(Date.now());
+
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
+						sclient = app.locals._sfind(REQ._user._id ? REQ._user._id : REQ._user);
+						if(sclient){
+        					sclient.socket.emit("CREDIT_UPDATED", data);
+						}
+ 						
+ 						var _html_credit_approved = _compiler.render({ _data : {
+                            user : (REQ._user.name + ' ' + REQ._user.last_name),
+                            monto : formatCurrency(REQ.data.amount[0], opts),
+                            pagare : REQ.data.id
+                         }}, 'credit_approved/credit_approved.ejs');
+
+                        var data_credit_approved = {
+                          from: ' Daimont <noreply@daimont.com>',
+                          to: REQ._user.email,
+                          subject: 'Aprobación de préstamo',
+                          text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos aprobado tu credito.',
+                          html: _html_credit_approved
+                        };
+
+                        mailgun.messages().send(data_credit_approved, function (error, body) {
+                          if(data){
+                              console.log("New credit request approved has been sended to " + REQ._user.email, body);
+                          }
+                        });                            
+
 					res.status(200).json(rs);
 
 				}else{
@@ -376,6 +403,29 @@ module.exports = function(app, apiRoutes, io){
 				}
 			});
 		}
+
+		function preapproved(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+			if(REQ._approvedby){
+				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
+			}
+
+			data.data.preapproved_time_server = new Date(Date.now());
+
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+					res.status(200).json(rs);
+				}else{
+					res.status(500).json(err)
+				}
+			});
+		}
+
 
 		function deposit(req, res){
 			var data = {};
