@@ -353,49 +353,22 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
-		function approved(req, res){
+		function preapproved(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
 
 			!REQ.data || (data.data = REQ.data); 
 
-			data.data.approved_server_time = new Date();
+			data.data.preapproved_time_server = new Date();
 			
 			if(REQ._approvedby){
 				data._approvedby = mongoose.Types.ObjectId(REQ._approvedby._id ? REQ._approvedby._id : REQ._approvedby);
 			}
 
-			data.data.deposited_time_server = new Date(Date.now());
-
 			data = { $set : data };          
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
 				if(rs){
-						sclient = app.locals._sfind(REQ._user._id ? REQ._user._id : REQ._user);
-						if(sclient){
-        					sclient.socket.emit("CREDIT_UPDATED", data);
-						}
- 						
- 						var _html_credit_approved = _compiler.render({ _data : {
-                            user : (REQ._user.name + ' ' + REQ._user.last_name),
-                            monto : formatCurrency(REQ.data.amount[0], opts),
-                            pagare : REQ.data.id
-                         }}, 'credit_approved/credit_approved.ejs');
-
-                        var data_credit_approved = {
-                          from: ' Daimont <noreply@daimont.com>',
-                          to: REQ._user.email,
-                          subject: 'Aprobación de préstamo',
-                          text: (REQ._user.name + ' ' + REQ._user.last_name) + ' Hemos aprobado tu credito.',
-                          html: _html_credit_approved
-                        };
-
-                        mailgun.messages().send(data_credit_approved, function (error, body) {
-                          if(data){
-                              console.log("New credit request approved has been sended to " + REQ._user.email, body);
-                          }
-                        });                            
-
 					res.status(200).json(rs);
 
 				}else{
@@ -1215,6 +1188,43 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+ 		function preaprobado(req, res){
+			var REQ = req.params; 
+			try{
+				Model.find({"data.status" : 'Preaprobado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+					if(!err){
+						async.map(rs, function (credit, next) {
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count || 0;
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													next(err, credit);
+											}
+										});
+								}
+							});
+						},
+						function (err, result) {
+						 	res.status(200).json(result || []);
+						});
+
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
  		function morosos(req, res){
 			var REQ = req.params; 
 			try{
@@ -1374,6 +1384,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/pendiente", pendiente);
 		apiRoutes.get("/" + _url_alias +"/firmado", firmado);
 		apiRoutes.get("/" + _url_alias +"/aceptado", aceptado);
+		apiRoutes.get("/" + _url_alias +"/preaprobado", preaprobado);
 		apiRoutes.get("/" + _url_alias +"/morosos", morosos);
 		apiRoutes.get("/" + _url_alias +"/rechazado", rechazado);
 
@@ -1387,6 +1398,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/lock/:id", lock);
 		apiRoutes.put("/" + _url_alias + "/unlock/:id", unlock);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
+		apiRoutes.put("/" + _url_alias + "/preapproved/:id", preapproved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/enable", request_whatsapp_enable);
