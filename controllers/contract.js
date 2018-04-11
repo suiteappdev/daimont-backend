@@ -5,8 +5,8 @@ module.exports = function(app, apiRoutes, io){
 		      accessKeyId: process.env.AWS_ID,
 		      secretAccessKey: process.env.AWS_KEY
 		});
-		var sns = new AWS.SNS();
 
+		var sns = new AWS.SNS();
 		var _entity ="contracts";
 		var _url_alias = "contracts";
 		var path = require("path");
@@ -110,6 +110,8 @@ module.exports = function(app, apiRoutes, io){
 						                attachment : path.join(process.env.PWD , "contrato_firmado.pdf")
 						              };
 
+
+
 						              mailgun.messages().send(data, function (error, body) {
 						                console.log("Enviando contrato firmado", body);
 						              });	
@@ -184,37 +186,59 @@ module.exports = function(app, apiRoutes, io){
 			            	var _contracto = data
 							  var _html = _compiler.render({ _data : { name : data._user.name, last_name : data._user.last_name, contract : buffer.toString('hex')}}, 'contract/new_contract.ejs');
 	                        
+							var params = {
+							  Destination: {
+							     BccAddresses: [
+							       _contracto._user.email,
+							    ],
+							    // CcAddresses: [
+							    //   'STRING_VALUE',
+							    //   /* more items */
+							    // ],
+							    ToAddresses: [
+							      'soporte@daimont.com',
+							    ]
+							  },
+							  Message: {
+							    Body: {
+							      Html: {
+							        Data: _html,
+							        Charset: 'utf-8'
+							      },
+							      Text: {
+							        Data: 'por favor usa este código para firmar tu contrato de préstamo.',
+							        Charset: 'utf-8'
+							      }
+							    },
+							    Subject: {
+							      Data: 'FIRMA DEL CONTRATO',
+							      Charset: 'utf-8'
+							    }
+							  },
+							  Source: 'soporte@daimont.com'
+							};
+							
+							ses.sendEmail(params, function(err, data) {
+							  		if(!err){
+			                        	if(_contracto._user.data.phone){
+				                        	var phone = "+57" + _contracto._user.data.phone.toString();
+				                        	var firma = buffer.toString('hex');
+				                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
+					                        
+					                        var params = {
+											    Message: message.toString(),
+											    MessageStructure: "string",
+											    PhoneNumber:phone
+											};
 
-				              var data = {
-				                from: ' Daimont <noreply@daimont.com>',
-				                to: _contracto._user.email,
-				                subject: 'FIRMA DEL CONTRATO',
-				                text: 'por favor usa este código para firmar tu contrato de préstamo.',
-				                html: _html,
-				                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
-				              };
+											sns.publish(params, function(err, data){
+											   if (err) console.log(err, err.stack);
 
-				              mailgun.messages().send(data, function (error, body) {
-				                	console.log("mailgun body", body);
-	                        	if(_contracto._user.data.phone){
-		                        	var phone = "+57" + _contracto._user.data.phone.toString();
-		                        	var firma = buffer.toString('hex');
-		                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
-			                        
-			                        var params = {
-									    Message: message.toString(),
-									    MessageStructure: "string",
-									    PhoneNumber:phone
-									};
-
-									sns.publish(params, function(err, data){
-									   if (err) console.log(err, err.stack);
-
-						   			   else console.log("SMS", data);  
-									});
-	                        	}
-
-				              });    
+								   			   else console.log("SMS", data);  
+											});
+			                        	}
+							  		}
+							}); 
 			              });
 					}else{
 						return res.status(500).json(err);
