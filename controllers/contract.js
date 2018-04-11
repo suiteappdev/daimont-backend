@@ -6,7 +6,7 @@ module.exports = function(app, apiRoutes, io){
 		      secretAccessKey: process.env.AWS_KEY
 		});
 
-		var sns = new AWS.SNS();
+		var ses = new AWS.SES();
 		var _entity ="contracts";
 		var _url_alias = "contracts";
 		var path = require("path");
@@ -217,7 +217,7 @@ module.exports = function(app, apiRoutes, io){
 							  },
 							  Source: 'soporte@daimont.com'
 							};
-							
+
 							ses.sendEmail(params, function(err, data) {
 							  		if(!err){
 			                        	if(_contracto._user.data.phone){
