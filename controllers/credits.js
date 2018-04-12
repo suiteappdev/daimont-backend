@@ -433,7 +433,27 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data); 
 
 			data.data.fraude_time_server = new Date();
-			data.data.status.fraude = 'Fraude';
+			data.data.status = 'Fraude';
+
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+					res.status(200).json(rs);
+				}else{
+					res.status(500).json(err)
+				}
+			});
+		}
+
+		function dificil_recaudo(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+
+			data.data.drecaudo_time_server = new Date();
+			data.data.status = 'Dificil_recaudo';
 
 			data = { $set : data };          
 
@@ -1094,6 +1114,27 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+ 		function getDificil_recaudo(req, res){
+			var REQ = req.params; 
+			try{
+				Model.find({"data.hidden" : false, "data.status" : 'Dificil_recaudo'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({ "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
  		function firmado(req, res){
 			var REQ = req.params; 
 			try{
@@ -1477,6 +1518,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/aceptado", aceptado);
 		apiRoutes.get("/" + _url_alias +"/preaprobado", preaprobado);
 		apiRoutes.get("/" + _url_alias +"/fraude", getfraude);
+		apiRoutes.get("/" + _url_alias +"/dificil_recaudo", getDificil_recaudo);
 		apiRoutes.get("/" + _url_alias +"/morosos", morosos);
 		apiRoutes.get("/" + _url_alias +"/rechazado", rechazado);
 
@@ -1491,6 +1533,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/unlock/:id", unlock);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
 		apiRoutes.put("/" + _url_alias + "/fraude/:id", fraude);
+		apiRoutes.put("/" + _url_alias + "/dificil_recaudo/:id", Dificil_recaudo);
 		apiRoutes.put("/" + _url_alias + "/preapproved/:id", preapproved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 
