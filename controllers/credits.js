@@ -426,6 +426,26 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function fraude(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+
+			data.data.fraude_time_server = new Date();
+			data.data.fraude = true;
+
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+					res.status(200).json(rs);
+				}else{
+					res.status(500).json(err)
+				}
+			});
+		}
+
 
 		function deposit(req, res){
 			var data = {};
@@ -1053,6 +1073,27 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+ 		function getfraude(req, res){
+			var REQ = req.params; 
+			try{
+				Model.find({"data.hidden" : false, "data.fraude" : true}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({ "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
  		function firmado(req, res){
 			var REQ = req.params; 
 			try{
@@ -1435,6 +1476,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/firmado", firmado);
 		apiRoutes.get("/" + _url_alias +"/aceptado", aceptado);
 		apiRoutes.get("/" + _url_alias +"/preaprobado", preaprobado);
+		apiRoutes.get("/" + _url_alias +"/fraude", getfraude);
 		apiRoutes.get("/" + _url_alias +"/morosos", morosos);
 		apiRoutes.get("/" + _url_alias +"/rechazado", rechazado);
 
@@ -1448,6 +1490,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/lock/:id", lock);
 		apiRoutes.put("/" + _url_alias + "/unlock/:id", unlock);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
+		apiRoutes.put("/" + _url_alias + "/fraude/:id", fraude);
 		apiRoutes.put("/" + _url_alias + "/preapproved/:id", preapproved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 
