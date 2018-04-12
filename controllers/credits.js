@@ -433,7 +433,7 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data); 
 
 			data.data.fraude_time_server = new Date();
-			data.data.fraude = true;
+			data.data.status.fraude = 'Fraude';
 
 			data = { $set : data };          
 
@@ -1076,7 +1076,7 @@ module.exports = function(app, apiRoutes, io){
  		function getfraude(req, res){
 			var REQ = req.params; 
 			try{
-				Model.find({"data.hidden" : false, "data.fraude" : true}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.hidden" : false, "data.status" : 'Fraude'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs || []);
 					}else{
