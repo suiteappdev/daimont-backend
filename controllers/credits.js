@@ -1533,7 +1533,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/unlock/:id", unlock);
 		apiRoutes.put("/" + _url_alias + "/approved/:id", approved);
 		apiRoutes.put("/" + _url_alias + "/fraude/:id", fraude);
-		apiRoutes.put("/" + _url_alias + "/dificil_recaudo/:id", Dificil_recaudo);
+		apiRoutes.put("/" + _url_alias + "/dificil_recaudo/:id", dificil_recaudo);
 		apiRoutes.put("/" + _url_alias + "/preapproved/:id", preapproved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 
