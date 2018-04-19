@@ -1173,6 +1173,30 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+ 		function pendiente_48(req, res){
+			var REQ = req.params; 
+			try{
+				var cutoffDate = new Date()
+				cutoffDate.setDate(cutoffDate.getDate() - 2);
+				
+				Model.find({"data.hidden" : false, "data.status" : 'Pendiente', "createdAt" : { $gte: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({ "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
 		 function pagado(req, res){
 			var REQ = req.params; 
 			try{
@@ -1516,6 +1540,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/desactualizado", desactualizado);
 		apiRoutes.get("/" + _url_alias +"/pendiente", pendiente);
 		apiRoutes.get("/" + _url_alias +"/firmado", firmado);
+		apiRoutes.get("/" + _url_alias +"/pendiente_48", pendiente_48);
 		apiRoutes.get("/" + _url_alias +"/aceptado", aceptado);
 		apiRoutes.get("/" + _url_alias +"/preaprobado", preaprobado);
 		apiRoutes.get("/" + _url_alias +"/fraude", getfraude);
