@@ -1478,6 +1478,7 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({"data.hidden" : false, "data.status" : 'Finalizado'}).populate("_user").populate({ path: "_payment", options: { sort: { 'createdAt': 1 } } }).populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						async.map(rs, function (credit, next) {
+							if(credit._user){
 								Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 									if(!err){
 											credit.data.count = count || 0;
@@ -1488,7 +1489,10 @@ module.exports = function(app, apiRoutes, io){
 												}
 											});
 									}
-								});								
+								});									
+							}else{
+							   next(err, credit)
+							}
 						},
 						function (err, result) {
 						 	res.status(200).json(result || []);
