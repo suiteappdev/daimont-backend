@@ -249,7 +249,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } ,{ $set : {"data.status" : "Consignado", "data.invalid_payment" : true}} , function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : {"data.status" : "Consignado", "data.invalid_payment" : true}} , function(err, rs){
 				if(rs){
 					console.log("pago",  rs);
 						if(REQ.send_email){
@@ -273,7 +273,13 @@ module.exports = function(app, apiRoutes, io){
 				                          if(data){
 				                              console.log("messages sended to " + credit._user.email, body);
 				                          }
-				                        });   
+				                        });
+
+										Credit.update({ _id : mongoose.Types.ObjectId(req.params.credit) }, $set : { "data.status" :  "Consignado"}).exec(function(err, rs){
+											if(!err){
+												console.log("credit updated");
+											}
+										});   
 								
 								}
 							});							
