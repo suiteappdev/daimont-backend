@@ -275,7 +275,7 @@ module.exports = function(app, apiRoutes, io){
 				                          }
 				                        });
 
-										Credit.update({ _id : mongoose.Types.ObjectId(req.params.credit) }, $set : { "data.status" :  "Consignado"}).exec(function(err, rs){
+										Credit.update({ _id : mongoose.Types.ObjectId(req.params.credit) }, {$set : { "data.status" :  "Consignado"}}).exec(function(err, rs){
 											if(!err){
 												console.log("credit updated");
 											}
