@@ -249,7 +249,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , {"data.invalid_payment" : true}} , function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , {$set : {"data.invalid_payment" : true}} , function(err, rs){
 				if(rs){
 					Credit.findOne({ _id : mongoose.Types.ObjectId(req.params.credit) }).populate("_user").exec(function(error, credit){
 						if(!error){
