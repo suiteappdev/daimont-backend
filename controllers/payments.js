@@ -269,18 +269,17 @@ module.exports = function(app, apiRoutes, io){
 				                          html: _html_payment_rejected
 				                        };
 
-				                        mailgun.messages().send(data_payment_rejected, function (error, body) {
-				                          if(data){
-				                              console.log("messages sended to " + credit._user.email, body);
-				                          }
-				                        });
+				                        credit.data.status = 'Consignado';
 
-										Credit.update({ _id : mongoose.Types.ObjectId(req.params.credit) }, {$set : { "data.status" :  "Consignado"}}).exec(function(err, rs){
-											if(!err){
-												console.log("credit updated");
-											}
-										});   
-								
+				                        credit.save(function (err) {
+										  if (err) return console.log(err);
+										 
+					                        mailgun.messages().send(data_payment_rejected, function (error, body) {
+					                          if(data){
+					                              console.log("messages sended to " + credit._user.email, body);
+					                          }
+					                        });
+										})
 								}
 							});							
 						}else{
