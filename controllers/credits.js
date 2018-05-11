@@ -642,6 +642,87 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function request_phoneCheck_enable(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhoneCheck" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
+		function request_phoneCheck_disabled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhoneCheck"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+		function request_emailCheck_enable(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmailCheck" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
+		function request_emailCheck_disabled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmailCheck"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+		function request_bankCheck_enable(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onBankCheck" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
+		function request_bankCheck_disabled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onBankCheck"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
 		function request_email(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
@@ -1576,6 +1657,14 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/request/email/:id/enable", request_email_enable);
 		apiRoutes.put("/" + _url_alias + "/request/email/:id/disabled", request_email_disabled);
 
+		apiRoutes.put("/" + _url_alias + "/request/bankCheck/:id/enable", request_bankCheck_enable);
+		apiRoutes.put("/" + _url_alias + "/request/bankCheck/:id/disabled", request_bankCheck_disabled);
+
+		apiRoutes.put("/" + _url_alias + "/request/phoneCheck/:id/enable", request_phone_enable);
+		apiRoutes.put("/" + _url_alias + "/request/phoneCheck/:id/disabled", request_phone_disabled);
+
+		apiRoutes.put("/" + _url_alias + "/request/emailCheck/:id/enable", request_emailCheck_enable);
+		apiRoutes.put("/" + _url_alias + "/request/emailCheck/:id/disabled", request_emailCheck_disabled);
 
 		apiRoutes.put("/" + _url_alias + "/payment/whatsapp/:id/enable", payment_whatsapp_enable);
 		apiRoutes.put("/" + _url_alias + "/payment/whatsapp/:id/disabled", payment_whatsapp_disabled);
