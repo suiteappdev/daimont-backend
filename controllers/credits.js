@@ -1660,8 +1660,8 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/request/bankCheck/:id/enable", request_bankCheck_enable);
 		apiRoutes.put("/" + _url_alias + "/request/bankCheck/:id/disabled", request_bankCheck_disabled);
 
-		apiRoutes.put("/" + _url_alias + "/request/phoneCheck/:id/enable", request_phone_enable);
-		apiRoutes.put("/" + _url_alias + "/request/phoneCheck/:id/disabled", request_phone_disabled);
+		apiRoutes.put("/" + _url_alias + "/request/phoneCheck/:id/enable", request_phoneCheck_enable);
+		apiRoutes.put("/" + _url_alias + "/request/phoneCheck/:id/disabled", request_phoneCheck_disabled);
 
 		apiRoutes.put("/" + _url_alias + "/request/emailCheck/:id/enable", request_emailCheck_enable);
 		apiRoutes.put("/" + _url_alias + "/request/emailCheck/:id/disabled", request_emailCheck_disabled);
