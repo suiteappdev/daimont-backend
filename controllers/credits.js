@@ -1262,7 +1262,7 @@ module.exports = function(app, apiRoutes, io){
 				
 				Model.find({"data.hidden" : false, "data.status" : 'Pendiente', "createdAt" : { $gte: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs || []);
+						res.status(200).json(rs.filter(function(c){ return c._user.data.updated }) || []);
 					}else{
 						res.status(500).json(err);
 					}
