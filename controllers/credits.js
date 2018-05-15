@@ -1262,7 +1262,26 @@ module.exports = function(app, apiRoutes, io){
 				
 				Model.find({"data.hidden" : false, "data.status" : 'Pendiente', "createdAt" : { $gte: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs.filter(function(c){ return c._user.data.updated }) || []);
+						var rs = rs.filter(function(c){ return c._user.data.updated });
+
+						async.map(rs, function (credit, next) {
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count || 0;
+										
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													next(err, credit);
+											}
+										});
+								}
+							});
+						},
+						function (err, result) {
+						 	res.status(200).json(result || []);
+						});
+
 					}else{
 						res.status(500).json(err);
 					}
