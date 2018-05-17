@@ -78,7 +78,7 @@ module.exports = function(app, apiRoutes, io){
 							if(payment._credit && payment._credit.data){
 									return (payment._credit.data.status == 'Pagado' && !payment.data.invalid_payment);
 							}
-						}
+						});
 
 						result = _.uniq(result, function(payment){
 							return payment._user._id;
