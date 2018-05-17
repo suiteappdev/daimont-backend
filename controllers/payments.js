@@ -85,7 +85,7 @@ module.exports = function(app, apiRoutes, io){
 						});
 
 
-						res.status(200).json(result));
+						res.status(200).json(result);
 					}else{
 						res.json(err);
 					}
