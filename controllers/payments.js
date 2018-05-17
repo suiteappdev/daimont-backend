@@ -10,6 +10,8 @@ module.exports = function(app, apiRoutes, io){
     	var crypto = require("crypto");
 	   	var config = require(path.join(process.env.PWD , "config.js"));
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
+   		var _ = require("underscore");
+
 
     	var multer  =   require('multer');
    		var multerS3 = require('multer-s3');
@@ -72,11 +74,18 @@ module.exports = function(app, apiRoutes, io){
 
 			 Model.find({}).populate("_user").populate("_credit").exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs.filter(function(payment){
+						var result = rs.filter(function(payment){
 							if(payment._credit && payment._credit.data){
 									return (payment._credit.data.status == 'Pagado' && !payment.data.invalid_payment);
 							}
-						}));
+						}
+
+						result = _.uniq(result, function(payment){
+							return payment._user._id;
+						});
+
+
+						res.status(200).json(result));
 					}else{
 						res.json(err);
 					}

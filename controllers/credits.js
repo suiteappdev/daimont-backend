@@ -1281,7 +1281,7 @@ module.exports = function(app, apiRoutes, io){
 						},
 						function (err, result) {
 							var result = _.uniq(result, function(credit){
-    							return credit._user;
+    							return credit._user._id;
   							});
 
 						 	res.status(200).json(result || []);
