@@ -13,6 +13,7 @@ module.exports = function(app, apiRoutes, io){
     	var moment = require('moment');
    		moment.locale('es');
    		var fs = require("fs");
+   		var _ = require("underscore");
 
 		var SimpleFcm = require('simple-fcm');
 		var fcm = new SimpleFcm('AIzaSyCOgQeNoM3X0fnKPqSPngUpQP8Bzrr5Hqs');
@@ -1279,6 +1280,10 @@ module.exports = function(app, apiRoutes, io){
 							});
 						},
 						function (err, result) {
+							var result = _.uniq(result, function(credit){
+    							return credit._user;
+  							});
+
 						 	res.status(200).json(result || []);
 						});
 
