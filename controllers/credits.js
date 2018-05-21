@@ -332,7 +332,7 @@ module.exports = function(app, apiRoutes, io){
 			!REQ.data || (data.data = REQ.data); 
 
 			if(REQ._payment){
-				data._payment = mongoose.Types.ObjectId(REQ._payment._id ? REQ._payment._id  : REQ._payment);
+				data._payment = data._payment || [];
 			}
 
 			if(REQ._contract){
