@@ -1273,7 +1273,13 @@ module.exports = function(app, apiRoutes, io){
 										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
 											if(!err){
 													credit.data.rejected = rejected || 0;
-													next(err, credit);
+													
+													Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : { $in : ["Pagado", "Firmado", "Aceptado", "Consignado", "Aprobado"] }}, function( err, pending){
+														if(!err){
+																credit.data.pending = pending || 0;
+																next(err, credit);
+														}
+													});
 											}
 										});
 								}
