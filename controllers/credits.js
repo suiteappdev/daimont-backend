@@ -1290,7 +1290,7 @@ module.exports = function(app, apiRoutes, io){
     							return credit._user._id;
   							});
 
-						 	res.status(200).json(result || []);
+						 	res.status(200).json(result.filter(function(c){return (c.data.pending == 0 )}) || []);
 						});
 
 					}else{
