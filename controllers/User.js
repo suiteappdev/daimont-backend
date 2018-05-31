@@ -231,7 +231,7 @@ module.exports = function(app, apiRoutes){
     function allow_cupon(req, res){
           var REQ = req.body || req.params;
 
-          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$unset: {'data.cupon_updated': 1 }, $unset : { "data._payment_onWhatsApps" : 1 , "data._payment_onEmail" : 1, "data._payment_onPhone" : 1}}, function(err, rs) {
+          UserSchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {$unset: {'data.cupon_updated': 1 }, $unset : { "data._payment_onWhatsApps" : 1 , "data._payment_onEmail" : 1, "data._payment_onPhone" : 1, "data._request_onWhatsApps" : 1 , "data._request_onEmail" : 1, "data._request_onPhone" : 1}}, function(err, rs) {
               if(!err){
                   res.status(200).json(rs);                
               }
