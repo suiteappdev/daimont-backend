@@ -188,7 +188,7 @@ module.exports = function(app, apiRoutes, io){
 			
 			model.save(function(err, payment){
 				if(payment){
-					User.update({ _id :  mongoose.Types.ObjectId(req.body._user)}, { $set : {"data.cupon_updated" : false }}).exec(function(err, usr){
+					User.update({ _id :  mongoose.Types.ObjectId(req.body._user)}, { $set : {"data.cupon_updated" : false }, $unset : { "data._payment_onWhatsApps" : 1 , "data._payment_onEmail" : 1, "data._payment_onPhone" : 1}}).exec(function(err, usr){
 						if(!err){
 
 						}
