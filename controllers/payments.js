@@ -143,6 +143,7 @@ module.exports = function(app, apiRoutes, io){
 			
 			model.save(function(err, payment){
 				if(payment){
+
 					Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").populate("_credit").exec(function(err, rs){
 						io.to('all').emit('NEW_PAYMENT_TO_ADMIN', rs);
 					});
@@ -188,19 +189,21 @@ module.exports = function(app, apiRoutes, io){
 			
 			model.save(function(err, payment){
 				if(payment){
-					if(payment._credit.data.status == 'Finalizado'){
-						User.update({ _id :  mongoose.Types.ObjectId(req.body._user)}, { $set : {"data.cupon_updated" : false }, $unset : { "data._payment_onWhatsApps" : 1 , "data._payment_onEmail" : 1, "data._payment_onPhone" : 1, "data._request_onWhatsApps" : 1 , "data._request_onEmail" : 1, "data._request_onPhone" : 1}}).exec(function(err, usr){
-							if(!err){
+					Model.findOne({ _id : mongoose.Types.ObjectId(payment._id)}).populate("_user").populate("_credit").exec(function(err, rs){
+							if(rs._credit.data.status == 'Finalizado'){
+								User.update({ _id :  mongoose.Types.ObjectId(req.body._user)}, { $set : {"data.cupon_updated" : false }, $unset : { "data._payment_onWhatsApps" : 1 , "data._payment_onEmail" : 1, "data._payment_onPhone" : 1, "data._request_onWhatsApps" : 1 , "data._request_onEmail" : 1, "data._request_onPhone" : 1}}).exec(function(err, usr){
+									if(!err){
 
-							}
-						});						
-					}else{
-						User.update({ _id :  mongoose.Types.ObjectId(req.body._user)}, { $set : { "data.cupon_updated" : false }}).exec(function(err, usr){
-							if(!err){
+									}
+								});						
+							}else{
+								User.update({ _id :  mongoose.Types.ObjectId(req.body._user)}, { $set : { "data.cupon_updated" : false }}).exec(function(err, usr){
+									if(!err){
 
+									}
+								});		
 							}
-						});		
-					}
+					});
 
 			    	res.status(200).json(payment);
 				}else{
