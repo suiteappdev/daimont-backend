@@ -46,7 +46,7 @@ module.exports = function(app, apiRoutes, io){
 		function getById(req, res){
 			var REQ = req.params; 
 
-			Model.findOne({ "_id" : mongoose.Types.ObjectId(REQ.id) }).populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+			Model.findOne({ "_id" : mongoose.Types.ObjectId(REQ.id || REQ._id) }).populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 				if(!err){
 					res.status(200).json(rs);
 				}else{
@@ -1540,7 +1540,7 @@ module.exports = function(app, apiRoutes, io){
 
 				console.log("FECHA CON 7 DIAS MENOS", moment(cutoffDate).format("LLL"));
 
-				Model.find({"data.status" : 'Consignado', $or : [{"data.pay_day" : { $gt: cutoffDate}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Consignado', $or : [{"data.pay_day" : { $gte: cutoffDate}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						async.map(rs, function (credit, next) {
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
