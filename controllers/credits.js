@@ -1532,6 +1532,46 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+ 		function preventivo(req, res){
+			var REQ = req.params; 
+			try{
+				var cutoffDate = new Date()
+				cutoffDate.setDate(cutoffDate.getDate() - 7);
+				console.log("FECHA CON 7 DIAS MENOS", moment(cutoffDate).format("LLL"));
+
+				Model.find({"data.status" : 'Consignado', $or : [{"data.pay_day" : { $gte: cutoffDate}}, {"data.pay_day" : { $gte: cutoffDate}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+					if(!err){
+						async.map(rs, function (credit, next) {
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count || 0;
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													next(err, credit);
+											}
+										});
+								}
+							});
+						},
+						function (err, result) {
+						 	res.status(200).json(result || []);
+						});
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
  		function actualizado(req, res){
 			var REQ = req.params; 
 			try{
@@ -1661,6 +1701,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/fraude", getfraude);
 		apiRoutes.get("/" + _url_alias +"/dificil_recaudo", getDificil_recaudo);
 		apiRoutes.get("/" + _url_alias +"/morosos", morosos);
+		apiRoutes.get("/" + _url_alias +"/preventivo", preventivo);
 		apiRoutes.get("/" + _url_alias +"/rechazado", rechazado);
 
 		apiRoutes.get("/" + _url_alias +"/email_request/:id", email_request);
