@@ -85,7 +85,7 @@ module.exports = function(app, apiRoutes, io){
 								 		gestion : formatCurrency(rs._credit.data.system_quote, opts),
 								 		total : formatCurrency(rs._credit.data.total_payment, opts),
 								 		cupon : formatCurrency(rs._user.data.cupon, opts),
-								 		ip:rs._credit.data.client_metadata.ip ? rs._credit.data.client_metadata.ip : req.ip || 'no definido' ,
+								 		ip:(rs._credit.data.client_metadata ? rs._credit.data.client_metadata.ip : req.ip) || 'no definido' ,
 								 		codigo:rs.data.contract,
 								 		consecutivo:rs._credit.data.id
 								 	}
