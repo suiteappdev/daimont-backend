@@ -1538,7 +1538,7 @@ module.exports = function(app, apiRoutes, io){
 				var end = new Date()
 				var start = new Date();
 
-				cutoffDate.setDate(start.getDate() + 7);
+				end.setDate(end.getDate() + 7);
 
 				Model.find({"data.status" : 'Consignado', "data.pay_day" : { $gte: start, $lt: end }}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
