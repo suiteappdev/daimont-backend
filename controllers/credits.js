@@ -1535,13 +1535,14 @@ module.exports = function(app, apiRoutes, io){
  		function preventivo(req, res){
 			var REQ = req.params; 
 			try{
-				var cutoffDate = new Date()
-				var current = new Date();
+				var end = new Date()
+				var start = new Date();
 
-				cutoffDate.setDate(cutoffDate.getDate() + 7);
+				cutoffDate.setDate(start.getDate() + 7);
 
-				Model.find({"data.status" : 'Consignado', "data.pay_day" : { $gte:  new Date(current.toISOString()), $lt: new Date(cutoffDate.toISOString())}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Consignado', "data.pay_day" : { $gte: start, $lt: end }}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
+						console.log("RS", rs);
 						async.map(rs, function (credit, next) {
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 								if(!err){
