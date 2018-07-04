@@ -1540,7 +1540,7 @@ module.exports = function(app, apiRoutes, io){
 
 				end.setDate(end.getDate() + 7);
 
-				Model.find({"data.status" : 'Consignado', "data.pay_day" : { $gte: new ISODate(start), $lt: new ISODate(end)}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : "Consignado", "data.hidden" : false, "data.pay_day" : { $gt: new ISODate(start), $lt: new ISODate(end)}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						console.log("RS", rs);
 						async.map(rs, function (credit, next) {
