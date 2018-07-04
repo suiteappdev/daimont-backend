@@ -1542,7 +1542,7 @@ module.exports = function(app, apiRoutes, io){
 				console.log("+7 DIAS", moment(cutoffDate).format("LLL"));
 				console.log("ACTUAL", moment(current).format("LLL"));
 
-				Model.find({"data.status" : 'Consignado', {"data.pay_day" : { $gte: current, $lt: cutoffDate}}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Consignado', "data.pay_day" : { $gte: current, $lt: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						async.map(rs, function (credit, next) {
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
