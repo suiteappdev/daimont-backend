@@ -1536,11 +1536,9 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			try{
 				var cutoffDate = new Date()
-				cutoffDate.setDate(cutoffDate.getDate() - 7);
+				cutoffDate.setDate(cutoffDate.getDate() + 7);
 
-				console.log("FECHA CON 7 DIAS MENOS", moment(cutoffDate).format("LLL"));
-
-				Model.find({"data.status" : 'Consignado', $or : [{"data.pay_day" : { $gte: cutoffDate}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : 'Consignado', $or : [{"data.pay_day" : { $lte: cutoffDate}}]}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						async.map(rs, function (credit, next) {
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
