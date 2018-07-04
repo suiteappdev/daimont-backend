@@ -1536,8 +1536,8 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			try{
 				var cutoffDate = new Date()
-				var current = cutoffDate;
-
+				var current = new Date();
+				
 				cutoffDate.setDate(cutoffDate.getDate() + 7);
 				console.log("+7 DIAS", moment(cutoffDate).format("LLL"));
 				console.log("ACTUAL", moment(current).format("LLL"));
