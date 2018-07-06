@@ -624,7 +624,7 @@ module.exports = function(app, apiRoutes, io){
 
 			data = { $set : data };          
  
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data.viewedPreventivo" : true, "data.viewed" : true} } , function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data.viewedPreventivo" : false, "data.viewed" : false} } , function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -641,7 +641,7 @@ module.exports = function(app, apiRoutes, io){
 
 			data = { $set : data };          
  
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data.viewedPreventivo" : false, "data.viewed" : false} } , function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data.viewedPreventivo" : true, "data.viewed" : true} } , function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
