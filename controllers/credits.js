@@ -1543,7 +1543,7 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({"data.status" : "Consignado", "data.hidden" : false, "data.pay_day" : { $gt: start.toISOString(), $lt: end.toISOString()}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						async.map(rs, function (credit, next) {
-							Model.update({ _id : mongoose.Types.ObjectId(credit._id)} , { "data.viewed" : false } , { multi : true }).exec(function(err, done){
+							Model.update({ _id : mongoose.Types.ObjectId(credit._id)} , { $set : {"data.viewed" : false} } , { multi : true }).exec(function(err, done){
 									if(!err){
 										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 											if(!err){
