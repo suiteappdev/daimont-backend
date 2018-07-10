@@ -1595,10 +1595,8 @@ module.exports = function(app, apiRoutes, io){
 						},
 						function (err, result) {
 						 	res.status(200).json(result.map(function(c){
-						 		if(c.data.viewed){
-						 			delete c.data.viewed;
-						 		}
-						 		
+						 		c.data.viewed = (c.data.viewedPreventivo || true );
+
 						 		return c;
 
 						 	}) || []);
