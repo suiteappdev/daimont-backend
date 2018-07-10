@@ -1594,7 +1594,12 @@ module.exports = function(app, apiRoutes, io){
 							});
 						},
 						function (err, result) {
-						 	res.status(200).json(result || []);
+						 	res.status(200).json(result.map(function(c){
+						 		c.data.viewed = (c.data.viewed && c.data.viewedPreventivo);
+
+						 		return c;
+						 		 
+						 	}) || []);
 						});
 					}else{
 						res.status(500).json(err);
