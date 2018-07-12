@@ -677,6 +677,114 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function request_references_family_enable_whatsapps(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._family_references_onWhatsApps" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
+		function request_references_family_disabled_whatsapps(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._family_references_onWhatsApps"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+		function request_references_family_enable_phone(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._family_references_onPhone" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
+		function request_references_family_disabled_phone(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._family_references_onPhone"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+		function request_references_comercial_enable_whatsapps(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._comercial_references_OnWhatsapps" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
+		function request_references_comercial_disabled_whatsapps(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._comercial_references_OnWhatsapps"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+		function request_references_comercial_enable_phone(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._comercial_references_onPhone" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
+		function request_references_comercial_disabled_phone(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._comercial_references_onPhone"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
 		function request_phoneCheck_enable(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
@@ -1765,6 +1873,18 @@ module.exports = function(app, apiRoutes, io){
 
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/enable", request_whatsapp_enable);
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/disabled", request_whatsapp_disabled);
+
+		apiRoutes.put("/" + _url_alias + "/request/family-references-whatsapps/:id/enable", request_references_family_enable_whatsapps);
+		apiRoutes.put("/" + _url_alias + "/request/family-references-whatsapps/:id/disabled", request_references_family_disabled_whatsapps);
+
+		apiRoutes.put("/" + _url_alias + "/request/family-references-phone/:id/enable", request_references_family_enable_phone);
+		apiRoutes.put("/" + _url_alias + "/request/family-references-phone/:id/disabled", request_references_family_disabled_phone);
+
+		apiRoutes.put("/" + _url_alias + "/request/comercial-references-whatsapps/:id/enable", request_references_comercial_enable_whatsapps);
+		apiRoutes.put("/" + _url_alias + "/request/comercial-references-whatsapps/:id/disabled", request_references_comercial_disabled_whatsapps);
+
+		apiRoutes.put("/" + _url_alias + "/request/comercial-references-phone/:id/enable", request_references_comercial_enable_phone);
+		apiRoutes.put("/" + _url_alias + "/request/comercial-references-phone/:id/disabled", request_references_comercial_disabled_phone);
 
 		apiRoutes.put("/" + _url_alias + "/request/phone/:id/enable", request_phone_enable);
 		apiRoutes.put("/" + _url_alias + "/request/phone/:id/disabled", request_phone_disabled);
