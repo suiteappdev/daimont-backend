@@ -7,7 +7,7 @@ module.exports = function(app, apiRoutes, io){
 		var Model = require(path.join("../", "models", _entity + ".js"));
 	   	var config = require(path.join(process.env.PWD , "config.js"));
 		var User = require('../models/user');
-		var Contract = require(path.join("../", "models/contract.js"));
+		var Contract = require(path.join("../", "models/contracts.js"));
 
 		var crypto = require("crypto")
 		var FB = require('facebook-node');
