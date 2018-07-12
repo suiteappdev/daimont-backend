@@ -1874,8 +1874,8 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/enable", request_whatsapp_enable);
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/disabled", request_whatsapp_disabled);
 
-		apiRoutes.put("/" + _url_alias + "/request/family-references-whatsapps/:id/enable", request_references_family_enable_whatsapps);
-		apiRoutes.put("/" + _url_alias + "/request/family-references-whatsapps/:id/disabled", request_references_family_disabled_whatsapps);
+		apiRoutes.put("/" + _url_alias + "/request/familiy-references-whatsapps/:id/enable", request_references_family_enable_whatsapps);
+		apiRoutes.put("/" + _url_alias + "/request/familiy-references-whatsapps/:id/disabled", request_references_family_disabled_whatsapps);
 
 		apiRoutes.put("/" + _url_alias + "/request/family-references-phone/:id/enable", request_references_family_enable_phone);
 		apiRoutes.put("/" + _url_alias + "/request/family-references-phone/:id/disabled", request_references_family_disabled_phone);
