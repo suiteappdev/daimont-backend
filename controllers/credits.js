@@ -7,6 +7,8 @@ module.exports = function(app, apiRoutes, io){
 		var Model = require(path.join("../", "models", _entity + ".js"));
 	   	var config = require(path.join(process.env.PWD , "config.js"));
 		var User = require('../models/user');
+		var Contract = require(path.join("../", "models/contract.js"));
+
 		var crypto = require("crypto")
 		var FB = require('facebook-node');
     	var user_manager = require('../models/user_manager');
@@ -1418,8 +1420,12 @@ module.exports = function(app, apiRoutes, io){
 													
 													Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : { $in : ["Pagado", "Firmado", "Aceptado", "Consignado", "Aprobado"] }}, function( err, pending){
 														if(!err){
-																credit.data.pending = pending || 0;
-																next(err, credit);
+																Contract.findOne({ _user: mongoose.Types.ObjectId(credit._user._id), _credit : mongoose.Types.ObjectId(credit._id)}}, function( err, sign){
+																	if(!err){
+																			credit.data.firma = sign || 0;
+																			next(err, credit);
+																	}
+																});
 														}
 													});
 											}
