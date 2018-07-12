@@ -1420,7 +1420,7 @@ module.exports = function(app, apiRoutes, io){
 													
 													Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : { $in : ["Pagado", "Firmado", "Aceptado", "Consignado", "Aprobado"] }}, function( err, pending){
 														if(!err){
-																Contract.findOne({ _user: mongoose.Types.ObjectId(credit._user._id), _credit : mongoose.Types.ObjectId(credit._id)}}, function( err, sign){
+																Contract.findOne({ _user: mongoose.Types.ObjectId(credit._user._id), _credit : mongoose.Types.ObjectId(credit._id)}, function( err, sign){
 																	if(!err){
 																			credit.data.firma = sign || 'sin firma';
 																			next(err, credit);
