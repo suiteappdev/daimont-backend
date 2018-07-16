@@ -1736,23 +1736,17 @@ module.exports = function(app, apiRoutes, io){
 						});	
 							
 						async.map(result, function (credit, next) {
-
-							Model.update({ _id : mongoose.Types.ObjectId(credit._id)} , { "data.viewedPreventivo" : false } , { multi : true }).exec(function(err, done){
-									if(!err){
-
-										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
-											if(!err){
-													credit.data.count = count || 0;
-													Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
-														if(!err){
-																credit.data.rejected = rejected || 0;
-																next(err, credit);
-														}
-													});
-											}
-										});										
-									}
-							});
+									Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+										if(!err){
+												credit.data.count = count || 0;
+												Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+													if(!err){
+															credit.data.rejected = rejected || 0;
+															next(err, credit);
+													}
+												});
+										}
+									});										
 						},
 						function (err, result) {
 						 	res.status(200).json(result.map(function(c){
