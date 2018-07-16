@@ -1690,8 +1690,6 @@ module.exports = function(app, apiRoutes, io){
 						var result = rs.filter(function(c){
 							var system = moment(c.data.deposited_time_server);
 							var now = moment(new Date());
-							
-							c.data.dias_interes = now.diff(system, 'days');
 
 							return (((now.diff(system, 'days') >= 23) && (now.diff(system, 'days') <= 29))) ? true : false; 
 						});	
