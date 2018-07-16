@@ -1692,7 +1692,7 @@ module.exports = function(app, apiRoutes, io){
 							
 							c.data.dias_interes = system.diff(new Date(), 'days');
 
-							return ((30 - pay_day.date())  >= 23 ) ? true : false; 
+							return (system.diff(new Date(), 'days') >= 23 ) ? true : false; 
 						});	
 							
 						async.map(result, function (credit, next) {
