@@ -1755,7 +1755,12 @@ module.exports = function(app, apiRoutes, io){
 							});
 						},
 						function (err, result) {
-						 	res.status(200).json(result);
+						 	res.status(200).json(result.map(function(c){
+						 		c.data.viewedPreventivo = (c.data.viewedPreventivo ? true : false);
+
+						 		return c;
+
+						 	}) || []);
 						});
 					}else{
 						res.status(500).json(err);
