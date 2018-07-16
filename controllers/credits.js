@@ -1690,7 +1690,7 @@ module.exports = function(app, apiRoutes, io){
 						var result = rs.filter(function(c){
 							var pay_day = moment(c.data.pay_day);
 
-							return ((30 - pay_day.date())  => 23 ) ? true : false; 
+							return ((30 - pay_day.date())  >= 23 ) ? true : false; 
 						});	
 							
 						async.map(result, function (credit, next) {
