@@ -1688,8 +1688,9 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({"data.status" : "Consignado", "data.hidden" : false }).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						var result = rs.filter(function(c){
-							var pay_day = moment(c.data.pay_day);
-							c.data.dias_interes = (30 - pay_day.date());
+							var system = moment(c.data.deposited_time_server);
+							
+							c.data.dias_interes = system.diff(new Date(), 'days');
 
 							return ((30 - pay_day.date())  >= 23 ) ? true : false; 
 						});	
