@@ -1684,16 +1684,20 @@ module.exports = function(app, apiRoutes, io){
  		function preventivo(req, res){
 			var REQ = req.params; 
 			try{
-				var end = new Date()
-				var start = new Date();
 
-				end.setDate(end.getDate() + 7);
-
-				Model.find({"data.status" : "Consignado", "data.hidden" : false, "data.pay_day" : { $gt: start.toISOString(), $lt: end.toISOString()}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+				Model.find({"data.status" : "Consignado", "data.hidden" : false }).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
-						async.map(rs, function (credit, next) {
+						var result = rs.filter(function(c){
+							var pay_day = moment(c.data.pay_day);
+
+							return ((30 - pay_day.date())  => 23 ) ? true : false; 
+						});	
+							
+						async.map(result, function (credit, next) {
+
 							Model.update({ _id : mongoose.Types.ObjectId(credit._id)} , { "data.viewedPreventivo" : false } , { multi : true }).exec(function(err, done){
 									if(!err){
+
 										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 											if(!err){
 													credit.data.count = count || 0;
