@@ -1689,10 +1689,11 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						var result = rs.filter(function(c){
 							var system = moment(c.data.deposited_time_server);
+							var now = new Date();
 							
-							c.data.dias_interes = system.diff(new Date(), 'days');
+							c.data.dias_interes = now.diff(system, 'days');
 
-							return (system.diff(new Date(), 'days') >= 23 ) ? true : false; 
+							return (now.diff(system, 'days') > = 23 ) ? true : false; 
 						});	
 							
 						async.map(result, function (credit, next) {
