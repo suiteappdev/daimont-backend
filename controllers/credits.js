@@ -1689,6 +1689,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						var result = rs.filter(function(c){
 							var pay_day = moment(c.data.pay_day);
+							c.data.dias_interes = (30 - pay_day.date());
 
 							return ((30 - pay_day.date())  >= 23 ) ? true : false; 
 						});	
