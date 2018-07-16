@@ -1693,7 +1693,7 @@ module.exports = function(app, apiRoutes, io){
 							
 							c.data.dias_interes = now.diff(system, 'days');
 
-							return (now.diff(system, 'days') >= 23 ) ? true : false; 
+							return (((now.diff(system, 'days') >= 23) && (now.diff(system, 'days') <= 29))) ? true : false; 
 						});	
 							
 						async.map(result, function (credit, next) {
