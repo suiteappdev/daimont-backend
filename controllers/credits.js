@@ -663,7 +663,7 @@ module.exports = function(app, apiRoutes, io){
 
 			data = { $set : data };          
  
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $unset : { "data.viewedPreventivo" : 1} } , function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data.viewedPreventivo" : false} } , function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
