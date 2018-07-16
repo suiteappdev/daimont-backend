@@ -601,6 +601,26 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function query(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			!REQ.data || (data.data = REQ.data); 
+
+			data.data.status = "Consultado";
+			data.data.query_time_server = new Date();
+
+			data = { $set : data };          
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , data , function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
 		function viewed(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
@@ -1319,6 +1339,27 @@ module.exports = function(app, apiRoutes, io){
 			}
 		}
 
+ 		function consultado(req, res){
+			var REQ = req.params; 
+			try{
+				Model.find({"data.hidden" : false, "data.status" : 'Consultado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});	
+			}catch(error){
+				Model.findOne({ "data.owner" : req.headers['x-daimont-user']}).exec(function(err, rs){
+					if(!err){
+						res.status(200).json(rs || []);
+					}else{
+						res.status(500).json(err);
+					}
+				});
+			}
+		}
+
  		function getfraude(req, res){
 			var REQ = req.params; 
 			try{
@@ -1855,6 +1896,7 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.get("/" + _url_alias +"/finalizado/:user/count", finalizado_count);
 		apiRoutes.get("/" + _url_alias +"/pagado", pagado);
 		apiRoutes.get("/" + _url_alias +"/anulado", anulado);
+		apiRoutes.get("/" + _url_alias +"/consultado", consultado);
 		apiRoutes.get("/" + _url_alias +"/actualizado", actualizado);
 		apiRoutes.get("/" + _url_alias +"/desactualizado", desactualizado);
 		apiRoutes.get("/" + _url_alias +"/pendiente", pendiente);
@@ -1924,6 +1966,7 @@ module.exports = function(app, apiRoutes, io){
 
 		apiRoutes.post("/" + _url_alias + "/notice/:id", notice);
 		apiRoutes.put("/" + _url_alias + "/nulled/:id", nulled);
+		apiRoutes.put("/" + _url_alias + "/consultado/:id", query);
 		apiRoutes.put("/" + _url_alias + "/viewed/:id", viewed);
 		apiRoutes.put("/" + _url_alias + "/set-viewed-preventivo/:id", set_viewed_preventivo);
 		apiRoutes.put("/" + _url_alias + "/unset-viewed-preventivo/:id", unset_viewed_preventivo);
