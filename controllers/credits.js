@@ -223,7 +223,23 @@ module.exports = function(app, apiRoutes, io){
 
 								model.save(function(err, credit){
 									if(credit){
+										require('crypto').randomBytes(3, function(err, buffer) {
+											var signature = {};
+											signature._user = mongoose.Types.ObjectId(credit._user);
+											signature._credit = mongoose.Types.ObjectId(credit._id);
+											signature.data =  buffer.toString('hex');
+
+											var contract_signature = new Contract(signature);
+											
+											Contract.save(function(err, contract){
+												if(!err){
+													console.log("new contract", contract);
+												}
+											});				
+										});
+
 								        if(facebook_token){
+
 								        }else{ 
 								        	
 								        	Model.findOne({ "_id" : mongoose.Types.ObjectId(credit._id)}).populate("_user").exec(function(err, rs){
@@ -275,6 +291,21 @@ module.exports = function(app, apiRoutes, io){
 						model.save(function(err, credit){
 							if(credit){
 								console.log("guardado modelo");
+								
+								require('crypto').randomBytes(3, function(err, buffer) {
+									var signature = {};
+									signature._user = mongoose.Types.ObjectId(credit._user);
+									signature._credit = mongoose.Types.ObjectId(credit._id);
+									signature.data =  buffer.toString('hex');
+
+									var contract_signature = new Contract(signature);
+									
+									Contract.save(function(err, contract){
+										if(!err){
+											console.log("new contract", contract);
+										}
+									});				
+								});
 
 						        if(facebook_token){
 										console.log("en nada");
