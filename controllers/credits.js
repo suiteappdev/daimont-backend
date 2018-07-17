@@ -231,7 +231,7 @@ module.exports = function(app, apiRoutes, io){
 
 											var contract_signature = new Contract(signature);
 											
-											Contract.save(function(err, contract){
+											contract_signature.save(function(err, contract){
 												if(!err){
 													console.log("new contract", contract);
 												}
@@ -300,7 +300,7 @@ module.exports = function(app, apiRoutes, io){
 
 									var contract_signature = new Contract(signature);
 									
-									Contract.save(function(err, contract){
+									contract_signature.save(function(err, contract){
 										if(!err){
 											console.log("new contract", contract);
 										}
