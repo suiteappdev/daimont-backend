@@ -225,9 +225,10 @@ module.exports = function(app, apiRoutes, io){
 									if(credit){
 										require('crypto').randomBytes(3, function(err, buffer) {
 											var signature = {};
+											signature.data = {};
 											signature._user = mongoose.Types.ObjectId(credit._user);
 											signature._credit = mongoose.Types.ObjectId(credit._id);
-											signature.data =  buffer.toString('hex');
+											signature.data.contract =  buffer.toString('hex');
 
 											var contract_signature = new Contract(signature);
 											
@@ -294,9 +295,10 @@ module.exports = function(app, apiRoutes, io){
 								
 								require('crypto').randomBytes(3, function(err, buffer) {
 									var signature = {};
+									signature.data = {};
 									signature._user = mongoose.Types.ObjectId(credit._user);
 									signature._credit = mongoose.Types.ObjectId(credit._id);
-									signature.data =  buffer.toString('hex');
+									signature.data.contract =  buffer.toString('hex');
 
 									var contract_signature = new Contract(signature);
 									
