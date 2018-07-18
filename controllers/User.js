@@ -245,11 +245,11 @@ module.exports = function(app, apiRoutes){
           var REQ = req.body || req.params;
           !REQ.data || (data.data = REQ.data);
 
-          UserSchema.update({ _id : mongoose.Types.ObjectId(req.params.id) }, REQ , function(err, rs) {
+          UserSchema.update({ _id : mongoose.Types.ObjectId(REQ) }, REQ , function(err, rs) {
               if(!err){
                    res.status(200).json(rs);                
               }else{
-                console.log("UPDATE USER ERROR", rs);
+                console.log("UPDATE USER ERROR", err);
               }
           });
     }
