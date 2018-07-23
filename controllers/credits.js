@@ -1335,7 +1335,40 @@ module.exports = function(app, apiRoutes, io){
 							}
 						});
 
-						res.status(200).json(result || []);
+						async.map(result, function (credit, next) {
+							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+								if(!err){
+										credit.data.count = count || 0;
+										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+											if(!err){
+													credit.data.rejected = rejected || 0;
+													
+													Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : { $in : ["Pagado", "Firmado", "Aceptado", "Consignado", "Aprobado"] }}, function( err, pending){
+														if(!err){
+																credit.data.pending = pending || 0;
+
+																Contract.findOne({ _user: mongoose.Types.ObjectId(credit._user._id), _credit : mongoose.Types.ObjectId(credit._id)}, function( err, sign){
+																	if(!err){
+																		credit.data.signature = sign;
+																		next(err, credit);
+																	}
+																});
+
+														}
+													});
+											}
+										});
+								}
+							});
+						},
+						function (err, result) {
+							var result = _.uniq(result, function(credit){
+    							return credit._user._id;
+  							});
+
+						 	res.status(200).json(result) || []);
+						});
+
 					}else{
 						res.status(500).json(err);
 					}
