@@ -49,7 +49,7 @@ module.exports = function(app, apiRoutes, io){
 
 		apiRoutes.get("/" + _url_alias , get);
 		apiRoutes.post("/" + _url_alias, post);
-		apiRoutes.put("/" + _url_alias + "/:id", update);
+		apiRoutes.put("/" + _url_alias + "/:id?", update);
 
 		return this;
 }
