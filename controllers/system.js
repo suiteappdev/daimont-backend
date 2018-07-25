@@ -11,7 +11,7 @@ module.exports = function(app, apiRoutes, io){
 
 			 Model.find({}).sort({"createdAt" : -1}).limit(1).exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs);
+						res.status(200).json(rs[0]);
 					}else{
 						res.json(err);
 					}
