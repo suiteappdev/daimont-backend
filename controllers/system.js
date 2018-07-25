@@ -49,9 +49,9 @@ module.exports = function(app, apiRoutes, io){
 			})
 		}
 
-		app.get("/" + _url_alias , get);
-		app.post("/" + _url_alias, post);
-		app.put("/" + _url_alias + "/:id?", update);
+		app.get("/api/" + _url_alias , get);
+		app.post("/api/" + _url_alias, post);
+		app.put("/api/" + _url_alias + "/:id?", update);
 
 		return this;
 }
