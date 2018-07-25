@@ -40,7 +40,9 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			Model.update({ _id :  mongoose.Types.ObjectId(req.params.id) }, REQ, { upsert : true }).exec(function(err, n){
+			var where = req.params.id ? ({ _id :  mongoose.Types.ObjectId(req.params.id) }) : {}
+
+			Model.update(where , REQ, { upsert : true }).exec(function(err, n){
 				if(!err){
 					res.status(200).json(n);
 				}
