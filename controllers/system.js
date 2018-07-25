@@ -27,7 +27,9 @@ module.exports = function(app, apiRoutes, io){
 			data.metadata = data.metadata || {};
 			data.data = REQ.data || {};
 
-			Model.save(data).exec(function(system, err){
+			var system = new Model(data);
+
+			system.save(function(system, err){
 				if(!err){
 					res.status(200).json(system);
 				}
