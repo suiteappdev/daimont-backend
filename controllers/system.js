@@ -9,7 +9,7 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.params; 
 			var where;
 
-			 Model.find({ $sort : { "createdAt" : -1 } }).exec(function(err, rs){
+			 Model.findOne({ $sort : { "createdAt" : -1 } }).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs);
 					}else{
