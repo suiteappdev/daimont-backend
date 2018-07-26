@@ -1057,7 +1057,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onPhone" : true } }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onPhone" : true } }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
