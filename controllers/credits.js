@@ -709,7 +709,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onWhatsApps" : true } }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onWhatsApps" : true } }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -723,7 +723,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onWhatsApps"  : false} }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onWhatsApps"  : false} }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -948,7 +948,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone" : true } }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone" : true } }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -961,7 +961,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone"  : false} }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onPhone"  : false} }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -974,7 +974,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail" : true } }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail" : true } }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -987,7 +987,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail"  : false} }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._request_onEmail"  : false} }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -1001,7 +1001,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onWhatsApps" : true } }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onWhatsApps" : true } }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -1015,7 +1015,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onWhatsApps" : false } }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onWhatsApps" : false } }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -1029,7 +1029,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onEmail" : true } }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onEmail" : true } }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -1043,7 +1043,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			User.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onEmail" : false } }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._payment_onEmail" : false } }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
