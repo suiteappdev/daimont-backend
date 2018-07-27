@@ -820,6 +820,33 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function preventive_enable(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._preventive" : true } }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
+		function preventive_disabled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._preventive"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
 		function request_references_family_enable_whatsapps(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
@@ -2074,6 +2101,9 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/dificil_recaudo/:id", dificil_recaudo);
 		apiRoutes.put("/" + _url_alias + "/preapproved/:id", preapproved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
+
+		apiRoutes.put("/" + _url_alias + "/preventive/:id/enable", preventive_enable);
+		apiRoutes.put("/" + _url_alias + "/preventive/:id/disabled", preventive_disabled);
 
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/enable", request_whatsapp_enable);
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/disabled", request_whatsapp_disabled);
