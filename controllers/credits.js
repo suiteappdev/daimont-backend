@@ -234,9 +234,13 @@ module.exports = function(app, apiRoutes, io){
 											
 											contract_signature.save(function(err, contract){
 												if(!err){
-													console.log("new contract", contract);
+													Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract", mongoose.Types.ObjectId(contract._id) }, function(err, n){
+														if(!err){
+															console.log("credit created with contract", contract._id);
+														}
+													})
 												}
-											});				
+											});			
 										});
 
 								        if(facebook_token){
@@ -275,6 +279,7 @@ module.exports = function(app, apiRoutes, io){
 								        		}
 								        	});
 								        }
+
 								    	return res.status(200).json(credit);
 									}else{
 										return res.status(500).json(err);
@@ -304,9 +309,13 @@ module.exports = function(app, apiRoutes, io){
 									
 									contract_signature.save(function(err, contract){
 										if(!err){
-											console.log("new contract", contract);
+											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract", mongoose.Types.ObjectId(contract._id) }, function(err, n){
+												if(!err){
+													console.log("credit created with contract", contract._id);
+												}
+											})
 										}
-									});				
+									});			
 								});
 
 						        if(facebook_token){
