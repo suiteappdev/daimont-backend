@@ -826,7 +826,43 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._preventive" : true } }, function(err, rs){
 				if(rs){
-						res.status(200).json(rs);
+						Model.findOne({ id : mongoose.Types.ObjectId(req.params.id)}).populate("_user").exec(function(err, credit){
+							if(!err){
+								  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, total : 100000}}, 'preventive/preventive.ejs');
+
+					              var data = {
+					                from: ' Daimont <noreply@daimont.com>',
+					                to: credit._user.email,
+					                subject: 'Daimont',
+					                text: 'Queremos recordarte tu fecha limite de pago.',
+					                html: _html,
+					                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
+					              };
+
+					              mailgun.messages().send(data, function (error, body) {
+					                	console.log("mailgun body", body);
+		                        	if(credit._user.data.phone){
+			                        	var phone = "+57" + credit._user.data.phone.toString();
+			                        	var message = "Estimado Usuario le recordamos que se acerca su fecha limite de pago."
+				                        
+				                        var params = {
+										    Message: message.toString(),
+										    MessageStructure: "string",
+										    PhoneNumber:phone
+										};
+
+										sns.publish(params, function(err, data){
+										   if (err) console.log(err, err.stack);
+
+							   			   else console.log("SMS", data);  
+										});
+		                        	}
+
+					              }); 
+					               
+								res.status(200).json(rs);
+							}
+						});
 				}else{
 						res.status(500).json(err)
 				}
