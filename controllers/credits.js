@@ -1,4 +1,11 @@
 module.exports = function(app, apiRoutes, io){
+		var AWS = require('aws-sdk');
+		AWS.config.region = 'us-west-2';
+		AWS.config.update({
+		      accessKeyId: process.env.AWS_ID,
+		      secretAccessKey: process.env.AWS_KEY
+		});
+		var sns = new AWS.SNS();
 		var async = require('async');
 		var _entity ="credits";
 		var _url_alias = "credits";
