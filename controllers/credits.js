@@ -239,11 +239,11 @@ module.exports = function(app, apiRoutes, io){
 												if(!err){
 
 													Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
-													  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, contract : credit._contract.data.contract}}, 'contract/new_contract.ejs');
+													  var _html = _compiler.render({ _data : { name : _credit._user.name, last_name : _credit._user.last_name, contract : _credit._contract.data.contract}}, 'contract/new_contract.ejs');
 
 										              var data = {
 										                from: ' Daimont <noreply@daimont.com>',
-										                to: credit._user.email,
+										                to: _credit._user.email,
 										                subject: 'FIRMA DEL CONTRATO',
 										                text: 'Por favor usa este código para firmar tu contrato de préstamo.',
 										                html: _html,
@@ -252,9 +252,9 @@ module.exports = function(app, apiRoutes, io){
 
 										              mailgun.messages().send(data, function (error, body) {
 										                	console.log("mailgun body", body);
-							                        	if(contract._user.data.phone){
-								                        	var phone = "+57" + credit._user.data.phone.toString();
-								                        	var firma = credit._contract.data.contract;
+							                        	if(_credit._user.data.phone){
+								                        	var phone = "+57" + _credit._user.data.phone.toString();
+								                        	var firma = _credit._contract.data.contract;
 								                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
 									                        
 									                        var params = {
@@ -270,7 +270,7 @@ module.exports = function(app, apiRoutes, io){
 															});
 							                        	}
 
-										              });  													});
+										              }); 												});
 													console.log("credit created with contract", contract._id);
 
 												}
@@ -350,11 +350,11 @@ module.exports = function(app, apiRoutes, io){
 												if(!err){
 
 													Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
-													  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, contract : credit._contract.data.contract}}, 'contract/new_contract.ejs');
+													  var _html = _compiler.render({ _data : { name : _credit._user.name, last_name : _credit._user.last_name, contract : _credit._contract.data.contract}}, 'contract/new_contract.ejs');
 
 										              var data = {
 										                from: ' Daimont <noreply@daimont.com>',
-										                to: credit._user.email,
+										                to: _credit._user.email,
 										                subject: 'FIRMA DEL CONTRATO',
 										                text: 'Por favor usa este código para firmar tu contrato de préstamo.',
 										                html: _html,
@@ -363,9 +363,9 @@ module.exports = function(app, apiRoutes, io){
 
 										              mailgun.messages().send(data, function (error, body) {
 										                	console.log("mailgun body", body);
-							                        	if(contract._user.data.phone){
-								                        	var phone = "+57" + credit._user.data.phone.toString();
-								                        	var firma = credit._contract.data.contract;
+							                        	if(_credit._user.data.phone){
+								                        	var phone = "+57" + _credit._user.data.phone.toString();
+								                        	var firma = _credit._contract.data.contract;
 								                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
 									                        
 									                        var params = {
