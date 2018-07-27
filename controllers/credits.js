@@ -235,43 +235,46 @@ module.exports = function(app, apiRoutes, io){
 											
 											contract_signature.save(function(err, contract){
 												if(!err){
-													Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
-														if(!err){
-															console.log("credit created with contract", contract._id);
-															  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, contract : contract.data.contract}}, 'contract/new_contract.ejs');
+											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
+												if(!err){
 
-												              var data = {
-												                from: ' Daimont <noreply@daimont.com>',
-												                to: credit._user.email,
-												                subject: 'FIRMA DEL CONTRATO',
-												                text: 'Por favor usa este código para firmar tu contrato de préstamo.',
-												                html: _html,
-												                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
-												              };
+													Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
+													  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, contract : credit._contract.data.contract}}, 'contract/new_contract.ejs');
 
-												              mailgun.messages().send(data, function (error, body) {
-												                	console.log("mailgun body", body);
-									                        	if(contract._user.data.phone){
-										                        	var phone = "+57" + contract._user.data.phone.toString();
-										                        	var firma = contract.data.contract;
-										                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
-											                        
-											                        var params = {
-																	    Message: message.toString(),
-																	    MessageStructure: "string",
-																	    PhoneNumber:phone
-																	};
+										              var data = {
+										                from: ' Daimont <noreply@daimont.com>',
+										                to: credit._user.email,
+										                subject: 'FIRMA DEL CONTRATO',
+										                text: 'Por favor usa este código para firmar tu contrato de préstamo.',
+										                html: _html,
+										                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
+										              };
 
-																	sns.publish(params, function(err, data){
-																	   if (err) console.log(err, err.stack);
+										              mailgun.messages().send(data, function (error, body) {
+										                	console.log("mailgun body", body);
+							                        	if(contract._user.data.phone){
+								                        	var phone = "+57" + credit._user.data.phone.toString();
+								                        	var firma = credit._contract.data.contract;
+								                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
+									                        
+									                        var params = {
+															    Message: message.toString(),
+															    MessageStructure: "string",
+															    PhoneNumber:phone
+															};
 
-														   			   else console.log("SMS", data);  
-																	});
-									                        	}
+															sns.publish(params, function(err, data){
+															   if (err) console.log(err, err.stack);
 
-												              });  
-														}
-													})
+												   			   else console.log("SMS", data);  
+															});
+							                        	}
+
+										              });  													});
+													console.log("credit created with contract", contract._id);
+
+												}
+											})
 												}
 											});			
 										});
@@ -345,8 +348,9 @@ module.exports = function(app, apiRoutes, io){
 										if(!err){
 											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
 												if(!err){
-													console.log("credit created with contract", contract._id);
-													  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, contract : contract.data.contract}}, 'contract/new_contract.ejs');
+
+													Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
+													  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, contract : credit._contract.data.contract}}, 'contract/new_contract.ejs');
 
 										              var data = {
 										                from: ' Daimont <noreply@daimont.com>',
@@ -360,8 +364,8 @@ module.exports = function(app, apiRoutes, io){
 										              mailgun.messages().send(data, function (error, body) {
 										                	console.log("mailgun body", body);
 							                        	if(contract._user.data.phone){
-								                        	var phone = "+57" + contract._user.data.phone.toString();
-								                        	var firma = contract.data.contract;
+								                        	var phone = "+57" + credit._user.data.phone.toString();
+								                        	var firma = credit._contract.data.contract;
 								                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
 									                        
 									                        var params = {
@@ -377,7 +381,9 @@ module.exports = function(app, apiRoutes, io){
 															});
 							                        	}
 
-										              });  
+										              });  													});
+													console.log("credit created with contract", contract._id);
+
 												}
 											})
 										}
