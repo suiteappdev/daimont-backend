@@ -826,7 +826,7 @@ module.exports = function(app, apiRoutes, io){
 
 			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._preventive" : true } }, function(err, rs){
 				if(rs){
-						Model.findOne({ id : mongoose.Types.ObjectId(req.params.id)}).populate("_user").exec(function(err, credit){
+						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id)}).populate("_user").exec(function(err, credit){
 							if(!err){
 								  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, total : 100000}}, 'preventive/preventive.ejs');
 
@@ -859,7 +859,7 @@ module.exports = function(app, apiRoutes, io){
 		                        	}
 
 					              }); 
-					               
+
 								res.status(200).json(rs);
 							}
 						});
