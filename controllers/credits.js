@@ -2102,8 +2102,8 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/preapproved/:id", preapproved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 
-		apiRoutes.put("/" + _url_alias + "/preventive/:id/enable", preventive_enable);
-		apiRoutes.put("/" + _url_alias + "/preventive/:id/disabled", preventive_disabled);
+		apiRoutes.put("/" + _url_alias + "/notify-preventive/:id/enable", preventive_enable);
+		apiRoutes.put("/" + _url_alias + "/notify-preventive/:id/disabled", preventive_disabled);
 
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/enable", request_whatsapp_enable);
 		apiRoutes.put("/" + _url_alias + "/request/whatsapp/:id/disabled", request_whatsapp_disabled);
