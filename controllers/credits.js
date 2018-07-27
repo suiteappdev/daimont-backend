@@ -234,7 +234,7 @@ module.exports = function(app, apiRoutes, io){
 											
 											contract_signature.save(function(err, contract){
 												if(!err){
-													Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract", mongoose.Types.ObjectId(contract._id) }, function(err, n){
+													Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
 														if(!err){
 															console.log("credit created with contract", contract._id);
 														}
@@ -309,7 +309,7 @@ module.exports = function(app, apiRoutes, io){
 									
 									contract_signature.save(function(err, contract){
 										if(!err){
-											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract", mongoose.Types.ObjectId(contract._id) }, function(err, n){
+											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
 												if(!err){
 													console.log("credit created with contract", contract._id);
 												}
