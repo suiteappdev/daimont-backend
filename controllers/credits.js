@@ -828,7 +828,20 @@ module.exports = function(app, apiRoutes, io){
 				if(rs){
 						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id)}).populate("_user").exec(function(err, credit){
 							if(!err){
-								  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, total : 100000}}, 'preventive/preventive.ejs');
+						      //variable que contiene los dias de intereses
+						      var mora = {};
+						      var now = moment(new Date());
+						      var system = moment(credit.data.deposited_time_server);
+
+						      mora.payForDays  = now.diff(system, 'days') == 0 ? 1 : now.diff(system, 'days');
+						      mora.interests = (parseInt(credit.data.amount[0]) * (2.18831289 / 100));
+						      mora.system_quote = (12990 + 960 * mora.payForDays);
+						      mora.iva = mora.system_quote * (19 / 100);
+						      mora.interestsPeerDays = ( mora.interests / 30 );
+						      mora.interestsDays = (mora.interestsPeerDays ) * mora.payForDays;
+						      mora.total_payment = (parseInt(credit.data.amount[0])) + (mora.interestsDays) + (mora.system_quote || 0) + (mora.iva || 0);
+
+								  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, total : formatCurrency(mora.total_payment, opts)}}, 'preventive/preventive.ejs');
 
 					              var data = {
 					                from: ' Daimont <noreply@daimont.com>',
