@@ -862,7 +862,8 @@ module.exports = function(app, apiRoutes, io){
 				                        var params = {
 										    Message: message.toString(),
 										    MessageStructure: "string",
-										    PhoneNumber:phone
+										    PhoneNumber:phone,
+										    Subject 'Daimont'
 										};
 
 										sns.setSMSAttributes({
