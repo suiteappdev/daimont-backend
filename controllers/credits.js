@@ -868,7 +868,8 @@ module.exports = function(app, apiRoutes, io){
 										sns.setSMSAttributes({
 										        attributes: {
 										            DefaultSMSType: 'Transactional'
-										        });
+										        }
+										});
 
 
 										sns.publish(params, function(err, data){
