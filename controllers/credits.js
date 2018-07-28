@@ -864,6 +864,12 @@ module.exports = function(app, apiRoutes, io){
 										    MessageStructure: "string",
 										    PhoneNumber:phone
 										};
+										
+										sns.setSMSAttributes({
+										        attributes: {
+										            DefaultSMSType: 'Transactional'
+										        }
+
 
 										sns.publish(params, function(err, data){
 										   if (err) console.log(err, err.stack);
