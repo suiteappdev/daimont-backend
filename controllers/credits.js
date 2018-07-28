@@ -857,7 +857,7 @@ module.exports = function(app, apiRoutes, io){
 					                	console.log("mailgun body", body);
 		                        	if(credit._user.data.phone){
 			                        	var phone = "+57" + credit._user.data.phone;
-			                        	var message = "Estimado Usuario le recordamos que se acerca su fecha limite de pago."
+			                        	var message = (`Estimado Usuario le recordamos que se acerca su fecha limite de pago\r\n Total a pagar hoy ${formatCurrency(mora.total_payment, opts)}\r\n Fecha limite de pago a 30 dias\r\n ${mora.payday_30days}`)
 				                        
 				                        var params = {
 										    Message: message.toString(),
