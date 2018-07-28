@@ -856,7 +856,7 @@ module.exports = function(app, apiRoutes, io){
 					              mailgun.messages().send(data, function (error, body) {
 					                	console.log("mailgun body", body);
 		                        	if(credit._user.data.phone){
-			                        	var phone = "+57" + credit._user.data.phone.toString();
+			                        	var phone = "+57" + credit._user.data.phone;
 			                        	var message = "Estimado Usuario le recordamos que se acerca su fecha limite de pago."
 				                        
 				                        var params = {
