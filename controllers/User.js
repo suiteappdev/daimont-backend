@@ -3,6 +3,7 @@ module.exports = function(app, apiRoutes, io){
     var user_manager = require('../models/user_manager');
     var path = require("path");
     var credit = require('../models/credits');
+    var System = require('../models/system');
     var config = require(process.env.PWD + '/config.js');
     var moment = require('moment');
     moment.locale('es');
@@ -415,6 +416,65 @@ module.exports = function(app, apiRoutes, io){
         });
     }
 
+    function mode(req, res){
+            if (!req.body.email) {
+                res.status(400).send({err : 'debe especificar un usuario'});
+                return;
+            }
+
+            if (!req.body.password) {
+                res.status(400).send({err : 'debe especificar un password'});
+                return;
+            }
+
+            if (!req.body.mode) {
+                res.status(400).send({err : 'debe especificar un modo'});
+                return;
+            }
+
+          var jwt = require('jsonwebtoken');
+          var UserSchema = require('../models/user');
+
+         UserSchema.findOne({ email : req.body.email.toLowerCase()}).exec(function(err, user){
+            if(!user){
+                    res.status(404).json({err : 'email address not found'});
+                    return;
+             }
+
+             if(user.data && user.data.blocked){
+                  res.status(401).json({ blocked : "account blocked"});
+                  return;
+             }
+
+            if(user.auth(req.body.password)){ 
+                    user.password = null;
+                    
+                    var token = jwt.sign(user, app.get('secret'), {
+                      expiresIn: "1h" // 24 horas (suficientes para una jornada laboral)
+                    });
+
+                    var where = req.params.id ? ({ _id :  mongoose.Types.ObjectId(req.params.id) }) : {}
+                    
+                    if(req.body.mode == "Produccion"){
+                      System.update(where , {$set : { status : true }}, { upsert : true }).exec(function(err, n){
+                        if(!err){
+                          res.status(200).json(n);
+                        }
+                      })     
+                    }else{
+                      System.update(where , {$set : { status : false }}, { upsert : true }).exec(function(err, n){
+                        if(!err){
+                          res.status(200).json(n);
+                        }
+                      })      
+                    }
+            }else{
+                  res.status(401).json({err: 'Usuario o clave incorrectos'});
+            }
+        });
+    }
+
+
     function exists(req, res){
         UserSchema.exists(req.params.email.toLowerCase(), function(err, rs){
           if(!err){
@@ -604,6 +664,7 @@ module.exports = function(app, apiRoutes, io){
     app.post("/api/user/client", client);
     app.post("/api/user/admin", admin);
     app.post("/api/login", login);
+    app.post("/api/mode", mode);
     
     apiRoutes.put("/user/:id", update);
     apiRoutes.put("/user/updated/:id", updatedProfile);
