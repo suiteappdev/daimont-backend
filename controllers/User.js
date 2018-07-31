@@ -1,4 +1,4 @@
-module.exports = function(app, apiRoutes){
+module.exports = function(app, apiRoutes, io){
     var mongoose = require('mongoose');
     var user_manager = require('../models/user_manager');
     var path = require("path");
@@ -247,6 +247,12 @@ module.exports = function(app, apiRoutes){
 
           UserSchema.update({ _id : mongoose.Types.ObjectId(req.params.id) }, REQ , function(err, rs) {
               if(!err){
+                  UserSchema.findOne({ _id : mongoose.Types.ObjectId(req.params.id)}).exec(function(err, user){
+                    console.log("user updated emit", user);
+                    if(!err){
+                        io.to('all').emit('NEW_UPDATED_TO_ADMIN', user);
+                    }
+                  });
                    res.status(200).json(rs);                
               }else{
                 console.log("UPDATE USER ERROR", err);
