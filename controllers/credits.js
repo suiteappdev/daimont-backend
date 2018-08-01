@@ -842,7 +842,7 @@ module.exports = function(app, apiRoutes, io){
 						      mora.total_payment = (parseInt(credit.data.amount[0])) + (mora.interestsDays) + (mora.system_quote || 0) + (mora.iva || 0);
                 			  mora.payday_30days = moment(credit.data.deposited_time_server || credit._contract.createAt).add(30, "days").format("LL");
 
-								  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, total : formatCurrency(mora.total_payment, opts), payday_30days : mora.payday_30days}}, 'preventive/preventive.ejs');
+								  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, total : formatCurrency(mora.total_payment, opts).split(".")[0], payday_30days : mora.payday_30days}}, 'preventive/preventive.ejs');
 
 					              var data = {
 					                from: ' Daimont <noreply@daimont.com>',
@@ -857,7 +857,7 @@ module.exports = function(app, apiRoutes, io){
 					                	console.log("mailgun body", body);
 		                        	if(credit._user.data.phone){
 			                        	var phone = "+57" + credit._user.data.phone;
-			                        	var message = (`DAIMONT le recuerda que se acerca su fecha limite de pago\r\n\r\n Total a pagar hoy\r\n ${formatCurrency(mora.total_payment, opts)}\r\n\r\n Fecha de pago a 30 dias\r\n ${mora.payday_30days}`)
+			                        	var message = (`DAIMONT le recuerda que se acerca su fecha limite de pago\r\n\r\n Total a pagar hoy\r\n ${formatCurrency(mora.total_payment, opts).split(".")[0]}\r\n\r\n Fecha de pago a 30 dias\r\n ${mora.payday_30days}`)
 				                        
 				                        var params = {
 										    Message: message.toString(),
