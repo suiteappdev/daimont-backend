@@ -456,13 +456,13 @@ module.exports = function(app, apiRoutes, io){
                     var where = req.params.id ? ({ _id :  mongoose.Types.ObjectId(req.params.id) }) : {}
                     
                     if(req.body.mode == "Produccion"){
-                      System.update(where , {$set : { status : true }}, { upsert : true }).exec(function(err, n){
+                      System.remove({}).exec(function(err, n){
                         if(!err){
                           res.status(200).json(n);
                         }
                       })     
                     }else{
-                      System.update({} , {$set : { status : false }}).exec(function(err, n){
+                      System.update({} , { $set : { status : false }}).exec(function(err, n){
                         if(!err){
                           res.status(200).json(n);
                         }
