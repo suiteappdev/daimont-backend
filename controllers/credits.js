@@ -28,7 +28,7 @@ module.exports = function(app, apiRoutes, io){
 		var fcm = new SimpleFcm('AIzaSyCOgQeNoM3X0fnKPqSPngUpQP8Bzrr5Hqs');
 
     	var formatCurrency = require('format-currency')
-		var opts = { format: '%v %c', code: 'COP' }
+		var opts = { format: '%v' }
 		FB.setApiVersion("v2.2");
 	    
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
@@ -847,7 +847,7 @@ module.exports = function(app, apiRoutes, io){
 					              var data = {
 					                from: ' Daimont <noreply@daimont.com>',
 					                to: credit._user.email,
-					                subject: 'Daimont',
+					                subject: 'DAIMONT',
 					                text: 'Queremos recordarte tu fecha limite de pago.',
 					                html: _html,
 					                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
@@ -857,7 +857,7 @@ module.exports = function(app, apiRoutes, io){
 					                	console.log("mailgun body", body);
 		                        	if(credit._user.data.phone){
 			                        	var phone = "+57" + credit._user.data.phone;
-			                        	var message = (`Daimont le recuerda que se acerca su fecha limite de pago\r\n\r\n Total a pagar hoy\r\n ${formatCurrency(mora.total_payment, opts)}\r\n\r\n Fecha de pago a 30 dias\r\n ${mora.payday_30days}`)
+			                        	var message = (`DAIMONT le recuerda que se acerca su fecha limite de pago\r\n\r\n Total a pagar hoy\r\n ${formatCurrency(mora.total_payment, opts)}\r\n\r\n Fecha de pago a 30 dias\r\n ${mora.payday_30days}`)
 				                        
 				                        var params = {
 										    Message: message.toString(),
