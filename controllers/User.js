@@ -453,8 +453,6 @@ module.exports = function(app, apiRoutes, io){
                       expiresIn: "1h" // 24 horas (suficientes para una jornada laboral)
                     });
 
-                    var where = req.params.id ? ({ _id :  mongoose.Types.ObjectId(req.params.id) }) : {}
-                    
                     if(req.body.mode == "Produccion"){
                       System.update(where , { $set : {"status" : true} }, { upsert : true }).exec(function(err, n){
                         if(!err){
@@ -462,7 +460,7 @@ module.exports = function(app, apiRoutes, io){
                         }
                       })     
                     }else{
-                      System.update(where , { $set : {"status" : false} }, { upsert : true }).exec(function(err, n){
+                      System.update({} , { $set : {"status" : false} }, { multi : true }).exec(function(err, n){
                         if(!err){
                           res.status(200).json(n);
                         }
