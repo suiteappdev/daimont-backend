@@ -454,7 +454,7 @@ module.exports = function(app, apiRoutes, io){
                     });
 
                     if(req.body.mode == "Produccion"){
-                      System.update({ }, { $set : {"status" : true} }, { upsert : true }).exec(function(err, n){
+                      System.update({ }, { $set : {"status" : true} }, { upsert : true, multi : true  }).exec(function(err, n){
                         if(!err){
                           res.status(200).json(n);
                         }
