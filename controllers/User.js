@@ -462,7 +462,7 @@ module.exports = function(app, apiRoutes, io){
                         }
                       })     
                     }else{
-                      System.update(where , {$set : { status : false }}, { upsert : true }).exec(function(err, n){
+                      System.update({} , {$set : { status : false }}).exec(function(err, n){
                         if(!err){
                           res.status(200).json(n);
                         }
