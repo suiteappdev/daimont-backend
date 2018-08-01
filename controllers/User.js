@@ -453,10 +453,20 @@ module.exports = function(app, apiRoutes, io){
                       expiresIn: "1h" // 24 horas (suficientes para una jornada laboral)
                     });
 
+                    var where = req.params.id ? ({ _id :  mongoose.Types.ObjectId(req.params.id) }) : {}
+                    
                     if(req.body.mode == "Produccion"){
-                      console.log("PRO", req.body.mode);
+                        System.update({ } , { status : true }, { upsert : true}).exec(function(err, n){
+                          if(!err){
+                            res.status(200).json(n);
+                          }
+                        })     
                     }else{
-                      console.log("MAN", req.body.mode);
+                      System.remove({}).exec(function(err, n){
+                        if(!err){
+                            res.status(200).json(n);
+                        }
+                      })      
                     }
             }else{
                   res.status(401).json({err: 'Usuario o clave incorrectos'});
