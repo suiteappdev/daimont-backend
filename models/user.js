@@ -18,8 +18,8 @@ var _Schema = new Schema({
       last_name : { type : String, trim : true, lowercase : true},
 	  second_last_name : { type : String, trim : true, lowercase : true},
 	  full_name : { type : String, trim : true, lowercase : true},
-      email : { type : String, trim : true , lowercase:true, index: true, unique: true},
-	  cc : { type : String, trim : true , lowercase:true, index: true, unique: true},
+      email : { type : String, trim : true , required : true, lowercase:true, index: true, unique: true},
+	  cc : { type : String, trim : true , lowercase:true, required : true, index: true, unique: true},
       phone : {type: String, required : false},
 	  data:{ type : Object},
 	  credit:{ type : Object},
@@ -37,7 +37,7 @@ _Schema.pre('save', function (next) {
     this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
     this.data = this.data ? this.data : {};
     this.data.updated = false;
-    
+
     next();
 });
 
