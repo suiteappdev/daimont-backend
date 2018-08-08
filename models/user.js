@@ -19,7 +19,7 @@ var _Schema = new Schema({
 	  second_last_name : { type : String, trim : true, lowercase : true},
 	  full_name : { type : String, trim : true, lowercase : true},
       email : { type : String, trim : true , required : true, lowercase:true, index: true, unique: true},
-	  cc : { type : String, trim : true , lowercase:true, required : true, index: true, unique: true},
+	  cc : { type : String, trim : true , lowercase:true, index: true, unique: true},
       phone : {type: String, required : false},
 	  data:{ type : Object},
 	  credit:{ type : Object},
