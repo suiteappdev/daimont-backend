@@ -13,17 +13,17 @@ var metadata = require('./plugins/metadata');
 var _Schema = new Schema({
 	  username : { type : String, trim : true, lowercase : true},
 	  password : {type: String, required : false},
-    name : { type : String, trim : true,  lowercase : true},
+      name : { type : String, trim : true,  lowercase : true},
 	  second_name : { type : String, trim : true,  lowercase : true},
-    last_name : { type : String, trim : true, lowercase : true},
+      last_name : { type : String, trim : true, lowercase : true},
 	  second_last_name : { type : String, trim : true, lowercase : true},
 	  full_name : { type : String, trim : true, lowercase : true},
-    email : { type : String, trim : true , lowercase:true, unique: true},
-	  cc : { type : String, trim : true , lowercase:true, unique: true},
-    phone : {type: String, required : false},
+      email : { type : String, trim : true , lowercase:true, index: true, unique: true},
+	  cc : { type : String, trim : true , lowercase:true, index: true, unique: true},
+      phone : {type: String, required : false},
 	  data:{ type : Object},
 	  credit:{ type : Object},
-    _plan : { type : Schema.Types.ObjectId , ref : 'plans', required: false},
+      _plan : { type : Schema.Types.ObjectId , ref : 'plans', required: false},
 	  active : { type : Boolean, default : false},
 	  type : { type : String, trim : true, default : 'CLIENT'},
 	  _role : [{ type : Schema.Types.ObjectId , ref : 'Role'}],
@@ -37,29 +37,7 @@ _Schema.pre('save', function (next) {
     this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
     this.data = this.data ? this.data : {};
     this.data.updated = false;
-
-
-    /*if(this.credit){
-    	var credit = mongoose.model('credits');
-
-        var new_credit = new credit(_self.credit);
-
-        new_credit._user = mongoose.Types.ObjectId(_self._id);
-        new_credit._id = mongoose.Types.ObjectId();
-        _self.credit.data = _self.credit.data || {};
-
-		if(!new_credit.metadata){
-			new_credit.metadata = {};
-			new_credit.metadata._author = this.data && this.data.facebook_id ? this.data.facebook_id : this._id
-		}
-
-    	new_credit.save(function(err, credit){
-    		if(!err){
-                _self.credit = credit._id;
-				next();    			
-    		}
-    	});
-    }*/
+    
     next();
 });
 
