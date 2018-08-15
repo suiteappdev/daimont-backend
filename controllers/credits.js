@@ -245,14 +245,18 @@ module.exports = function(app, apiRoutes, io){
 											
 											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
-													console.log("finalizado", count);
+													if(count >= 3){
+														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado" } }).exec(function(err, credit){
+															if(!err){
+																console.log("err", err);
+															}
+														})
+													}
 												}
 											});
 
 											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
 												if(!err){
-
-
 
 													Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
 													  var _html = _compiler.render({ _data : { name : _credit._user.name, last_name : _credit._user.last_name, contract : _credit._contract.data.contract}}, 'contract/new_contract.ejs');
@@ -365,7 +369,13 @@ module.exports = function(app, apiRoutes, io){
 											
 											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
-													console.log("finalizado", count);
+													if(count >= 3){
+														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado" } }).exec(function(err, credit){
+															if(!err){
+																console.log("err", err);
+															}
+														})
+													}
 												}
 											});
 
