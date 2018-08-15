@@ -362,6 +362,13 @@ module.exports = function(app, apiRoutes, io){
 									
 									contract_signature.save(function(err, contract){
 										if(!err){
+											
+											Model.count({ "data.status": "Finalizado" }).exec(function(err, count){
+												if(!err){
+													console.log("finalizado", count);
+												}
+											});
+
 											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
 												if(!err){
 
