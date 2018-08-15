@@ -243,7 +243,7 @@ module.exports = function(app, apiRoutes, io){
 											contract_signature.save(function(err, contract){
 												if(!err){
 											
-											Model.count({ "data.status": "Finalizado" }).exec(function(err, count){
+											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
 													console.log("finalizado", count);
 												}
@@ -363,7 +363,7 @@ module.exports = function(app, apiRoutes, io){
 									contract_signature.save(function(err, contract){
 										if(!err){
 											
-											Model.count({ "data.status": "Finalizado" }).exec(function(err, count){
+											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
 													console.log("finalizado", count);
 												}
