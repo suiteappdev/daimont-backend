@@ -242,8 +242,17 @@ module.exports = function(app, apiRoutes, io){
 											
 											contract_signature.save(function(err, contract){
 												if(!err){
+											
+											Model.count({ "data.status": "Finalizado" }).exec(function(err, count){
+												if(!err){
+													console.log("finalizado", count);
+												}
+											});
+
 											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
 												if(!err){
+
+
 
 													Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
 													  var _html = _compiler.render({ _data : { name : _credit._user.name, last_name : _credit._user.last_name, contract : _credit._contract.data.contract}}, 'contract/new_contract.ejs');
