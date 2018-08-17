@@ -245,7 +245,7 @@ module.exports = function(app, apiRoutes, io){
 											
 											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
-													if(count >= 3){
+													if(count >= 2){
 														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado" } }).exec(function(err, credit){
 															if(!err){
 																console.log("err", err);
@@ -369,7 +369,7 @@ module.exports = function(app, apiRoutes, io){
 											
 											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
-													if(count >= 3){
+													if(count >= 2){
 														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado" } }).exec(function(err, credit){
 															if(!err){
 																console.log("err", err);
@@ -1687,7 +1687,7 @@ module.exports = function(app, apiRoutes, io){
 							});
 						},
 						function (err, result) {
-						 	res.status(200).json(result || []);
+						 	res.status(200).json(_.uniq(result, function(c, key, a){ return c._user}) || []);
 						});
 
 					}else{
