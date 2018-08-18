@@ -917,8 +917,93 @@ module.exports = function(app, apiRoutes, io){
 			});
 		}
 
+		function second_preventive_enable(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._second_preventive" : true } }, function(err, rs){
+				if(rs){
+						Model.findOne({ _id : mongoose.Types.ObjectId(req.params.id)}).populate("_user").exec(function(err, credit){
+							if(!err){
+						      //variable que contiene los dias de intereses
+						      var mora = {};
+						      var now = moment(new Date());
+						      var system = moment(credit.data.deposited_time_server);
+
+						      mora.payForDays  = now.diff(system, 'days') == 0 ? 1 : now.diff(system, 'days');
+						      mora.interests = (parseInt(credit.data.amount[0]) * (2.18831289 / 100));
+						      mora.system_quote = (12990 + 960 * mora.payForDays);
+						      mora.iva = mora.system_quote * (19 / 100);
+						      mora.interestsPeerDays = ( mora.interests / 30 );
+						      mora.interestsDays = (mora.interestsPeerDays ) * mora.payForDays;
+						      mora.total_payment = (parseInt(credit.data.amount[0])) + (mora.interestsDays) + (mora.system_quote || 0) + (mora.iva || 0);
+                			  mora.payday_30days = moment(credit.data.deposited_time_server || credit._contract.createAt).add(30, "days").format("LL");
+
+								  var _html = _compiler.render({ _data : { name : credit._user.name, last_name : credit._user.last_name, total : formatCurrency(mora.total_payment, opts).split(".")[0].replace(",","."), payday_30days : mora.payday_30days}}, 'preventive/preventive.ejs');
+
+					              var data = {
+					                from: ' Daimont <noreply@daimont.com>',
+					                to: credit._user.email,
+					                subject: 'DAIMONT',
+					                text: 'Queremos recordarte tu fecha limite de pago.',
+					                html: _html,
+					                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
+					              };
+
+					              mailgun.messages().send(data, function (error, body) {
+					                	console.log("mailgun body", body);
+		                        	if(credit._user.data.phone){
+			                        	var phone = "+57" + credit._user.data.phone;
+			                        	var message = (`DAIMONT le recuerda que se acerca su fecha limite de pago\r\n\r\n Total a pagar hoy\r\n ${formatCurrency(mora.total_payment, opts).split(".")[0].replace(",",".")}\r\n\r\n${mora.payday_30days}`)
+				                        
+				                        var params = {
+										    Message: message.toString(),
+										    MessageStructure: "string",
+										    PhoneNumber:phone,
+										    Subject : 'Daimont'
+										};
+
+										sns.setSMSAttributes({
+										        attributes: {
+										            DefaultSMSType: 'Transactional'
+										        }
+										});
+
+
+										sns.publish(params, function(err, data){
+										   if (err) console.log(err, err.stack);
+
+							   			   else console.log("SMS", data);  
+										});
+		                        	}
+
+					              }); 
+
+								res.status(200).json(rs);
+							}
+						});
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+
 
 		function preventive_disabled(req, res){
+			var data = {};
+			var REQ = req.body || req.params;
+
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._preventive"  : false} }, function(err, rs){
+				if(rs){
+						res.status(200).json(rs);
+				}else{
+						res.status(500).json(err)
+				}
+			});
+		}
+
+		function second_preventive_disabled(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
 
@@ -2185,6 +2270,9 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/dificil_recaudo/:id", dificil_recaudo);
 		apiRoutes.put("/" + _url_alias + "/preapproved/:id", preapproved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
+
+		apiRoutes.put("/" + _url_alias + "/second-notify-preventive/:id/enable", preventive_enable);
+		apiRoutes.put("/" + _url_alias + "/second-notify-preventive/:id/disabled", preventive_disabled);
 
 		apiRoutes.put("/" + _url_alias + "/notify-preventive/:id/enable", preventive_enable);
 		apiRoutes.put("/" + _url_alias + "/notify-preventive/:id/disabled", preventive_disabled);
