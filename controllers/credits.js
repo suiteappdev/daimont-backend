@@ -2084,7 +2084,7 @@ module.exports = function(app, apiRoutes, io){
 							var system = moment(c.data.deposited_time_server);
 							var now = moment(new Date());
 
-							return (((now.diff(system, 'days') >= 23) && (now.diff(system, 'days') <= 29))) ? true : false; 
+							return (((now.diff(system, 'days') >= 20) && (now.diff(system, 'days') <= 29))) ? true : false; 
 						});	
 							
 						async.map(result, function (credit, next) {
