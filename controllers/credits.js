@@ -1007,7 +1007,7 @@ module.exports = function(app, apiRoutes, io){
 			var data = {};
 			var REQ = req.body || req.params;
 
-			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data._preventive"  : false} }, function(err, rs){
+			Model.update({ _id : mongoose.Types.ObjectId(req.params.id) } , { $set : { "data.second_preventive"  : false} }, function(err, rs){
 				if(rs){
 						res.status(200).json(rs);
 				}else{
@@ -2271,8 +2271,8 @@ module.exports = function(app, apiRoutes, io){
 		apiRoutes.put("/" + _url_alias + "/preapproved/:id", preapproved);
 		apiRoutes.put("/" + _url_alias + "/rejected/:id", rejected);
 
-		apiRoutes.put("/" + _url_alias + "/second-notify-preventive/:id/enable", preventive_enable);
-		apiRoutes.put("/" + _url_alias + "/second-notify-preventive/:id/disabled", preventive_disabled);
+		apiRoutes.put("/" + _url_alias + "/second-notify-preventive/:id/enable", second_preventive_enable);
+		apiRoutes.put("/" + _url_alias + "/second-notify-preventive/:id/disabled", second_preventive_disabled);
 
 		apiRoutes.put("/" + _url_alias + "/notify-preventive/:id/enable", preventive_enable);
 		apiRoutes.put("/" + _url_alias + "/notify-preventive/:id/disabled", preventive_disabled);
