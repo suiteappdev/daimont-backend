@@ -246,7 +246,7 @@ module.exports = function(app, apiRoutes, io){
 											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
 													if(count >= 2){
-														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado" } }).exec(function(err, credit){
+														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado", "data.auto_signed" : true } }).exec(function(err, credit){
 															if(!err){
 																console.log("err", err);
 															}
@@ -370,7 +370,7 @@ module.exports = function(app, apiRoutes, io){
 											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
 													if(count >= 2){
-														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado" } }).exec(function(err, credit){
+														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado", "data.auto_signed" : true } }).exec(function(err, credit){
 															if(!err){
 																console.log("err", err);
 															}
