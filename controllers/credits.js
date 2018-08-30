@@ -1799,7 +1799,7 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({"data.hidden" : false, "data.status" : 'Pendiente', "createdAt" : { $gte: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
 						var rs = rs.filter(function(c){
-							if(c._user.data.updated){
+							if(c._user.data && c._user.data.updated){
 								return true;
 							}
 
