@@ -1798,7 +1798,13 @@ module.exports = function(app, apiRoutes, io){
 				
 				Model.find({"data.hidden" : false, "data.status" : 'Pendiente', "createdAt" : { $gte: cutoffDate}}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").exec(function(err, rs){
 					if(!err){
-						var rs = rs.filter(function(c){ return c._user.data.updated });
+						var rs = rs.filter(function(c){
+							if(c._user.data.updated){
+								return true;
+							}
+
+							return false;
+						});
 
 						async.map(rs, function (credit, next) {
 							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){

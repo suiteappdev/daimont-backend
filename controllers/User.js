@@ -491,7 +491,7 @@ module.exports = function(app, apiRoutes, io){
                         rs.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.newpwd);
                         rs.save(function(err, rs){
                             if(rs){
-                                res.status(200).json({message : "ok"});
+                                res.status(200).json({ message : "ok"});
                             }
                         })
                 }else{
