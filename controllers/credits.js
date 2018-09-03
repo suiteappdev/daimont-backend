@@ -1759,17 +1759,19 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						
 						async.map(rs, function (credit, next) {
-							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
-								if(!err){
-										credit.data.count = count || 0;
-										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
-											if(!err){
-													credit.data.rejected = rejected || 0;
-													next(err, credit);
-											}
-										});
-								}
-							});
+							if(credit._user){
+								Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+									if(!err){
+											credit.data.count = count || 0;
+											Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+												if(!err){
+														credit.data.rejected = rejected || 0;
+														next(err, credit);
+												}
+											});
+									}
+								});								
+							}
 						},
 						function (err, result) {
 						 	res.status(200).json(_.uniq(result, function(c, key, a){ return c._user}) || []);
