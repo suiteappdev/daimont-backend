@@ -401,8 +401,6 @@ module.exports = function(app, apiRoutes, io){
              }
 
             if(user.auth(req.body.password)){
-                    user.password = null;
-                    
                     var token = jwt.sign(user, app.get('secret'), {
                       expiresIn: "1h" // 24 horas (suficientes para una jornada laboral)
                     });                    
