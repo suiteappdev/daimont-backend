@@ -1759,7 +1759,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						
 						async.map(rs, function (credit, next) {
-							if(credit._user){
+							if(credit._user && credit._user._id){
 								Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 									if(!err){
 											credit.data.count = count || 0;
