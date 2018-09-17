@@ -2009,8 +2009,11 @@ module.exports = function(app, apiRoutes, io){
 			try{
 				Model.find({"data.status" : 'Preaprobado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
+							rs = rs.filter(function(cre){
+								return cre._user && cre._user._id;
+							});
+							
 						async.map(rs, function (credit, next) {
-							if(credit._user){
 								Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 									if(!err){
 											credit.data.count = count || 0;
@@ -2022,7 +2025,6 @@ module.exports = function(app, apiRoutes, io){
 											});
 									}
 								});								
-							}
 						},
 						function (err, result) {
 						 	res.status(200).json(result || []);
