@@ -2010,6 +2010,7 @@ module.exports = function(app, apiRoutes, io){
 				Model.find({"data.status" : 'Preaprobado'}).sort("-createdAt").populate("_user").populate("_payment").populate("_contract").populate("_approvedby").exec(function(err, rs){
 					if(!err){
 						async.map(rs, function (credit, next) {
+							console.log("credit", credit);
 							if(credit._user && credit._user._id){
 								Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 									if(!err){
