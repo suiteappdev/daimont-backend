@@ -2011,7 +2011,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						async.map(rs, function (credit, next) {
 							console.log("credit", credit);
-							if(credit._user && credit._user._id){
+							if(credit._user){
 								Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
 									if(!err){
 											credit.data.count = count || 0;
