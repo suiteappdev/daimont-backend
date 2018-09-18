@@ -375,6 +375,18 @@ module.exports = function(app, apiRoutes, io){
         })
     }
 
+    function byEmail(req, res){
+        UserSchema
+        .find({ "email" : req.params.email })
+        .exec(function(err, rs){
+          if(!err){
+            return res.status(200).json(rs);
+          }
+
+          return res.status(404).json([]);
+        })
+    }
+
     function login(req, res){
             if (!req.body.email) {
                 res.status(400).send({err : 'debe especificar un usuario'});
@@ -648,6 +660,7 @@ module.exports = function(app, apiRoutes, io){
     apiRoutes.get('/user/:id', user);
     apiRoutes.get('/user/facebook/:facebookId', byfacebookId);
     apiRoutes.get('/user/documento/:documentId', byDocument);
+    apiRoutes.get('/user/email/:email', byEmail);
     apiRoutes.get("/user/banned_time/:user", banned_time);
 
     app.get('/api/user/exists/:email', exists);
