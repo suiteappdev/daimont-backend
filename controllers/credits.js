@@ -1940,21 +1940,33 @@ module.exports = function(app, apiRoutes, io){
 								return cre;
 						});
 
-						async.map(_updated_date, function (credit, next) {
-							Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
-								if(!err){
-										credit.data.count = count || 0;
-										Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
-											if(!err){
-													credit.data.rejected = rejected || 0;
-													next(err, credit);
-											}
-										});
-								}
-							});
+						var result = _updated_date.filter(function(c){
+							var system = moment(c.data.deposited_time_server);
+							var now = moment(new Date());
+
+							return (((now.diff(system, 'days') <= 19))) ? true : false; 
+						});	
+							
+						async.map(result, function (credit, next) {
+									Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
+										if(!err){
+												credit.data.count = count || 0;
+												Model.count({ _user: mongoose.Types.ObjectId(credit._user._id), "data.status" : 'Rechazado'}, function( err, rejected){
+													if(!err){
+															credit.data.rejected = rejected || 0;
+															next(err, credit);
+													}
+												});
+										}
+									});										
 						},
 						function (err, result) {
-						 	res.status(200).json(result || []);
+						 	res.status(200).json(result.map(function(c){
+						 		c.data.viewedPreventivo = c.data.viewedPreventivo || false;
+
+						 		return c;
+
+						 	}) || []);
 						});
 					}else{
 						res.status(500).json(err);
