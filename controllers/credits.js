@@ -246,55 +246,57 @@ module.exports = function(app, apiRoutes, io){
 											Model.count({ "_user" : mongoose.Types.ObjectId(credit._user), "data.status": "Finalizado" }).exec(function(err, count){
 												if(!err){
 													if(count >= 2){
-														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado", "data.auto_signed" : true } }).exec(function(err, credit){
+															Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { $set : { "data.status" : "Firmado", "data.auto_signed" : true } }).exec(function(err, credit){
+																if(!err){
+																	console.log("err", err);
+																}
+															})
+													}else{
+														Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
 															if(!err){
-																console.log("err", err);
+
+																Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
+																  var _html = _compiler.render({ _data : { name : _credit._user.name, last_name : _credit._user.last_name, contract : _credit._contract.data.contract}}, 'contract/new_contract.ejs');
+
+													              var data = {
+													                from: ' Daimont <noreply@daimont.com>',
+													                to: _credit._user.email,
+													                subject: 'FIRMA DEL CONTRATO',
+													                text: 'Por favor usa este código para firmar tu contrato de préstamo.',
+													                html: _html,
+													                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
+													              };
+
+													              mailgun.messages().send(data, function (error, body) {
+													                	console.log("mailgun body", body);
+										                        	if(_credit._user.data.phone){
+											                        	var phone = "+57" + _credit._user.data.phone.toString();
+											                        	var firma = _credit._contract.data.contract;
+											                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
+												                        
+												                        var params = {
+																		    Message: message.toString(),
+																		    MessageStructure: "string",
+																		    PhoneNumber:phone
+																		};
+
+																		sns.publish(params, function(err, data){
+																		   if (err) console.log(err, err.stack);
+
+															   			   else console.log("SMS", data);  
+																		});
+										                        	}
+
+													              }); 												});
+																console.log("credit created with contract", contract._id);
+
 															}
-														})
+														})														
 													}
 												}
 											});
 
-											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
-												if(!err){
 
-													Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
-													  var _html = _compiler.render({ _data : { name : _credit._user.name, last_name : _credit._user.last_name, contract : _credit._contract.data.contract}}, 'contract/new_contract.ejs');
-
-										              var data = {
-										                from: ' Daimont <noreply@daimont.com>',
-										                to: _credit._user.email,
-										                subject: 'FIRMA DEL CONTRATO',
-										                text: 'Por favor usa este código para firmar tu contrato de préstamo.',
-										                html: _html,
-										                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
-										              };
-
-										              mailgun.messages().send(data, function (error, body) {
-										                	console.log("mailgun body", body);
-							                        	if(_credit._user.data.phone){
-								                        	var phone = "+57" + _credit._user.data.phone.toString();
-								                        	var firma = _credit._contract.data.contract;
-								                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
-									                        
-									                        var params = {
-															    Message: message.toString(),
-															    MessageStructure: "string",
-															    PhoneNumber:phone
-															};
-
-															sns.publish(params, function(err, data){
-															   if (err) console.log(err, err.stack);
-
-												   			   else console.log("SMS", data);  
-															});
-							                        	}
-
-										              }); 												});
-													console.log("credit created with contract", contract._id);
-
-												}
-											})
 												}
 											});			
 										});
@@ -375,50 +377,52 @@ module.exports = function(app, apiRoutes, io){
 																console.log("err", err);
 															}
 														})
+													}else{
+															Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
+																if(!err){
+
+																	Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
+																	  var _html = _compiler.render({ _data : { name : _credit._user.name, last_name : _credit._user.last_name, contract : _credit._contract.data.contract}}, 'contract/new_contract.ejs');
+
+														              var data = {
+														                from: ' Daimont <noreply@daimont.com>',
+														                to: _credit._user.email,
+														                subject: 'FIRMA DEL CONTRATO',
+														                text: 'Por favor usa este código para firmar tu contrato de préstamo.',
+														                html: _html,
+														                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
+														              };
+
+														              mailgun.messages().send(data, function (error, body) {
+														                	console.log("mailgun body", body);
+											                        	if(_credit._user.data.phone){
+												                        	var phone = "+57" + _credit._user.data.phone.toString();
+												                        	var firma = _credit._contract.data.contract;
+												                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
+													                        
+													                        var params = {
+																			    Message: message.toString(),
+																			    MessageStructure: "string",
+																			    PhoneNumber:phone
+																			};
+
+																			sns.publish(params, function(err, data){
+																			   if (err) console.log(err, err.stack);
+
+																   			   else console.log("SMS", data);  
+																			});
+											                        	}
+
+														              });  													});
+																	console.log("credit created with contract", contract._id);
+
+																}
+															})														
 													}
 												}
 											});
 
-											Model.update({ _id : mongoose.Types.ObjectId(credit._id) }, { "_contract" : mongoose.Types.ObjectId(contract._id) }, function(err, n){
-												if(!err){
 
-													Model.findOne({ _id : mongoose.Types.ObjectId(credit._id)}).populate("_user").populate("_contract").exec(function(err, _credit){
-													  var _html = _compiler.render({ _data : { name : _credit._user.name, last_name : _credit._user.last_name, contract : _credit._contract.data.contract}}, 'contract/new_contract.ejs');
-
-										              var data = {
-										                from: ' Daimont <noreply@daimont.com>',
-										                to: _credit._user.email,
-										                subject: 'FIRMA DEL CONTRATO',
-										                text: 'Por favor usa este código para firmar tu contrato de préstamo.',
-										                html: _html,
-										                //attachment : path.join(process.env.PWD , "docs", "_contract.docx")
-										              };
-
-										              mailgun.messages().send(data, function (error, body) {
-										                	console.log("mailgun body", body);
-							                        	if(_credit._user.data.phone){
-								                        	var phone = "+57" + _credit._user.data.phone.toString();
-								                        	var firma = _credit._contract.data.contract;
-								                        	var message = "Usa este código "+ firma.toString() +" para firmar tu contrato de préstamo."
-									                        
-									                        var params = {
-															    Message: message.toString(),
-															    MessageStructure: "string",
-															    PhoneNumber:phone
-															};
-
-															sns.publish(params, function(err, data){
-															   if (err) console.log(err, err.stack);
-
-												   			   else console.log("SMS", data);  
-															});
-							                        	}
-
-										              });  													});
-													console.log("credit created with contract", contract._id);
-
-												}
-											})
 										}
 									});			
 								});
