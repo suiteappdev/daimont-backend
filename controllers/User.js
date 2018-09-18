@@ -376,14 +376,14 @@ module.exports = function(app, apiRoutes, io){
     }
 
     function byEmail(req, res){
-        UserSchema
-        .find({ "email" : req.params.email })
+        User
+        .count({ "email" : req.params.email })
         .exec(function(err, rs){
           if(!err){
-            return res.status(200).json({ count : rs.length });
+              return res.status(200).json({ count : rs });
           }
 
-          return res.status(404).json([]);
+          return res.status(404).json({ count : 0 });
         })
     }
 
