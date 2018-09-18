@@ -380,7 +380,7 @@ module.exports = function(app, apiRoutes, io){
         .find({ "email" : req.params.email })
         .exec(function(err, rs){
           if(!err){
-            return res.status(200).json(rs);
+            return res.status(200).json({ count : rs.length });
           }
 
           return res.status(404).json([]);
