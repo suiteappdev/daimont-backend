@@ -660,7 +660,7 @@ module.exports = function(app, apiRoutes, io){
     apiRoutes.get('/user/:id', user);
     apiRoutes.get('/user/facebook/:facebookId', byfacebookId);
     apiRoutes.get('/user/documento/:documentId', byDocument);
-    app.get('/user/email/:email', byEmail);
+    app.get('/api/user/email/:email', byEmail);
     apiRoutes.get("/user/banned_time/:user", banned_time);
 
     app.get('/api/user/exists/:email', exists);
