@@ -1961,12 +1961,7 @@ module.exports = function(app, apiRoutes, io){
 									});										
 						},
 						function (err, result) {
-						 	res.status(200).json(result.map(function(c){
-						 		c.data.viewedPreventivo = c.data.viewedPreventivo || false;
-
-						 		return c;
-
-						 	}) || []);
+						 	res.status(200).json( result|| [] );
 						});
 					}else{
 						res.status(500).json(err);
