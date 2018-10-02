@@ -413,10 +413,10 @@ module.exports = function(app, apiRoutes, io){
              }
 
             if(user.data && user.data.blockedTemp && user.data.blockedTemp){
-                  var now = new Date();
+                  var now = moment(new Date());
 
-                  if(now.diff(user.data.blockTempTime, 'days') < user.data.blockTempDays){
-                      res.status(401).json({ blocked_time_to_left : now.diff(user.data.blockTempTime, 'days')});
+                  if(now.diff(moment(user.data.blockTempTime), 'days') < user.data.blockTempDays){
+                      res.status(401).json({ blocked_time_to_left : now.diff(moment(user.data.blockTempTime), 'days')});
                       return;
                   }
              }
