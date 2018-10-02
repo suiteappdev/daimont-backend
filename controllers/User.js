@@ -412,6 +412,15 @@ module.exports = function(app, apiRoutes, io){
                   return;
              }
 
+            if(user.data && user.data.blockedTemp && user.data.blockedTemp){
+                  var now = new Date();
+
+                  if(now.diff(user.data.blockTempTime, 'days') < user.data.blockTempDays){
+                      res.status(401).json({ blocked_time_to_left : now.diff(user.data.blockTempTime, 'days')});
+                      return;
+                  }
+             }
+
             if(user.auth(req.body.password)){
                     var token = jwt.sign(user, app.get('secret'), {
                       expiresIn: "1h" // 24 horas (suficientes para una jornada laboral)
