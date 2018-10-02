@@ -416,7 +416,7 @@ module.exports = function(app, apiRoutes, io){
                   var now = moment(new Date());
 
                   if(now.diff(moment(user.data.blockTempTime), 'days') < user.data.blockTempDays){
-                      res.status(401).json({ blocked_time_to_left : now.diff(moment(user.data.blockTempTime), 'days')});
+                      res.status(401).json({ blocked_days_to_left :  (user.data.blockTempDays - now.diff(moment(user.data.blockTempTime), 'days')) });
                       return;
                   }
              }
