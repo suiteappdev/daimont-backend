@@ -633,7 +633,7 @@ module.exports = function(app, apiRoutes, io){
   function unblock(req, res){
       var REQ = req.body || req.params;
 
-      User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $unset: { "data.blockedTemp": 1, "data.blockTempTime" : 1, "data.blockTempDays" : 1}},  function(err, user) {
+      User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $unset: { "data.blocked": 1, "data.banned_time" : 1 }},  function(err, user) {
         if(!err){
                res.status(200).json(user);
           }
@@ -643,7 +643,7 @@ module.exports = function(app, apiRoutes, io){
     function unblockTemp(req, res){
       var REQ = req.body || req.params;
 
-      User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $unset: { "data.blockTemp": 1, "data.blockTempTime" : 1 }},  function(err, user) {
+      User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $unset: { "data.blockedTemp": 1, "data.blockTemp" : 1, "data.blockTempDays" : 1}},  function(err, user) {
         if(!err){
                res.status(200).json(user);
           }
