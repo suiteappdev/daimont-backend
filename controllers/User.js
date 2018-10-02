@@ -614,10 +614,36 @@ module.exports = function(app, apiRoutes, io){
       });
   }
 
+  function blockTemp(req, res){
+      var REQ = req.body || req.params;
+
+      User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $set: { "data.blockedTemp": true, "data.blockTempTime" : new Date(), "data.blockTempDays" : req.body.days}},  function(err, user) {
+        if(!err){
+               sessionSchema.find({ _user : mongoose.Types.ObjectId(req.params.id)}).exec(function(err, session){
+                  if(!err){
+                      session.remove();
+                  }
+               });
+
+               res.status(200).json(user);
+          }
+      });
+  }
+
   function unblock(req, res){
       var REQ = req.body || req.params;
 
-      User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $unset: { "data.blocked": 1, "data.banned_time" : 1 }},  function(err, user) {
+      User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $unset: { "data.blockedTemp": 1, "data.blockTempTime" : 1, "data.blockTempDays" : 1}},  function(err, user) {
+        if(!err){
+               res.status(200).json(user);
+          }
+      });
+  }
+
+    function unblockTemp(req, res){
+      var REQ = req.body || req.params;
+
+      User.update({_id : mongoose.Types.ObjectId(req.params.id)}, { $unset: { "data.blockTemp": 1, "data.blockTempTime" : 1 }},  function(err, user) {
         if(!err){
                res.status(200).json(user);
           }
@@ -680,6 +706,8 @@ module.exports = function(app, apiRoutes, io){
     apiRoutes.put("/user/updated/:id", updatedProfile);
     apiRoutes.put("/user/block/:id", block);
     apiRoutes.put("/user/unblock/:id", unblock);
+    apiRoutes.put("/user/block-temp/:id", blockTemp);
+    apiRoutes.put("/user/unblock-temp/:id", unblockTemp);
     apiRoutes.put("/user/:id/update-cupon", update_cupon);
     apiRoutes.put("/user/:id/allow_cupon", allow_cupon);
     apiRoutes.delete("/user/:id", remove);
