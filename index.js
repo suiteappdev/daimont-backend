@@ -25,8 +25,6 @@ var options = {
   ca: fs.readFileSync(path.join(process.env.PWD , "AddTrustExternalCARoot.crt"), "utf8")
 };
 
-app.use(express.static('public'));
-
 FB.setApiVersion("v2.2");
 app.use(cors());
 app.use(bodyParser.urlencoded({extended : true}));
