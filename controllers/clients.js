@@ -43,6 +43,8 @@ module.exports = function(app, apiRoutes){
         UserSchema.find({"data.updated" : true}).exec(function(err, users){
             if(!err){
                 async.map(users, function (user, next) {
+                  user.data.fname = ((user.name || '') +' '+ (user.data.second_name || '') +' '+ (user.last_name || '') +' '+ (user.data.second_last_name || '')).toString().replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ñ/g, 'n').replace(/\s\s/g, " ").toUpperCase()
+                 
                   Credits.count({ _user: mongoose.Types.ObjectId(user._id), "data.hidden" : false, "data.status" : 'Finalizado'}, function( err, count){
                     if(!err){
                         user.data.count = count || 0;
