@@ -98,6 +98,13 @@ module.exports = function(app, apiRoutes, io){
        var password_text = req.body.password;
        var credit = req.body.credit;
 
+       if(data.data){
+          data.data.allow_cupon = false;
+       }else{
+          data.data = {};
+          data.data.allow_cupon = false;
+       }
+
         user_manager.create(data, function(err, user){
           
           if(err){
