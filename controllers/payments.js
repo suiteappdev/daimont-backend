@@ -76,7 +76,7 @@ module.exports = function(app, apiRoutes, io){
 					if(!err){
 						var result = rs.filter(function(payment){
 							if(payment._credit && payment._credit.data){
-									return (payment._credit.data.status == 'Consignado' && (payment.data.tipo_pago == 'Abono' || payment.data.tipo_pago == 'Total') || !payment.data.invalid_payment);
+									return (payment._credit.data.status == 'Pagado' || !payment.data.invalid_payment);
 							}
 						});
 						
