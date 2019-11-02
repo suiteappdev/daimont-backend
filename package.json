@@ -33,7 +33,7 @@
     "jsonwebtoken": "^5.4.0",
     "mailgun-js": "^0.11.2",
     "moment": "^2.18.1",
-    "mongoose": "^4.1.9",
+    "mongoose": "^5.7.7",
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-deep-populate": "^3.0.0",
     "mongoose-sequence": "^3.0.2",
