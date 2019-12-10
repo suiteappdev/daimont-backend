@@ -21,7 +21,7 @@ var Session = require("./models/session");
 
 var options = {
   key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
-  cert: fs.readFileSync(path.join(process.env.PWD , "certificate.crt"), "utf8"),
+  cert: fs.readFileSync(path.join(process.env.PWD , "daimont_com_co.crt"), "utf8"),
   ca: fs.readFileSync(path.join(process.env.PWD , "AddTrustExternalCARoot.crt"), "utf8")
 };
 
