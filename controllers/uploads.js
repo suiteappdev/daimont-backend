@@ -5,37 +5,20 @@ module.exports = function(app, apiRoutes, io){
     var model = require(path.join("../", "models", "resource.js"));
     var path = require("path");
     var crypto = require("crypto");
-    var multerS3 = require('multer-s3');
-    var aws = require("aws-sdk");
     var entity_name = "uploads";
     var cropper = require(path.join("../", "helpers", "cropper", "cropper.js"));
 
-
-    aws.config.update({
-        accessKeyId: "AKIAIBQ56J72L3L23YKQ",
-        secretAccessKey: "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"
-    });
-
-    aws.config.update({region: 'us-west-2'});
-
-    var s3 = new aws.S3();
-
     var upload = multer({
-        storage: multerS3({
-            s3: s3,
-            acl: 'public-read',
-            bucket: 'shoplyassets',
-            contentType: multerS3.AUTO_CONTENT_TYPE,
-            metadata: function (req, file, cb) {
-              cb(null, {fieldName: file.fieldname});
-            },
-            key: function (req, file, cb) {
-                  crypto.pseudoRandomBytes(16, function (err, raw) {
-                    if (err) return cb(err)
-                    cb(null, raw.toString('hex') + path.extname(file.originalname));
-                  });           
-            }
-        })
+        dest: 'uploads/',
+        metadata: function (req, file, cb) {
+          cb(null, {fieldName: file.fieldname});
+        },
+        key: function (req, file, cb) {
+              crypto.pseudoRandomBytes(16, function (err, raw) {
+                if (err) return cb(err)
+                cb(null, raw.toString('hex') + path.extname(file.originalname));
+              });           
+        }
     }).single('file');
 
     function post(req, res, next){

@@ -110,7 +110,7 @@ apiRoutes.use(function(req, res, next) {
         }
     });
 
-app.use('/static/images', express.static('uploads/images'));
+app.use('/static/images', express.static('uploads/'));
 app.use('/static/apps', express.static('uploads/apps'));
 
 app.get('/home', function(req, res){
