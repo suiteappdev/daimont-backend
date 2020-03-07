@@ -8,11 +8,15 @@ module.exports = function(app, apiRoutes, io){
     var entity_name = "uploads";
     var cropper = require(path.join("../", "helpers", "cropper", "cropper.js"));
 
-    var upload = multer({
-        dest: 'uploads/',
+    var upload = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, '/uploads');
+        },
+
         metadata: function (req, file, cb) {
           cb(null, {fieldName: file.fieldname});
         },
+
         key: function (req, file, cb) {
               crypto.pseudoRandomBytes(16, function (err, raw) {
                 if (err) return cb(err)
