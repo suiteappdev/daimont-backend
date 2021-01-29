@@ -23,8 +23,8 @@ var options = {
   key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
   cert: fs.readFileSync(path.join(process.env.PWD , "daimont_com_co.crt"), "utf8"),
   ca: [
-    fs.readFileSync(path.join(process.env.PWD, 'USERTrustRSAAAACA.crt.crt')),
-    fs.readFileSync(path.join(process.env.PWD, 'SectigoRSADomainValidationSecureServerCA.crt')) 
+    fs.readFileSync(path.join(process.env.PWD, 'USERTrustRSAAAACA.crt'), "utf8"),
+    fs.readFileSync(path.join(process.env.PWD, 'SectigoRSADomainValidationSecureServerCA.crt'), "utf8") 
     ]
 };
 
