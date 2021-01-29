@@ -8,7 +8,7 @@ module.exports = function(app, apiRoutes, io){
     var entity_name = "uploads";
     var cropper = require(path.join("../", "helpers", "cropper", "cropper.js"));
 
-    var storage = multer.diskStorage({
+    var upload = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, '/uploads');
         },
@@ -24,8 +24,6 @@ module.exports = function(app, apiRoutes, io){
               });           
         }
     }).single('file');
-
-    var upload = multer({ storage: storage });
 
     function post(req, res, next){
         var data = {};
