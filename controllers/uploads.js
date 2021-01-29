@@ -25,8 +25,8 @@ module.exports = function(app, apiRoutes, io){
         }
     }).single('file');
 
-    console.log(upload);
-    console.log(multer.diskStorage);
+    console.log("upload",upload);
+    console.log("multer", multer.diskStorage);
 
     function post(req, res, next){
         var data = {};
