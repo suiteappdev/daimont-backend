@@ -22,7 +22,10 @@ var Session = require("./models/session");
 var options = {
   key: fs.readFileSync(path.join(process.env.PWD , "private.key"), "utf8"),
   cert: fs.readFileSync(path.join(process.env.PWD , "daimont_com_co.crt"), "utf8"),
-  ca: fs.readFileSync(path.join(process.env.PWD , "AddTrustExternalCARoot.crt"), "utf8")
+  ca: [
+    fs.readFileSync(path.join(process.env.PWD, 'USERTrustRSAAAACA.crt.crt')),
+    fs.readFileSync(path.join(process.env.PWD, 'SectigoRSADomainValidationSecureServerCA.crt')) 
+    ]
 };
 
 FB.setApiVersion("v2.2");
