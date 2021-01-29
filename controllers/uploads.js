@@ -8,7 +8,6 @@ module.exports = function(app, apiRoutes, io){
     var entity_name = "uploads";
     var cropper = require(path.join("../", "helpers", "cropper", "cropper.js"));
 
-    console.log(multer.diskStorage);
 
     var upload = multer.diskStorage({
         destination: function (req, file, cb) {
@@ -25,7 +24,7 @@ module.exports = function(app, apiRoutes, io){
                 cb(null, raw.toString('hex') + path.extname(file.originalname));
               });           
         }
-    }).single('file');
+    });
 
     function post(req, res, next){
         var data = {};
@@ -53,7 +52,7 @@ module.exports = function(app, apiRoutes, io){
         });
     }
 
-    app.post("/api/" + entity_name , upload, post);
+    app.post("/api/" + entity_name , upload.single('file'), post);
     app.post("/api/upload-amazon/", upload_amazon);
     app.post("/api/upload-local/", upload_local);
 
